@@ -1,0 +1,1 @@
+Put your ogre.cfg and plugins.cfg for release version here.

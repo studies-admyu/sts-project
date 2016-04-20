@@ -1,0 +1,1 @@
+Put your plugins.cfg for debug version here.

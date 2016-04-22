@@ -21,20 +21,25 @@ if (INSTALL_DEVELOPER_FILES)
 	endif (CMAKE_BUILD_TYPE MATCHES Debug)
 endif (INSTALL_DEVELOPER_FILES)
 
-# ToDo: Add -std=c++11 if necessary
+# Additional options for G++ like comilers
+if (${CMAKE_COMPILER_IS_GNUCXX})
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif (${CMAKE_COMPILER_IS_GNUCXX})
 
 # Ogre dependency
 if (WIN32)
 	# Replace backslash with slash to avoid parsing errors
 	string(REPLACE "\\" "/" CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
 elseif (UNIX)
-	if (EXISTS "/usr/local/lib/OGRE/cmake")
-	  set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+	if (EXISTS "/usr/share/OGRE/cmake/modules")
+		set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
+	elseif (EXISTS "/usr/local/lib/OGRE/cmake")
+		set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 	elseif (EXISTS "/usr/lib/OGRE/cmake")
-	  set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+		set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 	else (EXISTS "/usr/local/lib/OGRE/cmake")
-	  message(SEND_ERROR "Failed to find OGRE module path.")
-	endif (EXISTS "/usr/local/lib/OGRE/cmake")
+		message(SEND_ERROR "Failed to find OGRE module path.")
+	endif (EXISTS "/usr/share/OGRE/cmake/modules")
 endif (WIN32)
 
 find_package(OGRE REQUIRED)
@@ -63,26 +68,26 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 		set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
 	endif (MINGW)
 	set(OGRE_BOOST_COMPONENTS thread date_time)
-	
+
 	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS})
-	
+
 	if (NOT Boost_FOUND)
 		# Try again with the other type of libs
 		set(Boost_USE_STATIC_LIBS NOT ${Boost_USE_STATIC_LIBS})
 		find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS})
 	endif(NOT Boost_FOUND)
-	
+
 	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS})
- 
+
 	# Set up referencing of Boost
 	include_directories(${Boost_INCLUDE_DIR})
-	
+
 	add_definitions("-DBOOST_ALL_NO_LIB")
 	if (WIN32)
 		# Boost.Asio _WIN32_WINNT
 		#add_definitions("-D_WIN32_WINNT=0x0501")
 	endif (WIN32)
-	
+
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
 

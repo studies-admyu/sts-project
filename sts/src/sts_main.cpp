@@ -68,7 +68,6 @@ int main(int argc, char* argv[])
 
 		std::unique_ptr<Ogre::Root> lRoot(new Ogre::Root(lPluginsFileName, lConfigFileName, lLogFileName));
 
-		loadPlugins(lRoot);
 		initRenderSystem(lRoot);
 
 		bool lCreateAWindowAutomatically = false;

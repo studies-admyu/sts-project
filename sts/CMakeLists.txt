@@ -9,7 +9,7 @@ set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
 )
- 
+
 include_directories(
 	${OIS_INCLUDE_DIRS}
 	${OGRE_INCLUDE_DIRS}
@@ -18,21 +18,22 @@ include_directories(
 	${Boost_INCLUDE_DIRS}
 )
 
+add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
+
 if (WIN32)
-	add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
 #	ToDo: solve linking problem here
 #	set_target_properties (sts PROPERTIES WIN32_EXECUTABLE TRUE)
 endif (WIN32)
 
 target_link_libraries(sts ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
- 
+
 # ToDo: add post build commands for MSVC_IDE
 
 if (WIN32)
 	install (TARGETS sts RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Release)
 	# ToDo: do something with that
 	install (FILES config/plugins.cfg config/ogre.cfg DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Release)
-	
+
 	install (FILES ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
 		${OGRE_PLUGIN_DIR_REL}/Plugin_CgProgramManager.dll
 		${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
@@ -42,12 +43,12 @@ if (WIN32)
 		${OGRE_PLUGIN_DIR_REL}/OIS.dll
 		DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Release
 	)
-	
+
 	if (INSTALL_DEBUG_BINARIES)
 		install (TARGETS sts RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Debug)
 		# ToDo: do something with that
 		install (FILES config/debug/plugins.cfg config/ogre.cfg DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Debug)
-		
+
 		install (FILES ${OGRE_PLUGIN_DIR_DBG}/OgreMain_d.dll
 			${OGRE_PLUGIN_DIR_DBG}/Plugin_CgProgramManager_d.dll
 			${OGRE_PLUGIN_DIR_DBG}/Plugin_OctreeSceneManager_d.dll
@@ -58,7 +59,7 @@ if (WIN32)
 			DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Debug
 		)
 	endif (INSTALL_DEBUG_BINARIES)
-	
+
 	install (DIRECTORY data/ DESTINATION data)
 endif (WIN32)
 
@@ -66,7 +67,7 @@ if (UNIX)
 	install (TARGETS sts RUNTIME DESTINATION bin CONFIGURATIONS Release)
 	# ToDo: do something with that
 	install (FILES config/plugins.cfg config/ogre.cfg DESTINATION bin CONFIGURATIONS Release)
-	
+
 	if (INSTALL_DEBUG_BINARIES)
 		install (TARGETS sts RUNTIME DESTINATION bin CONFIGURATIONS Debug)
 		# ToDo: do something with that

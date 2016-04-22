@@ -13,7 +13,7 @@ option (INSTALL_DEVELOPER_FILES "Install include headers, libs & debug symbols (
 
 if (INSTALL_DEVELOPER_FILES)
 	if (CMAKE_BUILD_TYPE MATCHES Debug)
-		option (INSTALL_DEBUG_BINARIES "Install debug versions of binaries." OFF)
+		option (INSTALL_DEBUG_BINARIES "Install debug versions of binaries." ON)
 		if (MSVC AND INSTALL_DEBUG_BINARIES)
 			# ToDo: add *.pdb installation code
 			#option (INSTALL_DEBUG_BINARIES_PDB "Install PDB files for debug versions of binaries." OFF)
@@ -90,21 +90,6 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
-
-# Set default install prefix
-if (CMAKE_INSTALL_PREFIX STREQUAL "")
-	if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/..")
-		set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../sts-project-build-${CMAKE_BUILD_TYPE}")
-	else (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/..")
-		set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/sts-project-build-${CMAKE_BUILD_TYPE}")
-	endif (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/..")
-endif (CMAKE_INSTALL_PREFIX STREQUAL "")
-
-# ToDo: Try not to use this
-if (UNIX)
-	file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/bin)
-	set(EXECUTABLE_OUTPUT_PATH ${CMAKE_INSTALL_PREFIX}/bin)
-endif (UNIX)
 
 # STS
 add_subdirectory (sts)

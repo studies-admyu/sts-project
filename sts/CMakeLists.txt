@@ -64,13 +64,11 @@ if (WIN32)
 endif (WIN32)
 
 if (UNIX)
-	install (TARGETS sts RUNTIME DESTINATION bin CONFIGURATIONS Release)
-	# ToDo: do something with that
+	install (TARGETS sts DESTINATION bin CONFIGURATIONS Release)
 	install (FILES config/plugins.cfg config/ogre.cfg DESTINATION bin CONFIGURATIONS Release)
 
 	if (INSTALL_DEBUG_BINARIES)
-		install (TARGETS sts RUNTIME DESTINATION bin CONFIGURATIONS Debug)
-		# ToDo: do something with that
+		install (TARGETS sts DESTINATION bin CONFIGURATIONS Debug)
 		install (FILES config/plugins.cfg config/ogre.cfg DESTINATION bin CONFIGURATIONS Debug)
 	endif (INSTALL_DEBUG_BINARIES)
 

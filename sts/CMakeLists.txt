@@ -29,12 +29,11 @@ target_link_libraries(sts ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBR
 
 # ToDo: add post build commands for MSVC_IDE
 
-# fFlder with binaries. Currently on Windows we install just to INSTALL_PREFIX, on Linux to bin subfoler.
+# Folder with binaries. Currently on Windows we install just to INSTALL_PREFIX, on Linux to bin subfoler.
 set (sts_BIN_DIR ${CMAKE_INSTALL_PREFIX})
 if (UNIX)
 	set (sts_BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin)
 endif (UNIX)
-message(WARNING, "sts_bin_dir: ${sts_BIN_DIR}")
 
 # do we need to built a binary?
 set (sts_IS_BINARY_BUILT False)

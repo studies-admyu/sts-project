@@ -26,7 +26,7 @@ if (${CMAKE_COMPILER_IS_GNUCXX})
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif (${CMAKE_COMPILER_IS_GNUCXX})
 
-# Ogre dependency
+# Ogre dependency, searched by cmake module
 if (WIN32)
 	# Replace backslash with slash to avoid parsing errors
 	string(REPLACE "\\" "/" CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")

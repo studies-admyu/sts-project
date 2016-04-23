@@ -15,6 +15,49 @@
 
 typedef std::vector<Ogre::String> Strings;
 
+/** Stores proceeded command line args */
+struct ExecutionArgs
+{
+	/** Defines if config dialog execution is needed */
+	bool showConfigDialog;
+	/** Define if help prompt is needed */
+	bool helpPrompt;
+
+	ExecutionArgs():
+		showConfigDialog(false), helpPrompt(false) {}
+};
+
+/** Processes command line args */
+bool processCommandLineArgs(int argc, char* argv[], ExecutionArgs& exArgs)
+{
+	exArgs = ExecutionArgs();
+	/* No options */
+	if (argc <= 1) {
+		return true;
+	}
+
+	bool returnValue = true;
+	for (int i = 1; i < argc; ++i) {
+		std::string arg(argv[i]);
+		if (arg == "--help") {
+			/* Check for other options - they are not allowed */
+			if (argc > 2) {
+				std::cerr << "ERROR: No additional option with --help is allowed." << std::endl;
+				returnValue = false;
+				break;
+			}
+			exArgs.helpPrompt = true;
+		} else if (arg == "--config")  {
+			exArgs.showConfigDialog = true;
+		} else {
+			std::cerr << "ERROR: unknown option \"" << arg << "\"" << std::endl;
+			returnValue = false;
+			break;
+		}
+	}
+	return returnValue;
+}
+
 /** Try to use first possible render system. Throw an exception if nothing is found. */
 void initSomeRenderSystem(std::unique_ptr<Ogre::Root>& root)
 {
@@ -41,12 +84,30 @@ void initResourceMainGroup(const Ogre::String& groupName)
 
 int main(int argc, char* argv[])
 {
+	std::unique_ptr<ExecutionArgs> exArgs(new ExecutionArgs());
+	if (!processCommandLineArgs(argc, argv, *exArgs)) {
+		return -1;
+	} else if (exArgs->helpPrompt) {
+		std::cout << "Usage: sts [--help] || [--config]" << std::endl;
+		std::cout << "Options:" << std::endl;
+		std::cout << "\t --help - print this message;" << std::endl;
+		std::cout << "\t --config - show config dialog." << std::endl;
+		std::cout << std::endl;
+		return 0;
+	}
+
 	try {
 		Ogre::String lConfigFileName = "ogre.cfg";
 		Ogre::String lPluginsFileName = "plugins.cfg";
 		Ogre::String lLogFileName = "Ogre_STS.log";
 
 		std::unique_ptr<Ogre::Root> lRoot(new Ogre::Root(lPluginsFileName, lConfigFileName, lLogFileName));
+
+		if (exArgs->showConfigDialog) {
+			if (!lRoot->showConfigDialog()) {
+				return 0;
+			}
+		}
 
 		Ogre::String lWindowTitle = "STS";
 		Ogre::String lCustomCapacities = "";

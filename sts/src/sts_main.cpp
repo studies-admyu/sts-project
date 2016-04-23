@@ -15,28 +15,8 @@
 
 typedef std::vector<Ogre::String> Strings;
 
-void loadPlugins(std::unique_ptr<Ogre::Root>& root)
-{
-	Strings lPluginNames;
-	lPluginNames.push_back("RenderSystem_GL");
-	lPluginNames.push_back("Plugin_ParticleFX");
-	lPluginNames.push_back("Plugin_CgProgramManager");
-	lPluginNames.push_back("Plugin_OctreeSceneManager");
-
-	{
-		Strings::iterator lIter = lPluginNames.begin();
-		for (; lIter != lPluginNames.end(); ++lIter) {
-			Ogre::String& lPluginName = (*lIter);
-			bool lIsInDebugMode = OGRE_DEBUG_MODE;
-			if (lIsInDebugMode) {
-				lPluginName.append("_d");
-			}
-			root->loadPlugin(lPluginName);
-		}
-	}
-}
-
-void initRenderSystem(std::unique_ptr<Ogre::Root>& root)
+/** Try to use first possible render system. Throw an exception if nothing is found. */
+void initSomeRenderSystem(std::unique_ptr<Ogre::Root>& root)
 {
 	const Ogre::RenderSystemList& lRenderSystemList = root->getAvailableRenderers();
 	if (lRenderSystemList.size() == 0) {
@@ -68,15 +48,18 @@ int main(int argc, char* argv[])
 
 		std::unique_ptr<Ogre::Root> lRoot(new Ogre::Root(lPluginsFileName, lConfigFileName, lLogFileName));
 
-		initRenderSystem(lRoot);
-
-		bool lCreateAWindowAutomatically = false;
 		Ogre::String lWindowTitle = "STS";
 		Ogre::String lCustomCapacities = "";
-		lRoot->initialise(lCreateAWindowAutomatically, lWindowTitle, lCustomCapacities);
 
-		Ogre::RenderWindow* lWindow = nullptr;
-		{
+		/* Check for the valid ogre.cfg */
+		bool lCreateAWindowAutomatically = lRoot->restoreConfig();
+		if (!lCreateAWindowAutomatically) {
+			initSomeRenderSystem(lRoot);
+		}
+		Ogre::RenderWindow* lWindow = lRoot->initialise(lCreateAWindowAutomatically, lWindowTitle, lCustomCapacities);
+
+		if (!lWindow) {
+			/* ogre.cfg is not available - start with hardcoded parameters */
 			unsigned int lSizeX = 800;
 			unsigned int lSizeY = 600;
 			bool lFullscreen = false;

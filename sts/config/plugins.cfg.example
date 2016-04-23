@@ -1,17 +1,32 @@
 # Defines plugins to load
 
-# Define plugin folder
+# Defines plugin folder
 PluginFolder=/usr/local/lib/OGRE
 
-# Define plugins
+# ------ RENDER SYSTEM ------
+# Available render system plugins
+
+# -> Windows only
 # Plugin=RenderSystem_Direct3D9
 # Plugin=RenderSystem_Direct3D10
 # Plugin=RenderSystem_Direct3D11
- Plugin=RenderSystem_GL
+
+# -> Desktop universal
+Plugin=RenderSystem_GL
+
+# -> Mobile universal
 # Plugin=RenderSystem_GLES
- Plugin=Plugin_ParticleFX
- Plugin=Plugin_BSPSceneManager
- Plugin=Plugin_CgProgramManager
- Plugin=Plugin_PCZSceneManager
- Plugin=Plugin_OctreeZone
- Plugin=Plugin_OctreeSceneManager
+
+# ------ SCENE MANAGER ------
+# -> Scene managers (choose one of them)
+Plugin=Plugin_OctreeSceneManager
+# Plugin=Plugin_BSPSceneManager
+# Plugin=Plugin_PCZSceneManager
+
+# ------ ADDITIONAL ------
+# -> Additional plugins (optional)
+# Plugin=Plugin_ParticleFX
+# Plugin=Plugin_CgProgramManager
+
+# -> Additional plugins for PCZSceneManager (optional)
+# Plugin=Plugin_OctreeZone

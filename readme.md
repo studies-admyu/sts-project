@@ -1,7 +1,9 @@
 ### Building
 
-The project is cross-platform and tested at least on Windows, Linux (Ubuntu) and Mac OS.
+The project is cross-platform and tested at least on Windows, Linux (Ubuntu).
 CMake >= 2.8 is used for building.
+
+**WARNING: Building with CMake under Mac OS X is not supported.**
 
 The dependencies:
 

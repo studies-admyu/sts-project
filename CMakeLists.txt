@@ -91,5 +91,8 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
 
+# add boost filesystem
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+
 # STS
 add_subdirectory (sts)

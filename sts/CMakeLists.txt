@@ -4,10 +4,14 @@ project(sts)
 
 set (sts_SRC_ROOT_DIR src)
 
-set (sts_HEADERS "${sts_SRC_ROOT_DIR}/sts.hpp")
+set (sts_HEADERS
+	"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
+	"${sts_SRC_ROOT_DIR}/game_data.hpp"
+)
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+	"${sts_SRC_ROOT_DIR}/game_data.cpp"
 )
 
 include_directories(
@@ -26,6 +30,8 @@ if (WIN32)
 endif (WIN32)
 
 target_link_libraries(sts ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
+# link boost filesystem
+target_link_libraries(sts ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 
 # ToDo: add post build commands for MSVC_IDE
 

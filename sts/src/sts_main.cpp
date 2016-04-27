@@ -3,7 +3,8 @@
 
 #include <vector>
 
-#include "sts.hpp"
+#include "sts_resources.hpp"
+#include "game_data.hpp"
 
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreRenderSystem.h>
@@ -41,6 +42,8 @@ void initResourceMainGroup(const Ogre::String& groupName)
 
 int main(int argc, char* argv[])
 {
+	sts::GameData gd;
+	
 	try {
 		Ogre::String lConfigFileName = "ogre.cfg";
 		Ogre::String lPluginsFileName = "plugins.cfg";

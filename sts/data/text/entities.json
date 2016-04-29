@@ -1,0 +1,24 @@
+[
+  {
+    "id": "starship_small",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "starship_small.mesh"
+  },
+  {
+    "id": "starship_big",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "starship_big.mesh"
+  },
+  {
+    "id": "round_bullet",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "round_bullet.mesh"
+  }
+
+]

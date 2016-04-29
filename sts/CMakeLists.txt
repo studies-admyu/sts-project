@@ -5,14 +5,20 @@ project(sts)
 set (sts_SRC_ROOT_DIR src)
 
 set (sts_HEADERS
-	"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
-	"${sts_SRC_ROOT_DIR}/game_data.hpp"
-)
+		"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
+		"${sts_SRC_ROOT_DIR}/game_data.hpp"
+		"${sts_SRC_ROOT_DIR}/game_object.hpp"
+		"${sts_SRC_ROOT_DIR}/entity.hpp"
+		"${sts_SRC_ROOT_DIR}/weapon.hpp"
+		"${sts_SRC_ROOT_DIR}/move.cpp")
 set (sts_SOURCES
-	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
-	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
-	"${sts_SRC_ROOT_DIR}/game_data.cpp"
-)
+		"${sts_SRC_ROOT_DIR}/sts_main.cpp"
+		"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+		"${sts_SRC_ROOT_DIR}/game_data.cpp"
+		"${sts_SRC_ROOT_DIR}/game_object.cpp"
+		"${sts_SRC_ROOT_DIR}/entity.cpp"
+		"${sts_SRC_ROOT_DIR}/weapon.cpp"
+		"${sts_SRC_ROOT_DIR}/move.cpp")
 
 include_directories(
 	${OIS_INCLUDE_DIRS}

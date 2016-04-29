@@ -5,6 +5,8 @@
 
 #include "sts_resources.hpp"
 #include "game_data.hpp"
+#include "move.hpp"
+#include "game_object.hpp"
 
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreRenderSystem.h>
@@ -97,7 +99,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	sts::GameData gd;
+
 	try {
 		Ogre::String lConfigFileName = "ogre.cfg";
 		Ogre::String lPluginsFileName = "plugins.cfg";
@@ -209,6 +211,12 @@ int main(int argc, char* argv[])
 			Ogre::WindowEventUtilities::messagePump();
 		}
 		Ogre::LogManager::getSingleton().logMessage("Render window closed.");
+
+		sts::GameData::load();
+		sts::GameObject go;
+		sts::IMoveBehaviour *imb = sts::IMoveBehaviour::createMoveBehaviour("MoveIdle");
+		imb->move(go);
+		imb->move(go);
 	}
 	catch (Ogre::Exception &e) {
 		std::cerr << "Ogre::Exception: " << e.what() << std::endl;

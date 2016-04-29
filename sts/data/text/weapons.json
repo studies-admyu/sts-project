@@ -2,9 +2,6 @@
   {
     "id": "Blaster",
     "bullet-style": "BlastBullet",
-    "bullet-colormap": {
-      "hue": "0xffff00"
-    },
     "bullet-loop-sound": "",
     "explosion-style": "LocalExplosion",
     "explosion-colormap": {
@@ -12,28 +9,22 @@
     },
     "explosion-sound": "explosion_general.ogg",
     "muzzle-flash-style": "SimpleMuzzleFlash",
-    "muzzle-flash-colormap": {
-      "hue": "0xffff00"
-    },
     "firing-style": "FireSingle",
     "damage": 15,
-    "homing": 0
+    "homing": false
   },
   {
     "id": "RocketLauncher",
     "bullet-style": "MissileBullet",
-    "bullet-colormap": {
-      "hue": "0x7f7f7f"
-    },
     "bullet-loop-sound": "missile_flight_loop.ogg",
     "explosion-style": "LocalExplosion",
     "explosion-colormap": {
       "hue": "0xffff00"
     },
     "explosion-sound": "explosion_general.ogg",
-    "muzzle-flash-style": "NoMuzzleFlash",
+    "muzzle-flash-style": "NotSoSimpleMuzzleFlash",
     "firing-style": "FireSingle",
     "damage": 30,
-    "homing": 1
+    "homing": true
   }
 ]

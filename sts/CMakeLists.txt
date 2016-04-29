@@ -4,10 +4,16 @@ project(sts)
 
 set (sts_SRC_ROOT_DIR src)
 
-set (sts_HEADERS "${sts_SRC_ROOT_DIR}/sts.hpp")
+set (sts_HEADERS
+	"${sts_SRC_ROOT_DIR}/sts.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
+)
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
 )
 
 include_directories(

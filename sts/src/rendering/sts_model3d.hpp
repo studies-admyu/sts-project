@@ -14,16 +14,32 @@ class Model3DAttachable: public IAttachable
 friend class Model3D;
 
 public:
-	Ogre::MovableObject* getAttachable();
-	const Ogre::MovableObject* getAttachable() const;
+	~Model3DAttachable();
+
+	void attachToNode(Ogre::Node* node);
+	void setPosition3D(const Ogre::Vector3& position);
+	Ogre::Vector3 position3D() const;
+	void setPlanarRotation(float radians);
+	float planarRotation() const;
+	void setAxisRotation(float radians);
+	float axisRotation() const;
+	void setVisible(bool value);
+	bool isVisible() const;
+	void update();
 
 private:
+	Ogre::Node* _node;
 	Ogre::Entity* _attachableEntity;
+	float _planarRotation;
+	float _axisRotation;
 
 	/** May be created only by a friend class */
 	Model3DAttachable(Ogre::Entity* entity);
 	/** May be copied only by a friend class */
 	Model3DAttachable(const Model3DAttachable&);
+
+	/** Updates model rotation */
+	void updateRotation();
 };
 
 class Model3D: public IRenderable
@@ -34,6 +50,7 @@ public:
 	  * @arg modelFilename - name of the *.mesh file.
 	  */
 	Model3D(Ogre::SceneManager* sceneManager, std::string modelFilename);
+	~Model3D();
 	IAttachable* spawnAttachable() const;
 	std::string modelFilename() const;
 

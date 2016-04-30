@@ -36,7 +36,7 @@ public:
     }
 
     Bullet* createBullet(int x, int y, double direction);
-    IFiringStyle* createNewFiringStyle();
+    IFiringStyle* createNewFiringStyle() const;
 
     std::string id;
     std::string firingStyle;

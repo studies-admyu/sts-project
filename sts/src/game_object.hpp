@@ -38,6 +38,7 @@ public:
 	IWeaponBehaviour *iwb2;
 	std::list<Transition> transitions;
 };
+
 class UnitType {
 public:
 	UnitType(std::string id, Entity *entityPtr, int hm, int sm, const Weapon *w1, const Weapon *w2);
@@ -51,7 +52,8 @@ public:
 };
 
 class Unit : public LayeredObject {
-	Unit(int x, int y, double d, UnitType* utptr, std::list<State> states);
+public:
+	Unit(int x, int y, double d, const UnitType* utptr, std::list<State> states);
 	const UnitType *unitTypePtr;
 	IFiringStyle *firingStyleW1Ptr;
 	IFiringStyle *firingStyleW2Ptr;
@@ -64,6 +66,7 @@ public:
 	Level(std::string level_json_name);
 	static boost::filesystem::path configs_path;
 	static std::list<State> parseStates(pt::ptree);
+	static State parseState(pt::ptree);
 
 	std::list<Unit> units;
 };

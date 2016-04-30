@@ -7,7 +7,7 @@ namespace sts {
         Bullet *b = new Bullet(x, y, direction, this);
     }
 
-    IFiringStyle* Weapon::createNewFiringStyle() {
+    IFiringStyle* Weapon::createNewFiringStyle() const {
         if (firingStyle == "EvenFiringStyle")
             return new EvenFiringStyle();
         else

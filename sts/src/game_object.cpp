@@ -6,6 +6,7 @@
 
 #include "game_data.hpp"
 #include "sts_resources.hpp"
+#include "weapon.hpp"
 
 namespace sts {
     UnitType::UnitType(std::string _id, Entity *_entityPtr, int hm, int sm, const Weapon *w1, const Weapon *w2)
@@ -15,8 +16,11 @@ namespace sts {
     boost::filesystem::path Level::configs_path = boost::filesystem::path(sts::getDataBasePath()) /
             boost::filesystem::path("text") / boost::filesystem::path("levels");
 
-    Unit::Unit(int x, int y, double d, UnitType *utptr, std::list<State> states) : LayeredObject(x, y, d) {
-
+    Unit::Unit(int x, int y, double d, const UnitType *utptr, std::list<State> _states) : LayeredObject(x, y, d) {
+        unitTypePtr = utptr;
+        states = _states;
+        firingStyleW1Ptr = utptr->weapon1->createNewFiringStyle();
+        firingStyleW2Ptr = utptr->weapon2->createNewFiringStyle();
     }
 
     Level::Level(std::string level_json_name) {
@@ -36,9 +40,9 @@ namespace sts {
             int y = mfs_tree.get<int>("y0");
             double d = mfs_tree.get<int>("y0");
             std::list<State> states = parseStates(mfs_tree.get_child("states"));
+            units.push_back(Unit(x, y, d, unitType, states));
 
         }
-        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFf" << std::endl;
     }
 
     std::list<State> Level::parseStates(pt::ptree root) {
@@ -46,9 +50,14 @@ namespace sts {
         for (pt::ptree::value_type &state : root) {
             assert(state.first.empty()); // lists have no keys
             pt::ptree state_tree = state.second;
-            std::string state_type = state_tree.get<std::string>("type");
-            std::cout << state_type << std::endl;
+            states.push_back(parseState(state_tree));
         }
         return states;
+    }
+
+    State Level::parseState(pt::ptree tree) {
+        std::string state_type = tree.get<std::string>("type");
+        std::cout << "Parsing state " << state_type << std::endl;
+        return State();
     }
 }

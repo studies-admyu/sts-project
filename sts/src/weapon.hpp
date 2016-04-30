@@ -1,12 +1,14 @@
 #pragma once
 
 #include <OGRE/OgreRoot.h>
+#include <boost/property_tree/ptree.hpp>
 
 #include <string>
 #include "bullet.hpp"
 #include "game_object.hpp"
 
 namespace sts {
+    namespace pt = boost::property_tree;
 
 /*
  * The whole process of firing:
@@ -50,11 +52,22 @@ public:
 // finally calls createBullet of Weapon
 class IWeaponBehaviour {
 public:
+    static IWeaponBehaviour* createWeaponBehaviour(std::string wb_type, pt::ptree params);
     virtual void behaviourAlgorithm(Unit &u) = 0;
 };
 
-class FireForward : IWeaponBehaviour {
+class FireForward : public IWeaponBehaviour {
 public:
+    FireForward(pt::ptree params) { count = params.get<int>("count"); period = params.get<double>("period"); };
+    virtual void behaviourAlgorithm(Unit &u) { /* implement behaviour here */ };
+private:
+    int count;
+    double period;
+};
+
+class NoFire : public IWeaponBehaviour {
+public:
+    NoFire(pt::ptree params) {}
     virtual void behaviourAlgorithm(Unit &u) { /* implement behaviour here */ };
 };
 

@@ -36,6 +36,7 @@ private:
     static void parseBulletStyles();
 	static void parseWeapons();
 	static void parseUnitTypes();
+	static void parseWeaponBehaviours();
 };
 
 }

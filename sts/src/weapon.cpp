@@ -22,4 +22,14 @@ namespace sts {
         }
         return false;
     }
+
+    IWeaponBehaviour* IWeaponBehaviour::createWeaponBehaviour(std::string wb_type, pt::ptree params) {
+        if (wb_type == "FireForward") {
+            return new FireForward(params);
+        } else if (wb_type == "NoFire") {
+            return new NoFire(params);
+        }
+        else
+            throw WeaponException("Bad weapon behaviour type name");
+    }
 }

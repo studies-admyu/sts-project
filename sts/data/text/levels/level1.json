@@ -9,13 +9,7 @@
       {
         "type": "MoveActionState",
         "animation": "",
-        "weapon1-behavior": {
-          "type": "FireForward",
-          "params": {
-            "count": 0,
-            "period": 0.5
-          }
-        },
+        "weapon1-behavior": "BasicFireForward",
         "weapon2-behavior": {
           "type": "NoFire"
         },

@@ -30,6 +30,7 @@ namespace sts {
 	    parseBulletStyles();
         parseWeapons();
         parseUnitTypes();
+        parseWeaponBehaviours();
     }
 
 	// TODO: handle exceptions
@@ -56,13 +57,13 @@ namespace sts {
         auto json_filename = (configs_path / boost::filesystem::path("entities.json")).string();
         pt::read_json(json_filename, root);
 
-        for (pt::ptree::value_type &mfs_root : root)
+        for (pt::ptree::value_type &eRoot : root)
         {
-            assert(mfs_root.first.empty()); // lists have no keys
-            pt::ptree mfs_tree = mfs_root.second;
-            std::string id = mfs_tree.get<std::string>("id");
-            std::string colormap_hue = mfs_tree.get<std::string>("colormap.hue");
-            std::string model_name = mfs_tree.get<std::string>("model");
+            assert(eRoot.first.empty()); // lists have no keys
+            pt::ptree entityTree = eRoot.second;
+            std::string id = entityTree.get<std::string>("id");
+            std::string colormap_hue = entityTree.get<std::string>("colormap.hue");
+            std::string model_name = entityTree.get<std::string>("model");
             std::cout << "Read entity with id " << id << std::endl;
             entities[id] = new Entity(id, model_name, colormap_hue);
         }
@@ -80,16 +81,16 @@ namespace sts {
         auto json_filename = (configs_path / boost::filesystem::path("weapons.json")).string();
         pt::read_json(json_filename, root);
 
-        for (pt::ptree::value_type &mfs_root : root)
+        for (pt::ptree::value_type &wRoot : root)
         {
-            assert(mfs_root.first.empty()); // lists have no keys
-            pt::ptree mfs_tree = mfs_root.second;
-            std::string id = mfs_tree.get<std::string>("id");
-            std::string bullet_style_name = mfs_tree.get<std::string>("bullet-style");
-            std::string firing_style_name = mfs_tree.get<std::string>("firing-style");
-            std::string muzzle_flash_style_name = mfs_tree.get<std::string>("muzzle-flash-style");
-            int damage = mfs_tree.get<int>("damage");
-            bool isHoming = mfs_tree.get<bool>("homing");
+            assert(wRoot.first.empty()); // lists have no keys
+            pt::ptree weaponTree = wRoot.second;
+            std::string id = weaponTree.get<std::string>("id");
+            std::string bullet_style_name = weaponTree.get<std::string>("bullet-style");
+            std::string firing_style_name = weaponTree.get<std::string>("firing-style");
+            std::string muzzle_flash_style_name = weaponTree.get<std::string>("muzzle-flash-style");
+            int damage = weaponTree.get<int>("damage");
+            bool isHoming = weaponTree.get<bool>("homing");
             weapons[id] = new Weapon(id, bulletStyles[bullet_style_name], muzzleFlashStyles[muzzle_flash_style_name],
                                      damage, isHoming, firing_style_name);
         }
@@ -100,18 +101,34 @@ namespace sts {
         auto json_filename = (configs_path / boost::filesystem::path("unit_types.json")).string();
         pt::read_json(json_filename, root);
 
+        for (pt::ptree::value_type &utRoot : root)
+        {
+            assert(utRoot.first.empty()); // lists have no keys
+            pt::ptree unitTypeTree = utRoot.second;
+            std::string id = unitTypeTree.get<std::string>("id");
+            std::string entity_name = unitTypeTree.get<std::string>("entity");
+            std::string weapon1_name = unitTypeTree.get<std::string>("weapon1");
+            std::string weapon2_name = unitTypeTree.get<std::string>("weapon2");
+            int health_max = unitTypeTree.get<int>("health_max");
+            int speed_max = unitTypeTree.get<int>("speed_max");
+            unit_types[id] = new UnitType(id, entities[entity_name], health_max, speed_max, weapons[weapon1_name],
+            weapons[weapon2_name]);
+        }
+    }
+
+    void GameData::parseWeaponBehaviours() {
+        pt::ptree root;
+        auto json_filename = (configs_path / boost::filesystem::path("weapon_behaviours.json")).string();
+        pt::read_json(json_filename, root);
+
         for (pt::ptree::value_type &mfs_root : root)
         {
             assert(mfs_root.first.empty()); // lists have no keys
             pt::ptree mfs_tree = mfs_root.second;
             std::string id = mfs_tree.get<std::string>("id");
-            std::string entity_name = mfs_tree.get<std::string>("entity");
-            std::string weapon1_name = mfs_tree.get<std::string>("weapon1");
-            std::string weapon2_name = mfs_tree.get<std::string>("weapon2");
-            int health_max = mfs_tree.get<int>("health_max");
-            int speed_max = mfs_tree.get<int>("speed_max");
-            unit_types[id] = new UnitType(id, entities[entity_name], health_max, speed_max, weapons[weapon1_name],
-            weapons[weapon2_name]);
+            std::string wb_type = mfs_tree.get<std::string>("type");
+            pt::ptree params = mfs_tree.get_child("states");
+            weapon_behaviours[id] = IWeaponBehaviour::createWeaponBehaviour(wb_type, params);
         }
     }
 }

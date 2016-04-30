@@ -8,7 +8,7 @@ SceneManager::SceneManager(Ogre::SceneManager* osceneManager):
 	_oscene(osceneManager)
 {
 	/* Create zero layer */
-	this->_layers.push_back(new Layer());
+	this->_layers.push_back(std::shared_ptr<Layer>(new Layer()));
 }
 
 SceneManager::SceneManager(const SceneManager& scmgr)
@@ -27,24 +27,31 @@ Layer* SceneManager::addLayer(unsigned int index)
 		return nullptr;
 	}
 
-	Layer* newLayer = new Layer();
+	std::shared_ptr<Layer> newLayer(new Layer());
 
 	if (index > this->_layers.size()) {
 		this->_layers.push_back(newLayer);
 	} else {
 		this->_layers.insert(this->_layers.begin() + index, newLayer);
 	}
-	return newLayer;
+	return newLayer.get();
 }
 
 Layer* SceneManager::layer(unsigned int index)
 {
-	return this->_layers.at(index);
+	return this->_layers.at(index).get();
 }
 
 std::vector<Layer*> SceneManager::layers()
 {
-	return std::vector<Layer*>();
+	std::vector<Layer*> returnVector;
+	returnVector.reserve(this->_layers.size());
+
+	for (auto layer = this->_layers.begin(); layer != this->_layers.end(); ++layer) {
+		returnVector.push_back(layer->get());
+	}
+
+	return returnVector;
 }
 
 void SceneManager::removeLayer(unsigned int index)
@@ -55,7 +62,7 @@ void SceneManager::removeLayer(unsigned int index)
 	}
 
 	/* Move all the objects to the zero layer */
-	Layer* layerToRemove = this->_layers.at(index);
+	std::shared_ptr<Layer> layerToRemove(this->_layers.at(index));
 	/** @todo Make it thread safe is necessary. */
 	auto objects = layerToRemove->objects();
 	for (auto obj = objects.begin(); obj != objects.end(); ++obj) {
@@ -63,7 +70,6 @@ void SceneManager::removeLayer(unsigned int index)
 	}
 
 	this->_layers.erase(this->_layers.begin() + index);
-	delete layerToRemove;
 }
 
 bool SceneManager::moveLayerUp(unsigned int index)
@@ -72,7 +78,7 @@ bool SceneManager::moveLayerUp(unsigned int index)
 		return false;
 	}
 
-	Layer* layerToMove = this->_layers.at(index);
+	std::shared_ptr<Layer> layerToMove(this->_layers.at(index));
 	this->_layers.at(index) = this->_layers.at(index - 1);
 	this->_layers.at(index - 1) = layerToMove;
 
@@ -85,7 +91,7 @@ bool SceneManager::moveLayerDown(unsigned int index)
 		return false;
 	}
 
-	Layer* layerToMove = this->_layers.at(index);
+	std::shared_ptr<Layer> layerToMove(this->_layers.at(index));
 	this->_layers.at(index) = this->_layers.at(index + 1);
 	this->_layers.at(index + 1) = layerToMove;
 
@@ -94,7 +100,7 @@ bool SceneManager::moveLayerDown(unsigned int index)
 
 void SceneManager::moveLayeredObject(LayeredObject* object, unsigned int layerIndex)
 {
-	Layer* layerMoveTo = this->_layers.at(layerIndex);
+	Layer* layerMoveTo = this->_layers.at(layerIndex).get();
 	if (object->layer()) {
 		object->layer()->removeObject(object);
 	}

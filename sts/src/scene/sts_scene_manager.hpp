@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <OGRE/OgreSceneManager.h>
@@ -36,7 +37,7 @@ private:
 	Ogre::Viewport* _oviewport;
 	Ogre::Camera* _ocamera;
 
-	std::vector<Layer*> _layers;
+	std::vector<std::shared_ptr<Layer>> _layers;
 	SharedObjectGroup _sharedObjects;
 
 	SceneManager(const SceneManager&);

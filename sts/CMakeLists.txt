@@ -9,11 +9,24 @@ set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_layer.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_layered_object.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_object_group.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp"
 )
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_layer.cpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_layered_object.cpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.cpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.cpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.cpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.cpp"
 )
 
 include_directories(
@@ -22,6 +35,7 @@ include_directories(
 	${OGRE_SAMPLES_INCLUDEPATH}
 	${OGRE_Overlay_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIRS}
+	${sts_SRC_ROOT_DIR}
 )
 
 add_executable(sts ${sts_HEADERS} ${sts_SOURCES})

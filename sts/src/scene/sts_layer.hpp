@@ -15,7 +15,7 @@ public:
 	std::list<LayeredObject*> objects();
 	void removeObject(LayeredObject* object);
 	unsigned char opacity();
-	void setOpacity(unsigned char);
+	void setOpacity(unsigned char value);
 
 private:
 	unsigned char _opacity;

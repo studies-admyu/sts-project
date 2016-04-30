@@ -32,7 +32,12 @@ public:
 	void processScene();
 
 private:
-	Ogre::SceneManager* _sceneManager;
+	Ogre::SceneManager* _oscene;
+	Ogre::Viewport* _oviewport;
+	Ogre::Camera* _ocamera;
+
+	std::vector<Layer*> _layers;
+	SharedObjectGroup _sharedObjects;
 
 	SceneManager(const SceneManager&);
 };

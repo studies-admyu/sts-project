@@ -18,7 +18,7 @@ public:
 	};
 
 	SceneObject(Ogre::Node* node, IAttachable* attachable);
-	~SceneObject();
+	virtual ~SceneObject();
 
 	bool isVisible() const;
 	void setVisible(bool value);

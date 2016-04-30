@@ -13,7 +13,7 @@ namespace sts {
 class SceneManager
 {
 public:
-	SceneManager(Ogre::SceneManager* osceneManager);
+	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* osceneViewport);
 	~SceneManager();
 
 	Layer* addLayer(unsigned int index);
@@ -41,6 +41,7 @@ private:
 	SharedObjectGroup _sharedObjects;
 
 	SceneManager(const SceneManager&);
+	void initScene();
 };
 
 } // namespace sts

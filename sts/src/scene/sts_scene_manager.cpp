@@ -4,11 +4,13 @@
 
 namespace sts {
 
-SceneManager::SceneManager(Ogre::SceneManager* osceneManager):
-	_oscene(osceneManager)
+SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* osceneViewport):
+	_oscene(osceneManager), _oviewport(osceneViewport)
 {
 	/* Create zero layer */
 	this->_layers.push_back(std::shared_ptr<Layer>(new Layer()));
+
+	initScene();
 }
 
 SceneManager::SceneManager(const SceneManager& scmgr)
@@ -19,6 +21,33 @@ SceneManager::SceneManager(const SceneManager& scmgr)
 SceneManager::~SceneManager()
 {
 
+}
+
+void SceneManager::initScene()
+{
+	/* Set viewport options */
+	this->_oviewport->setAutoUpdated(true);
+	this->_oviewport->setBackgroundColour(Ogre::ColourValue(1, 0, 1));
+
+	/* Create camera */
+	this->_ocamera = this->_oscene->createCamera("SceneCamera");
+
+	/* Attach it to the viewport */
+	this->_oviewport->setCamera(this->_ocamera);
+
+	/* Set camera options */
+	this->_ocamera->setAspectRatio(
+		float(this->_oviewport->getActualWidth()) / this->_oviewport->getActualHeight()
+	);
+	this->_ocamera->setNearClipDistance(1.5f);
+	this->_ocamera->setFarClipDistance(3000.0f);
+
+	this->_ocamera->setPosition(Ogre::Vector3(0, 100, -1));
+	this->_ocamera->lookAt(Ogre::Vector3(0, 0, 0));
+
+	/* Create light */
+	Ogre::Light* sceneLight = this->_oscene->createLight("SceneLight");
+	sceneLight->setPosition(this->_ocamera->getPosition());
 }
 
 Layer* SceneManager::addLayer(unsigned int index)

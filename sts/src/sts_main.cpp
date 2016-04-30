@@ -7,6 +7,7 @@
 #include "game_data.hpp"
 #include "move.hpp"
 #include "game_object.hpp"
+#include "weapon.hpp"
 
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreRenderSystem.h>
@@ -195,28 +196,29 @@ int main(int argc, char* argv[])
 		lWindow->setAutoUpdated(false);
 		lRoot->clearEventTimes();
 
-		while (!lWindow->isClosed()) {
-			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
-			float diplacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
-			lShipNode->setOrientation(Ogre::Quaternion(Ogre::Radian(angle), Ogre::Vector3(0, 0, 1)));
-			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
-
-			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
-			lSpriteBillboard->setTexcoordIndex(spriteFrame);
-
-			lWindow->update(false);
-			lWindow->swapBuffers();
-			lRoot->renderOneFrame();
-
-			Ogre::WindowEventUtilities::messagePump();
-		}
+//		while (!lWindow->isClosed()) {
+//			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
+//			float diplacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
+//			lShipNode->setOrientation(Ogre::Quaternion(Ogre::Radian(angle), Ogre::Vector3(0, 0, 1)));
+//			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
+//
+//			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
+//			lSpriteBillboard->setTexcoordIndex(spriteFrame);
+//
+//			lWindow->update(false);
+//			lWindow->swapBuffers();
+//			lRoot->renderOneFrame();
+//
+//			Ogre::WindowEventUtilities::messagePump();
+//		}
 		Ogre::LogManager::getSingleton().logMessage("Render window closed.");
 
 		sts::GameData::load();
-		sts::GameObject go;
-		sts::IMoveBehaviour *imb = sts::IMoveBehaviour::createMoveBehaviour("MoveIdle");
+		sts::GameObject go(1, 1, 1.0);
+		sts::IMoveBehaviour *imb = sts::GameData::weapons["Blaster"]->bulletStylePtr->createMoveBehaviour();
 		imb->move(go);
 		imb->move(go);
+		sts::Level l("level1.json");
 	}
 	catch (Ogre::Exception &e) {
 		std::cerr << "Ogre::Exception: " << e.what() << std::endl;

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "EnemySmall",
+    "entity": "starship_small",
+    "health_max": 100,
+    "speed_max": 10,
+    "weapon1": "Blaster",
+    "weapon2": "RocketLauncher"
+  }
+]

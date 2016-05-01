@@ -8,6 +8,8 @@ set (sts_HEADERS "${sts_SRC_ROOT_DIR}/sts.hpp")
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+	"${sts_SRC_ROOT_DIR}/SoundManager.cpp"
+	"${sts_SRC_ROOT_DIR}/MyFrameListener.cpp"
 )
 
 include_directories(
@@ -16,6 +18,7 @@ include_directories(
 	${OGRE_SAMPLES_INCLUDEPATH}
 	${OGRE_Overlay_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIRS}
+	${SDL_INCLUDE_DIR}
 )
 
 add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
@@ -25,7 +28,7 @@ if (WIN32)
 #	set_target_properties (sts PROPERTIES WIN32_EXECUTABLE TRUE)
 endif (WIN32)
 
-target_link_libraries(sts ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
+target_link_libraries(sts ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES} ${SDL_LIBRARY} ${SDL_MIXER_LIBRARIES})
 
 # ToDo: add post build commands for MSVC_IDE
 

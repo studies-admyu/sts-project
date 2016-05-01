@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "SoundManager.hpp"
+#include "MyFrameListener.hpp"
 #include "sts.hpp"
 
 #include <OGRE/OgreRoot.h>
@@ -191,11 +193,20 @@ int main(int argc, char* argv[])
 		lWindow->setAutoUpdated(false);
 		lRoot->clearEventTimes();
 
+		// Create sound manager
+		SoundManager* mSoundMgr = new SoundManager();
+		mSoundMgr->playMusic("../data/sounds/Credits_heart-of-the-sea.ogg");
+		mSoundMgr->playSound("../data/sounds/bell.ogg");
+		
+		// Create an instance of the MyFrameListener Class and add it to the root object
+		MyFrameListener* myListener = new MyFrameListener(lShipNode, lWindow, lCamera);
+		lRoot->addFrameListener(myListener);
+
 		while (!lWindow->isClosed()) {
 			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
 			float diplacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
 			lShipNode->setOrientation(Ogre::Quaternion(Ogre::Radian(angle), Ogre::Vector3(0, 0, 1)));
-			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
+//			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
 
 			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
 			lSpriteBillboard->setTexcoordIndex(spriteFrame);

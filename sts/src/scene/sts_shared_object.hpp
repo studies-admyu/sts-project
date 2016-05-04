@@ -7,9 +7,9 @@ namespace sts {
 class SharedObject: public SceneObject
 {
 public:
-	SharedObject(Ogre::Node* node, IAttachable* attachable);
+	SharedObject(Ogre::SceneNode* node, IRenderable* renderable);
 	~SharedObject();
-	
+
 	void setPosition(const Position& pos);
 	Position position() const;
 };

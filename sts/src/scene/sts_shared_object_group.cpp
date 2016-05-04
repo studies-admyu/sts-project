@@ -61,7 +61,7 @@ void SharedObjectGroup::removeObject(SharedObject* object)
 	}
 }
 
-unsigned char SharedObjectGroup::opacity()
+unsigned char SharedObjectGroup::opacity() const
 {
 	return this->_opacity;
 }

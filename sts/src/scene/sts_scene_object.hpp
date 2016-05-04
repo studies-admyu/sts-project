@@ -1,8 +1,8 @@
 #pragma once
 
-#include <OGRE/OgreNode.h>
+#include <OGRE/OgreSceneNode.h>
 
-#include <rendering/sts_attachable.hpp>
+#include <rendering/sts_renderable.hpp>
 
 namespace sts {
 
@@ -17,7 +17,7 @@ public:
 		int y;
 	};
 
-	SceneObject(Ogre::Node* node, IAttachable* attachable);
+	SceneObject(Ogre::SceneNode* node, IRenderable* renderable);
 	virtual ~SceneObject();
 
 	bool isVisible() const;
@@ -28,12 +28,12 @@ public:
 	float planarRotation() const;
 	void setAxisRotation(float radians);
 	float axisRotation() const;
+	virtual void processObject();
 
 protected:
 	IAttachable* attachable();
 
 private:
-	Ogre::Node* _objectNode;
 	IAttachable* _attachable;
 
 	SceneObject(const SceneObject&);

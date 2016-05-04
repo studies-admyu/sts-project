@@ -2,20 +2,20 @@
 
 namespace sts {
 
-SharedObject::SharedObject(Ogre::Node* node, IAttachable* attachable):
-	SceneObject(node, attachable)
+SharedObject::SharedObject(Ogre::SceneNode* node, IRenderable* renderable):
+	SceneObject(node, renderable)
 {
-	
+
 }
 
 SharedObject::~SharedObject()
 {
-	
+
 }
 
 void SharedObject::setPosition(const SceneObject::Position& pos)
 {
-	
+
 }
 
 SceneObject::Position SharedObject::position() const

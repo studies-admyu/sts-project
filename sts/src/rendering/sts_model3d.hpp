@@ -16,7 +16,6 @@ friend class Model3D;
 public:
 	~Model3DAttachable();
 
-	void attachToNode(Ogre::Node* node);
 	void setPosition3D(const Ogre::Vector3& position);
 	Ogre::Vector3 position3D() const;
 	void setPlanarRotation(float radians);
@@ -34,7 +33,7 @@ private:
 	float _axisRotation;
 
 	/** May be created only by a friend class */
-	Model3DAttachable(Ogre::Entity* entity);
+	Model3DAttachable(Ogre::SceneNode* node, Ogre::Entity* entity);
 	/** May be copied only by a friend class */
 	Model3DAttachable(const Model3DAttachable&);
 
@@ -49,14 +48,16 @@ public:
 	  * @arg sceneManager - OGRE scene manager instance;
 	  * @arg modelFilename - name of the *.mesh file.
 	  */
-	Model3D(Ogre::SceneManager* sceneManager, std::string modelFilename);
+	Model3D(Ogre::SceneManager* sceneManager, std::string modelFilename, float scale = 1.0f);
 	~Model3D();
-	IAttachable* spawnAttachable() const;
+	IAttachable* spawnAttachable(Ogre::SceneNode* node) const;
 	std::string modelFilename() const;
+	float scale() const;
 
 private:
 	Ogre::SceneManager* _sceneManager;
 	std::string _modelFilename;
+	float _modelScale;
 
 	/** Duplicating is prohibited */
 	Model3D(const Model3D&);

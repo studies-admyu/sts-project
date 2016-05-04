@@ -4,6 +4,7 @@ namespace sts {
 
 Layer::Layer()
 {
+	this->_speed = 0;
 	this->_opacity = 255;
 }
 
@@ -60,7 +61,7 @@ void Layer::removeObject(LayeredObject* object)
 	}
 }
 
-unsigned char Layer::opacity()
+unsigned char Layer::opacity() const
 {
 	return this->_opacity;
 }
@@ -68,6 +69,21 @@ unsigned char Layer::opacity()
 void Layer::setOpacity(unsigned char value)
 {
 	this->_opacity = value;
+}
+
+unsigned int Layer::speed() const
+{
+	return this->_speed;
+}
+
+void Layer::setSpeed(unsigned int value)
+{
+	this->_speed = value;
+}
+
+void Layer::processLayer()
+{
+
 }
 
 } // namespace sts

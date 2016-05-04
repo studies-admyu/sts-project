@@ -14,7 +14,7 @@ public:
 	void addObject(SharedObject* object);
 	std::list<SharedObject*> objects();
 	void removeObject(SharedObject* object);
-	unsigned char opacity();
+	unsigned char opacity() const;
 	void setOpacity(unsigned char);
 
 private:

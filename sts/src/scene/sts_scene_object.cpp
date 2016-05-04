@@ -2,14 +2,13 @@
 
 namespace sts {
 
-SceneObject::SceneObject(Ogre::Node* node, IAttachable* attachable):
-	_objectNode(node), _attachable(attachable)
+SceneObject::SceneObject(Ogre::SceneNode* node, IRenderable* renderable)
 {
-	this->_attachable->attachToNode(node);
+	this->_attachable = renderable->spawnAttachable(node);
 }
 
 SceneObject::SceneObject(const SceneObject& sceneobj):
-	_objectNode(sceneobj._objectNode), _attachable(sceneobj._attachable)
+	_attachable(sceneobj._attachable)
 {
 
 }
@@ -52,6 +51,11 @@ void SceneObject::setAxisRotation(float radians)
 float SceneObject::axisRotation() const
 {
 	return this->_attachable->axisRotation();
+}
+
+void SceneObject::processObject()
+{
+
 }
 
 } // namespace sts

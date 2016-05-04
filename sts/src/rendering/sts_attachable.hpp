@@ -11,7 +11,6 @@ namespace sts {
 class IAttachable
 {
 public:
-	virtual void attachToNode(Ogre::Node* node) = 0;
 	virtual void setPosition3D(const Ogre::Vector3& position) = 0;
 	virtual Ogre::Vector3 position3D() const = 0;
 	virtual void setPlanarRotation(float radians) = 0;

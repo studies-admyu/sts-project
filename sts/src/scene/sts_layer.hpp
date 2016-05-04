@@ -14,11 +14,17 @@ public:
 	void addObject(LayeredObject* object);
 	std::list<LayeredObject*> objects();
 	void removeObject(LayeredObject* object);
-	unsigned char opacity();
+
+	unsigned char opacity() const;
 	void setOpacity(unsigned char value);
+	unsigned int speed() const;
+	void setSpeed(unsigned int value);
+
+	void processLayer();
 
 private:
 	unsigned char _opacity;
+	unsigned int _speed;
 	std::list<LayeredObject*> _objects;
 
 	Layer(const Layer&);

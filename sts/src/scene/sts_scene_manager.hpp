@@ -30,6 +30,9 @@ public:
 	SharedObjectGroup* sharedObjects();
 	void removeSharedObject(SharedObject* object);
 
+	unsigned int sceneWidth() const;
+	unsigned int sceneHeight() const;
+
 	void processScene();
 
 private:

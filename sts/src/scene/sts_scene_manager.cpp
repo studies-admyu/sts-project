@@ -36,9 +36,14 @@ void SceneManager::initScene()
 	this->_oviewport->setCamera(this->_ocamera);
 
 	/* Set camera options */
+	/* Orthographic projectsion */
+	this->_ocamera->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
+	/* Window & scene coordinates must correspond */
 	this->_ocamera->setAspectRatio(
 		float(this->_oviewport->getActualWidth()) / this->_oviewport->getActualHeight()
 	);
+	this->_ocamera->setOrthoWindowWidth(this->_oviewport->getActualWidth());
+
 	this->_ocamera->setNearClipDistance(1.5f);
 	this->_ocamera->setFarClipDistance(3000.0f);
 
@@ -154,6 +159,16 @@ void SceneManager::removeSharedObject(SharedObject* object)
 {
 	this->_sharedObjects.removeObject(object);
 	delete object;
+}
+
+unsigned int SceneManager::sceneWidth() const
+{
+	return this->_oviewport->getActualWidth();
+}
+
+unsigned int SceneManager::sceneHeight() const
+{
+	return this->_oviewport->getActualHeight();
 }
 
 void SceneManager::processScene()

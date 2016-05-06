@@ -18,11 +18,10 @@ public:
 
 	Layer* addLayer(unsigned int index);
 	Layer* layer(unsigned int index);
+	const Layer* layer(unsigned int index) const;
+	float layerZ(unsigned int index) const;
 	std::vector<Layer*> layers();
 	void removeLayer(unsigned int index);
-
-	bool moveLayerUp(unsigned int index);
-	bool moveLayerDown(unsigned int index);
 
 	void moveLayeredObject(LayeredObject* object, unsigned int layerIndex);
 	void removeLayeredObject(LayeredObject* object);

@@ -8,7 +8,7 @@ SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* os
 	_oscene(osceneManager), _oviewport(osceneViewport)
 {
 	/* Create zero layer */
-	this->_layers.push_back(std::shared_ptr<Layer>(new Layer()));
+	this->_layers.push_back(std::shared_ptr<Layer>(new Layer(this, 0)));
 
 	initScene();
 }
@@ -61,7 +61,7 @@ Layer* SceneManager::addLayer(unsigned int index)
 		return nullptr;
 	}
 
-	std::shared_ptr<Layer> newLayer(new Layer());
+	std::shared_ptr<Layer> newLayer(new Layer(this, this->_layers.size()));
 
 	if (index > this->_layers.size()) {
 		this->_layers.push_back(newLayer);
@@ -74,6 +74,25 @@ Layer* SceneManager::addLayer(unsigned int index)
 Layer* SceneManager::layer(unsigned int index)
 {
 	return this->_layers.at(index).get();
+}
+
+const Layer* SceneManager::layer(unsigned int index) const
+{
+	return this->_layers.at(index).get();
+}
+
+float SceneManager::layerZ(unsigned int index) const
+{
+	{
+		/* Check the layer */
+		const Layer* layerToCheck = this->layer(index);
+	}
+
+	if (this->_layers.size() > 1) {
+		return index * 1000.0 / (this->_layers.size() - 1);
+	} else {
+		return 0.0;
+	}
 }
 
 std::vector<Layer*> SceneManager::layers()
@@ -104,32 +123,6 @@ void SceneManager::removeLayer(unsigned int index)
 	}
 
 	this->_layers.erase(this->_layers.begin() + index);
-}
-
-bool SceneManager::moveLayerUp(unsigned int index)
-{
-	if (index < 1) {
-		return false;
-	}
-
-	std::shared_ptr<Layer> layerToMove(this->_layers.at(index));
-	this->_layers.at(index) = this->_layers.at(index - 1);
-	this->_layers.at(index - 1) = layerToMove;
-
-	return true;
-}
-
-bool SceneManager::moveLayerDown(unsigned int index)
-{
-	if ( (index == 0) || (index == this->_layers.size() - 1) ) {
-		return false;
-	}
-
-	std::shared_ptr<Layer> layerToMove(this->_layers.at(index));
-	this->_layers.at(index) = this->_layers.at(index + 1);
-	this->_layers.at(index + 1) = layerToMove;
-
-	return true;
 }
 
 void SceneManager::moveLayeredObject(LayeredObject* object, unsigned int layerIndex)

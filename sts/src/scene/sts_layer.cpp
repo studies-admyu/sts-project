@@ -1,11 +1,13 @@
 #include "sts_layer.hpp"
 
+#include "sts_scene_manager.hpp"
+
 namespace sts {
 
-Layer::Layer()
+Layer::Layer(SceneManager* sceneMgr, unsigned int lIndex):
+	_scene(sceneMgr), _layerIndex(lIndex), _speed(0), _opacity(255)
 {
-	this->_speed = 0;
-	this->_opacity = 255;
+
 }
 
 Layer::Layer(const Layer& clayer)
@@ -61,6 +63,11 @@ void Layer::removeObject(LayeredObject* object)
 	}
 }
 
+float Layer::z() const
+{
+	return this->_scene->layerZ(this->_layerIndex);
+}
+
 unsigned char Layer::opacity() const
 {
 	return this->_opacity;
@@ -79,6 +86,11 @@ unsigned int Layer::speed() const
 void Layer::setSpeed(unsigned int value)
 {
 	this->_speed = value;
+}
+
+SceneManager* Layer::sceneManager()
+{
+	return _scene;
 }
 
 void Layer::processLayer()

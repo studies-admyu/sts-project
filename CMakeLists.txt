@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.8)
 
 project(sts)
 
+if (APPLE)
+	message(SEND_ERROR "Sorry, project building with CMake on Apple is not supported.")
+endif (APPLE)
+
 if (MSVC_IDE)
 	set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 	unset (CMAKE_BUILD_TYPE CACHE)
@@ -13,11 +17,11 @@ option (INSTALL_DEVELOPER_FILES "Install include headers, libs & debug symbols (
 
 if (INSTALL_DEVELOPER_FILES)
 	if (CMAKE_BUILD_TYPE MATCHES Debug)
-		option (INSTALL_DEBUG_BINARIES "Install debug versions of binaries." ON)
-		if (MSVC AND INSTALL_DEBUG_BINARIES)
+		option (INSTALL_DEBUG_EXECUTABLES "Install debug versions of executables." ON)
+		if (MSVC AND INSTALL_DEBUG_EXECUTABLES)
 			# ToDo: add *.pdb installation code
 			#option (INSTALL_DEBUG_BINARIES_PDB "Install PDB files for debug versions of binaries." OFF)
-		endif (MSVC AND INSTALL_DEBUG_BINARIES)
+		endif (MSVC AND INSTALL_DEBUG_EXECUTABLES)
 	endif (CMAKE_BUILD_TYPE MATCHES Debug)
 endif (INSTALL_DEVELOPER_FILES)
 
@@ -67,17 +71,22 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 		# search names with "lib". This is the workaround.
 		set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
 	endif (MINGW)
-	set(OGRE_BOOST_COMPONENTS thread date_time)
 
-	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS})
+	# Set component variables
+	set(OGRE_BOOST_COMPONENTS thread date_time)
+	set(EXTRA_BOOST_COMPONENTS filesystem)
+
+	set (ALL_BOOST_COMPONENTS ${OGRE_BOOST_COMPONENTS} ${EXTRA_BOOST_COMPONENTS})
+
+	find_package(Boost COMPONENTS ${ALL_BOOST_COMPONENTS} REQUIRED)
 
 	if (NOT Boost_FOUND)
 		# Try again with the other type of libs
 		set(Boost_USE_STATIC_LIBS NOT ${Boost_USE_STATIC_LIBS})
-		find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS})
+		find_package(Boost COMPONENTS ${ALL_BOOST_COMPONENTS} REQUIRED)
 	endif(NOT Boost_FOUND)
 
-	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS})
+	find_package(Boost COMPONENTS ${ALL_BOOST_COMPONENTS} REQUIRED)
 
 	# Set up referencing of Boost
 	include_directories(${Boost_INCLUDE_DIR})
@@ -87,8 +96,6 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 		# Boost.Asio _WIN32_WINNT
 		#add_definitions("-D_WIN32_WINNT=0x0501")
 	endif (WIN32)
-
-	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
 
 # STS

@@ -5,29 +5,42 @@ project(sts)
 set (sts_SRC_ROOT_DIR src)
 
 set (sts_HEADERS
-	"${sts_SRC_ROOT_DIR}/sts.hpp"
-	"${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
-	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
-	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_layer.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_layered_object.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_object_group.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp"
-)
+		"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
+		"${sts_SRC_ROOT_DIR}/game_data.hpp"
+		"${sts_SRC_ROOT_DIR}/game_object.hpp"
+		"${sts_SRC_ROOT_DIR}/entity.hpp"
+		"${sts_SRC_ROOT_DIR}/weapon.hpp"
+		"${sts_SRC_ROOT_DIR}/bullet.hpp"
+		"${sts_SRC_ROOT_DIR}/move.cpp"
+        "${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
+        "${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
+        "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_layer.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_layered_object.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_object_group.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_scene_object.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_shared_object.hpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp")
+
 set (sts_SOURCES
-	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
-	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
-	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_layer.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_layered_object.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.cpp"
-)
+		"${sts_SRC_ROOT_DIR}/sts_main.cpp"
+		"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+		"${sts_SRC_ROOT_DIR}/game_data.cpp"
+		"${sts_SRC_ROOT_DIR}/game_object.cpp"
+		"${sts_SRC_ROOT_DIR}/entity.cpp"
+		"${sts_SRC_ROOT_DIR}/bullet.cpp"
+		"${sts_SRC_ROOT_DIR}/weapon.cpp"
+		"${sts_SRC_ROOT_DIR}/move.cpp"
+        "${sts_SRC_ROOT_DIR}/sts_main.cpp"
+        "${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+        "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_layer.cpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_layered_object.cpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.cpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_scene_object.cpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_shared_object.cpp"
+        "${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.cpp")
 
 include_directories(
 	${OIS_INCLUDE_DIRS}
@@ -38,51 +51,52 @@ include_directories(
 	${sts_SRC_ROOT_DIR}
 )
 
-add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
+# Do we need to built a binary?
+set (sts_BUILD_EXECUTABLE ON)
+if (CMAKE_BUILD_TYPE MATCHES "Debug" AND NOT INSTALL_DEBUG_EXECUTABLES)
+	set (sts_BUILD_EXECUTABLE OFF)
+endif ()
 
-if (WIN32)
-#	ToDo: solve linking problem here
-#	set_target_properties (sts PROPERTIES WIN32_EXECUTABLE TRUE)
-endif (WIN32)
+if (sts_BUILD_EXECUTABLE)
+	add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
 
-target_link_libraries(sts ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
+	target_link_libraries(sts ${Boost_LIBRARIES} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
 
-# ToDo: add post build commands for MSVC_IDE
+	if (WIN32)
+	#	ToDo: solve linking problem here
+	#	set_target_properties (sts PROPERTIES WIN32_EXECUTABLE TRUE)
+	endif (WIN32)
 
-# Folder with binaries. Currently on Windows we install just to INSTALL_PREFIX, on Linux to bin subfoler.
-set (sts_BIN_DIR ${CMAKE_INSTALL_PREFIX})
-if (UNIX)
-	set (sts_BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-endif (UNIX)
+	# ToDo: add post build commands for MSVC_IDE
 
-# do we need to built a binary?
-set (sts_IS_BINARY_BUILT False)
-if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "Debug" AND INSTALL_DEBUG_BINARIES))
-	set (sts_IS_BINARY_BUILT TRUE)
-endif ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "Debug" AND INSTALL_DEBUG_BINARIES))
+	# Folder with binaries. Currently on Windows we install just to INSTALL_PREFIX, on Linux to bin subfoler.
+	if (WIN32)
+		set (sts_BIN_DIR ${CMAKE_INSTALL_PREFIX})
+	else (WIN32)
+		# Same for unix and apple systems for now
+		set (sts_BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+	endif (WIN32)
 
-# install the binary
-if (sts_IS_BINARY_BUILT)
-	# install the binary itself
-    install (TARGETS sts DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Release)
-	install (TARGETS sts DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Debug)
+	# Install the executable itself
+    install (TARGETS sts DESTINATION ${sts_BIN_DIR})
 
-	# install ogre.cfg, necessary if binary is built
+	# Install ogre.cfg, necessary if binary is built
 	if (NOT EXISTS ${PROJECT_SOURCE_DIR}/config/ogre.cfg)
-		message(SEND_ERROR "Failed to find config/ogre.cfg file")
-	endif (NOT EXISTS ${PROJECT_SOURCE_DIR}/config/ogre.cfg)
-	install (FILES config/ogre.cfg DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Release)
-	install (FILES config/ogre.cfg DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Debug)
+		message(SEND_ERROR "Failed to find config/ogre.cfg file. Please create one.")
+	endif ()
+	install (FILES config/ogre.cfg DESTINATION ${sts_BIN_DIR})
 
-	# install plugins.cfg, optional
+	# Install plugins.cfg, optional (release)
 	if (EXISTS ${PROJECT_SOURCE_DIR}/config/plugins.cfg)
 		install (FILES config/plugins.cfg DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Release)
-		install (FILES config/plugins.cfg DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Debug)
-	endif (EXISTS ${PROJECT_SOURCE_DIR}/config/plugins.cfg)
+	endif ()
 
-	# install data such as models
-	install (DIRECTORY data/ DESTINATION data)
+	# Install plugins.cfg, optional (debug)
+	if (EXISTS ${PROJECT_SOURCE_DIR}/config/debug/plugins.cfg)
+		install (FILES config/debug/plugins.cfg DESTINATION ${sts_BIN_DIR} CONFIGURATIONS Debug)
+	endif ()
 
+	# Install plugins for Windows
 	if (WIN32)
 		install (FILES ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
 				${OGRE_PLUGIN_DIR_REL}/Plugin_CgProgramManager.dll
@@ -104,5 +118,7 @@ if (sts_IS_BINARY_BUILT)
 				DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Debug
 				)
 	endif (WIN32)
-endif (sts_IS_BINARY_BUILT)
+endif ()
 
+# Install all the game data
+install (DIRECTORY data/ DESTINATION data)

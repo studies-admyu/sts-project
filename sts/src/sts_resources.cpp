@@ -1,6 +1,6 @@
-#include "sts.hpp"
-
 #include <OGRE/OgrePlatform.h>
+
+#include "sts_resources.hpp"
 
 namespace sts {
 

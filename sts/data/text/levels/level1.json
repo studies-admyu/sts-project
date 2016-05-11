@@ -1,0 +1,34 @@
+[
+  {
+    "type": "EnemySmall",
+    "x0": 10,
+    "y0": 15,
+    "direction": 3.8,
+    "destructable": 1,
+    "states": [
+      {
+        "type": "MoveActionState",
+        "animation": "",
+        "weapon1-behavior": "BasicFireForward",
+        "weapon2-behavior": "NoFire",
+        "params": {
+          "moveToX": 0.5,
+          "moveToY": 15
+        },
+        "transitions": [
+          {
+            "type": "ActionEnd"
+          }
+        ]
+      },
+      {
+        "type": "PermanentState",
+        "weapon1-behavior": "NoFire",
+        "weapon2-behavior": "NoFire",
+        "move-behavior": {
+          "type": "MoveLeftRight"
+        }
+      }
+    ]
+  }
+]

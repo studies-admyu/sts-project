@@ -3,7 +3,11 @@
 
 #include <vector>
 
-#include "sts.hpp"
+#include "sts_resources.hpp"
+#include "game_data.hpp"
+#include "move.hpp"
+#include "game_object.hpp"
+#include "weapon.hpp"
 
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreRenderSystem.h>
@@ -95,6 +99,7 @@ int main(int argc, char* argv[])
 		std::cout << std::endl;
 		return 0;
 	}
+
 
 	try {
 		Ogre::String lConfigFileName = "ogre.cfg";
@@ -207,6 +212,10 @@ int main(int argc, char* argv[])
 			Ogre::WindowEventUtilities::messagePump();
 		}
 		Ogre::LogManager::getSingleton().logMessage("Render window closed.");
+
+		sts::GameData::load();
+		sts::GameObject go(1, 1, 1.0);
+		sts::Level l("level1.json");
 	}
 	catch (Ogre::Exception &e) {
 		std::cerr << "Ogre::Exception: " << e.what() << std::endl;

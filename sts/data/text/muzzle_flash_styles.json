@@ -1,0 +1,16 @@
+[
+  {
+    "id": "SimpleMuzzleFlash",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "sound": "blast_flash.ogg"
+  },
+  {
+    "id": "NotSoSimpleMuzzleFlash",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "sound": "white_flash.ogg"
+  }
+]

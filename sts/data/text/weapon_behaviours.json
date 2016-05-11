@@ -1,0 +1,15 @@
+[
+  {
+    "id": "BasicFireForward",
+    "type": "FireForward",
+    "params": {
+      "count": 0,
+      "period": 0.5
+    }
+  },
+  {
+    "id": "NoFire",
+    "type": "NoFire",
+    "params": {}
+  }
+]

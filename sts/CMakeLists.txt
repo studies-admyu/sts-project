@@ -10,6 +10,7 @@ set (sts_HEADERS
 		"${sts_SRC_ROOT_DIR}/game_object.hpp"
 		"${sts_SRC_ROOT_DIR}/entity.hpp"
 		"${sts_SRC_ROOT_DIR}/weapon.hpp"
+		"${sts_SRC_ROOT_DIR}/bullet.hpp"
 		"${sts_SRC_ROOT_DIR}/move.cpp")
 set (sts_SOURCES
 		"${sts_SRC_ROOT_DIR}/sts_main.cpp"
@@ -17,6 +18,7 @@ set (sts_SOURCES
 		"${sts_SRC_ROOT_DIR}/game_data.cpp"
 		"${sts_SRC_ROOT_DIR}/game_object.cpp"
 		"${sts_SRC_ROOT_DIR}/entity.cpp"
+		"${sts_SRC_ROOT_DIR}/bullet.cpp"
 		"${sts_SRC_ROOT_DIR}/weapon.cpp"
 		"${sts_SRC_ROOT_DIR}/move.cpp")
 

@@ -215,9 +215,6 @@ int main(int argc, char* argv[])
 
 		sts::GameData::load();
 		sts::GameObject go(1, 1, 1.0);
-		sts::IMoveBehaviour *imb = sts::GameData::weapons["Blaster"]->bulletStylePtr->createMoveBehaviour();
-		imb->move(go);
-		imb->move(go);
 		sts::Level l("level1.json");
 	}
 	catch (Ogre::Exception &e) {

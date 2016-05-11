@@ -10,9 +10,7 @@
         "type": "MoveActionState",
         "animation": "",
         "weapon1-behavior": "BasicFireForward",
-        "weapon2-behavior": {
-          "type": "NoFire"
-        },
+        "weapon2-behavior": "NoFire",
         "params": {
           "moveToX": 0.5,
           "moveToY": 15
@@ -25,16 +23,8 @@
       },
       {
         "type": "PermanentState",
-        "weapon1-behavior": {
-          "type": "FireOnTarget",
-          "params": {
-            "count": 0,
-            "period": 1
-          }
-        },
-        "weapon2-behavior": {
-          "type": "NoFire"
-        },
+        "weapon1-behavior": "NoFire",
+        "weapon2-behavior": "NoFire",
         "move-behavior": {
           "type": "MoveLeftRight"
         }

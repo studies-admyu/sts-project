@@ -14,40 +14,50 @@ class Weapon;
 class Bullet : public GameObject {
 public:
 	Bullet(int x, int y, double direction, Weapon *w) : GameObject(x, y, direction), weapon(w) {}
+	void move();
 private:
 	Weapon *weapon;
 };
 
+/*
+ * Specifies how a bullet looks like, how it moves and how it handles collisions.
+ * All BulletStyles are singltones with hardcoded behaviours.
+ * Creates bullets of this style on demand.
+ * */
 class IBulletStyle {
 public:
 	IBulletStyle(const Entity *e) : entityPtr(e) {}
 	// Every bullet style must decide how to handle collisions.
 	virtual void collisionAlgorithm(GameObject &o) const = 0;
-	// Hardcoded, so no arguments now. Should be changed in the future.
-	virtual IMoveBehaviour* createMoveBehaviour() const = 0;
-	// Creates a bullet GameObject, passing itself to it.
-	// Currently children are hardcoded and not configurable externally. We should change it in the future.
-	static Bullet createNewBullet(double direction);
+	// Every bullet style must decide how to move the bullet
+	virtual void move(Bullet *bullet) const = 0;
 
 	const Entity *entityPtr;
 };
 
 class RoundBullet : public IBulletStyle {
 public:
-	// Currently hardcoded, later from json
-	RoundBullet() : IBulletStyle(GameData::entities["round_bullet"]) { Ogre::LogManager::getSingleton().logMessage("RoundBullet style created");}
+	static RoundBullet* getInstance();
 	virtual void collisionAlgorithm(GameObject &o) const override { /* handle collision here */ }
-	// Currently hardcoded, later from json
-	virtual IMoveBehaviour* createMoveBehaviour() const override { return IMoveBehaviour::createMoveBehaviour("MoveForward"); }
+	virtual void move(Bullet *bullet) const override { return Ogre::LogManager::getSingleton().logMessage("Moving RoundBullet"); }
+private:
+	RoundBullet() : IBulletStyle(GameData::entities["RoundBullet"]) { Ogre::LogManager::getSingleton().logMessage("RoundBullet style created");}
+	RoundBullet(RoundBullet const&) = delete;
+	RoundBullet& operator=(RoundBullet const&) = delete;
+	static RoundBullet *instance;
+
 };
 
 class BlastBullet : public IBulletStyle {
 public:
-	// Currently hardcoded, later from json
-	BlastBullet() : IBulletStyle(GameData::entities["blast_bullet"]) { Ogre::LogManager::getSingleton().logMessage("BlastBullet style created");}
+	static BlastBullet* getInstance();
 	virtual void collisionAlgorithm(GameObject &o) const override { /* handle collision here */ }
-	// Currently hardcoded, later from json
-	virtual IMoveBehaviour* createMoveBehaviour() const override { return IMoveBehaviour::createMoveBehaviour("MoveForward"); }
+	virtual void move(Bullet *bullet) const override { return Ogre::LogManager::getSingleton().logMessage("Moving BlastBullet"); }
+private:
+	BlastBullet() : IBulletStyle(GameData::entities["BlastBullet"]) { Ogre::LogManager::getSingleton().logMessage("BlastBullet style created");}
+	BlastBullet(BlastBullet const&) = delete;
+	BlastBullet& operator=(BlastBullet const&) = delete;
+	static BlastBullet *instance;
 };
 
 

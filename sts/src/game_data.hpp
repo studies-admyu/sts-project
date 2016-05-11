@@ -9,7 +9,6 @@
 
 namespace sts {
 
-// circular dependency with bullet (bullets needs entities from GameData to create themselves), no good
 class IBulletStyle;
 class MuzzleFlashStyle;
 class Weapon;

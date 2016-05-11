@@ -69,11 +69,10 @@ namespace sts {
         }
     }
 
-	// A stub which creates one instance of each IBulletStyle descendant.
-    // Later we will configure bullet styles externally.
+	// Creates mappings BulletStyleName -> instance of needed BulletStyles. All BulletStyles are singltones
 	void GameData::parseBulletStyles() {
-        bulletStyles["RoundBullet"] = new RoundBullet();
-        bulletStyles["BlastBullet"] = new BlastBullet();
+        bulletStyles["RoundBullet"] = RoundBullet::getInstance();
+        bulletStyles["BlastBullet"] = BlastBullet::getInstance();
 	}
 
     void GameData::parseWeapons() {

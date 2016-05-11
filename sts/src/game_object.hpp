@@ -7,13 +7,11 @@
 
 namespace sts {
 
-class IFiringStyle;
 class Entity;
 class Weapon;
 class IWeaponBehaviour;
 
 namespace pt = boost::property_tree;
-
 
 class GameObject {
 public:

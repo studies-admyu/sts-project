@@ -26,10 +26,9 @@ namespace sts {
         auto json_filename = (configs_path / boost::filesystem::path(level_json_name)).string();
         pt::read_json(json_filename, root);
 
-        for (pt::ptree::value_type &mfs_root : root)
-        {
-            assert(mfs_root.first.empty()); // lists have no keys
-            pt::ptree mfs_tree = mfs_root.second;
+        for (pt::ptree::value_type &unitRoot : root) {
+            assert(unitRoot.first.empty()); // lists have no keys
+            pt::ptree mfs_tree = unitRoot.second;
 
             Ogre::LogManager::getSingleton().logMessage("Enemy loaded");
             std::string unit_type_name = mfs_tree.get<std::string>("type");

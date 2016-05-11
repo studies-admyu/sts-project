@@ -9,7 +9,6 @@
     },
     "explosion-sound": "explosion_general.ogg",
     "muzzle-flash-style": "SimpleMuzzleFlash",
-    "firing-style": "EvenFiringStyle",
     "damage": 15,
     "homing": false
   },

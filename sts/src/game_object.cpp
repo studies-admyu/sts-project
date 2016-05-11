@@ -19,8 +19,6 @@ namespace sts {
     Unit::Unit(int x, int y, double d, const UnitType *utptr, std::list<State> _states) : LayeredObject(x, y, d) {
         unitTypePtr = utptr;
         states = _states;
-        firingStyleW1Ptr = utptr->weapon1->createNewFiringStyle();
-        firingStyleW2Ptr = utptr->weapon2->createNewFiringStyle();
     }
 
     Level::Level(std::string level_json_name) {

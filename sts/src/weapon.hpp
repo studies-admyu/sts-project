@@ -15,7 +15,10 @@ namespace sts {
  *   * from main cycle method fire of Unit is called
  *   * from it's active state, for each weaponBehaviour:
  *     - call weaponBehaviour.fire()
- *     - it checks, if time for firing has come by running
+ *     - WeaponBehaviour checks, whether time for firing has come;
+ *     - If it is, WeaponBehaviour determines number of bullets and their direction
+ *       (hardcoded in descendants, not jsonified)
+ *     - For each bullet to fire, it runs weapon.createBullet method
  */
 
 struct MuzzleFlashStyle {
@@ -27,62 +30,71 @@ struct MuzzleFlashStyle {
     std::string sound;
 };
 
-// Weapon defines information about weapon: it' damage, bullet, animations, etc, but it doesn't make
-// decisions when and where to shot. It also creates bullets.
+/*
+ * Weapon defines information about weapon: it' damage, BulletStyle, animations, etc, but it doesn't make
+ * decisions when and where to shot. It also creates bullets.
+ * It is jsonified, but each weapon is instantiated only once since it doesn't need SceneObject specific state
+ */
 class Weapon {
 public:
+    // Create instance from json tree
+    Weapon(pt::ptree params);
     Weapon(const std::string &_id, const IBulletStyle *ibs, const MuzzleFlashStyle *mfs,
-           int d, bool isH, std::string fs) :
-            id(_id), bulletStylePtr(ibs), muzzleFlashStylePtr(mfs), damage(d), isHoming(isH), firingStyle(fs) {
+           int damage, bool isH) :
+            id(_id), bulletStyle(ibs), muzzleFlashStyle(mfs), damage(damage), isHoming(isH) {
         Ogre::LogManager::getSingleton().logMessage("Weapon created");
     }
 
     Bullet* createBullet(int x, int y, double direction);
-    IFiringStyle* createNewFiringStyle() const;
 
+    // string identifier used to reference configured instance in json
     std::string id;
-    std::string firingStyle;
-    const IBulletStyle *bulletStylePtr;
-    const MuzzleFlashStyle *muzzleFlashStylePtr;
+    const IBulletStyle *bulletStyle;
+    const MuzzleFlashStyle *muzzleFlashStyle;
     int damage;
     bool isHoming;
 };
 
-// Entry point for fire(); Asks FiringStyle, is it time to fire, then defines number and direction of bullets and
-// finally calls createBullet of Weapon
+/*
+ * Entry point for SceneObject's active state fire() method. Determines is it time to fire, how many bullets to create
+ * and in which direction push them; then it calls weapon.createBullet for each.
+ * The class is not jsonified, behaviour is hardcoded.
+ * The class needs to store SceneObject's state, at least time of the last shot, so we create an instance for every
+ * Unit. Instances will be created by factory method createWeaponBehaviour.
+ * */
 class IWeaponBehaviour {
 public:
-    static IWeaponBehaviour* createWeaponBehaviour(std::string wb_type, pt::ptree params);
-    virtual void behaviourAlgorithm(Unit &u) = 0;
+    /*
+     * Factory method, creates needed instances on demand
+     * */
+    static IWeaponBehaviour* createWeaponBehaviour(std::string wb_type, Weapon *w);
+    virtual void fire(Unit *u) = 0;
+protected:
+    virtual bool isTimeTofire() = 0;
+    IWeaponBehaviour(Weapon *w) : weapon(w) {};
+    // this weapon will be used to fire
+    Weapon *weapon;
 };
 
-class FireForward : public IWeaponBehaviour {
+class FireForwardEveryFive : public IWeaponBehaviour {
 public:
-    FireForward(pt::ptree params) { count = params.get<int>("count"); period = params.get<double>("period"); };
-    virtual void behaviourAlgorithm(Unit &u) { /* implement behaviour here */ };
+    FireForwardEveryFive(Weapon *w) : IWeaponBehaviour(w) {};
+    virtual void fire(Unit *u) override { /* implement behaviour here */ };
+protected:
+    virtual bool isTimeTofire() override;
 private:
-    int count;
+    double lastShotTime;
     double period;
 };
 
 class NoFire : public IWeaponBehaviour {
 public:
-    NoFire(pt::ptree params) {}
-    virtual void behaviourAlgorithm(Unit &u) { /* implement behaviour here */ };
+    NoFire(Weapon *w) : IWeaponBehaviour(w) {};
+    virtual void fire(Unit *u) override { /* implement behaviour here */ };
+protected:
+    virtual bool isTimeTofire() override { return false; };
 };
 
-class IFiringStyle {
-public:
-    virtual bool isTimeToFire(Unit &u) = 0;
-};
-
-class EvenFiringStyle : public IFiringStyle {
-public:
-    virtual bool isTimeToFire(Unit &u) override;
-private:
-    const int period = 5;
-    double lastShotTime = 0;
-};
 
 class WeaponException : public std::exception {
 public:

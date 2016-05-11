@@ -55,8 +55,6 @@ class Unit : public LayeredObject {
 public:
 	Unit(int x, int y, double d, const UnitType* utptr, std::list<State> states);
 	const UnitType *unitTypePtr;
-	IFiringStyle *firingStyleW1Ptr;
-	IFiringStyle *firingStyleW2Ptr;
 	std::list<State> states;
 };
 

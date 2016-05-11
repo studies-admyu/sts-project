@@ -25,7 +25,6 @@ public:
     static std::unordered_map<std::string, IBulletStyle*> bulletStyles;
 	static std::unordered_map<std::string, Weapon*> weapons;
 	static std::unordered_map<std::string, UnitType*> unit_types;
-	static std::unordered_map<std::string, IWeaponBehaviour*> weapon_behaviours;
 private:
     GameData() {}
     static boost::filesystem::path configs_path;
@@ -35,7 +34,6 @@ private:
     static void parseBulletStyles();
 	static void parseWeapons();
 	static void parseUnitTypes();
-	static void parseWeaponBehaviours();
 };
 
 }

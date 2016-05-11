@@ -31,7 +31,7 @@ public:
 	virtual void collisionAlgorithm(GameObject &o) const = 0;
 	// Every bullet style must decide how to move the bullet
 	virtual void move(Bullet *bullet) const = 0;
-
+protected:
 	const Entity *entityPtr;
 };
 

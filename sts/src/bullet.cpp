@@ -2,7 +2,7 @@
 #include "weapon.hpp"
 
 namespace sts {
-    void Bullet::move() {weapon->bulletStylePtr->move(this); }
+    void Bullet::move() { weapon->bulletStyle->move(this); }
 
     RoundBullet* RoundBullet::instance = nullptr;
     RoundBullet* RoundBullet::getInstance() {

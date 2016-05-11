@@ -38,6 +38,16 @@ Ogre::Vector3 Model3DAttachable::position3D() const
 	return this->_node->getPosition();
 }
 
+Ogre::SceneNode* Model3DAttachable::node()
+{
+	return this->_node;
+}
+
+const Ogre::SceneNode* Model3DAttachable::node() const
+{
+	return this->_node;
+}
+
 void Model3DAttachable::setPlanarRotation(float radians)
 {
 	this->_planarRotation = radians;

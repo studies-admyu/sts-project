@@ -12,7 +12,6 @@ set (sts_HEADERS
 		"${sts_SRC_ROOT_DIR}/weapon.hpp"
 		"${sts_SRC_ROOT_DIR}/bullet.hpp"
 		"${sts_SRC_ROOT_DIR}/move.cpp"
-        "${sts_SRC_ROOT_DIR}/sts.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"

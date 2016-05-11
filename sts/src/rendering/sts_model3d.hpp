@@ -18,6 +18,8 @@ public:
 
 	void setPosition3D(const Ogre::Vector3& position);
 	Ogre::Vector3 position3D() const;
+	Ogre::SceneNode* node();
+	const Ogre::SceneNode* node() const;
 	void setPlanarRotation(float radians);
 	float planarRotation() const;
 	void setAxisRotation(float radians);
@@ -27,7 +29,7 @@ public:
 	void update();
 
 private:
-	Ogre::Node* _node;
+	Ogre::SceneNode* _node;
 	Ogre::Entity* _attachableEntity;
 	float _planarRotation;
 	float _axisRotation;

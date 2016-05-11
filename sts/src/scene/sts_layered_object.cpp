@@ -45,6 +45,11 @@ void LayeredObject::processObject()
 {
 	SceneObject::processObject();
 
+	Ogre::Vector3 attachablePosition = this->attachable()->position3D();
+	/* We use y coordinate instead of z */
+	attachablePosition.y = this->layer()->z();
+	this->attachable()->setPosition3D(attachablePosition);
+
 	++this->_frameCounter;
 	this->_frameCounter = this->_frameCounter % 1000;
 	if (this->_frameCounter == 0) {

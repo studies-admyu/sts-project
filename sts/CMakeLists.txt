@@ -5,13 +5,13 @@ project(sts)
 set (sts_SRC_ROOT_DIR src)
 
 set (sts_HEADERS
-		"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
-		"${sts_SRC_ROOT_DIR}/game_data.hpp"
-		"${sts_SRC_ROOT_DIR}/game_object.hpp"
-		"${sts_SRC_ROOT_DIR}/entity.hpp"
-		"${sts_SRC_ROOT_DIR}/weapon.hpp"
-		"${sts_SRC_ROOT_DIR}/bullet.hpp"
-		"${sts_SRC_ROOT_DIR}/move.cpp"
+	"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
+	"${sts_SRC_ROOT_DIR}/game_data.hpp"
+	"${sts_SRC_ROOT_DIR}/game_object.hpp"
+	"${sts_SRC_ROOT_DIR}/entity.hpp"
+	"${sts_SRC_ROOT_DIR}/weapon.hpp"
+	"${sts_SRC_ROOT_DIR}/bullet.hpp"
+	"${sts_SRC_ROOT_DIR}/move.cpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
@@ -24,14 +24,14 @@ set (sts_HEADERS
         "${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp")
 
 set (sts_SOURCES
-		"${sts_SRC_ROOT_DIR}/sts_main.cpp"
-		"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
-		"${sts_SRC_ROOT_DIR}/game_data.cpp"
-		"${sts_SRC_ROOT_DIR}/game_object.cpp"
-		"${sts_SRC_ROOT_DIR}/entity.cpp"
-		"${sts_SRC_ROOT_DIR}/bullet.cpp"
-		"${sts_SRC_ROOT_DIR}/weapon.cpp"
-		"${sts_SRC_ROOT_DIR}/move.cpp"
+	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
+	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+	"${sts_SRC_ROOT_DIR}/game_data.cpp"
+	"${sts_SRC_ROOT_DIR}/game_object.cpp"
+	"${sts_SRC_ROOT_DIR}/entity.cpp"
+	"${sts_SRC_ROOT_DIR}/bullet.cpp"
+	"${sts_SRC_ROOT_DIR}/weapon.cpp"
+	"${sts_SRC_ROOT_DIR}/move.cpp"
         "${sts_SRC_ROOT_DIR}/sts_main.cpp"
         "${sts_SRC_ROOT_DIR}/sts_resources.cpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
@@ -78,7 +78,7 @@ if (sts_BUILD_EXECUTABLE)
 	endif (WIN32)
 
 	# Install the executable itself
-    install (TARGETS sts DESTINATION ${sts_BIN_DIR})
+	install (TARGETS sts DESTINATION ${sts_BIN_DIR})
 
 	# Install ogre.cfg, necessary if binary is built
 	if (NOT EXISTS ${PROJECT_SOURCE_DIR}/config/ogre.cfg)
@@ -99,24 +99,24 @@ if (sts_BUILD_EXECUTABLE)
 	# Install plugins for Windows
 	if (WIN32)
 		install (FILES ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
-				${OGRE_PLUGIN_DIR_REL}/Plugin_CgProgramManager.dll
-				${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
-				${OGRE_PLUGIN_DIR_REL}/Plugin_ParticleFX.dll
-				${OGRE_PLUGIN_DIR_REL}/RenderSystem_Direct3D9.dll
-				${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
-				${OGRE_PLUGIN_DIR_REL}/OIS.dll
-				DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Release
-				)
+			${OGRE_PLUGIN_DIR_REL}/Plugin_CgProgramManager.dll
+			${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
+			${OGRE_PLUGIN_DIR_REL}/Plugin_ParticleFX.dll
+			${OGRE_PLUGIN_DIR_REL}/RenderSystem_Direct3D9.dll
+			${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
+			${OGRE_PLUGIN_DIR_REL}/OIS.dll
+			DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Release
+		)
 
 		install (FILES ${OGRE_PLUGIN_DIR_DBG}/OgreMain_d.dll
-				${OGRE_PLUGIN_DIR_DBG}/Plugin_CgProgramManager_d.dll
-				${OGRE_PLUGIN_DIR_DBG}/Plugin_OctreeSceneManager_d.dll
-				${OGRE_PLUGIN_DIR_DBG}/Plugin_ParticleFX_d.dll
-				${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
-				${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
-				${OGRE_PLUGIN_DIR_DBG}/OIS_d.dll
-				DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Debug
-				)
+			${OGRE_PLUGIN_DIR_DBG}/Plugin_CgProgramManager_d.dll
+			${OGRE_PLUGIN_DIR_DBG}/Plugin_OctreeSceneManager_d.dll
+			${OGRE_PLUGIN_DIR_DBG}/Plugin_ParticleFX_d.dll
+			${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
+			${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
+			${OGRE_PLUGIN_DIR_DBG}/OIS_d.dll
+			DESTINATION ${CMAKE_INSTALL_PREFIX} CONFIGURATIONS Debug
+		)
 	endif (WIN32)
 endif ()
 

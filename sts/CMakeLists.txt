@@ -6,6 +6,7 @@ set (sts_SRC_ROOT_DIR src)
 
 set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
+	"${sts_SRC_ROOT_DIR}/sts_game_root.hpp"
 	"${sts_SRC_ROOT_DIR}/game_data.hpp"
 	"${sts_SRC_ROOT_DIR}/game_object.hpp"
 	"${sts_SRC_ROOT_DIR}/entity.hpp"
@@ -26,6 +27,7 @@ set (sts_HEADERS
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
+	"${sts_SRC_ROOT_DIR}/sts_game_root.cpp"
 	"${sts_SRC_ROOT_DIR}/game_data.cpp"
 	"${sts_SRC_ROOT_DIR}/game_object.cpp"
 	"${sts_SRC_ROOT_DIR}/entity.cpp"

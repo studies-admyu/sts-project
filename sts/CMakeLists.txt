@@ -37,7 +37,7 @@ set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/move.cpp"
         "${sts_SRC_ROOT_DIR}/sts_main.cpp"
         "${sts_SRC_ROOT_DIR}/sts_resources.cpp"
-	"${sts_SRC_ROOT_DIR}/sts_renderable.cpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.cpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
         "${sts_SRC_ROOT_DIR}/scene/sts_layer.cpp"
         "${sts_SRC_ROOT_DIR}/scene/sts_layered_object.cpp"

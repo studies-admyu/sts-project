@@ -1,9 +1,7 @@
 #pragma once
 
-#include <string>
-
-#include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreEntity.h>
+#include <OGRE/OgreSceneNode.h>
 
 #include "sts_renderable.hpp"
 
@@ -43,21 +41,20 @@ private:
 	void updateRotation();
 };
 
-class Model3D: public IRenderable
+class Model3D: public Renderable
 {
 public:
 	/** Creates a 3D model from a *.mesh file
 	  * @arg sceneManager - OGRE scene manager instance;
 	  * @arg modelFilename - name of the *.mesh file.
 	  */
-	Model3D(Ogre::SceneManager* sceneManager, std::string modelFilename, float scale = 1.0f);
+	Model3D(std::string name, std::string modelFilename, float scale = 1.0f);
 	~Model3D();
 	IAttachable* spawnAttachable(Ogre::SceneNode* node) const;
 	std::string modelFilename() const;
 	float scale() const;
 
 private:
-	Ogre::SceneManager* _sceneManager;
 	std::string _modelFilename;
 	float _modelScale;
 

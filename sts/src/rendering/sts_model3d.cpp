@@ -1,5 +1,7 @@
 #include "sts_model3d.hpp"
 
+#include <sts_game_root.hpp>
+
 namespace sts {
 
 /* Model3DAttachable class */
@@ -87,14 +89,14 @@ void Model3DAttachable::update()
 
 /* Model3D class */
 
-Model3D::Model3D(Ogre::SceneManager* sceneManager, std::string modelFilename, float scale):
-	_sceneManager(sceneManager), _modelFilename(modelFilename), _modelScale(scale)
+Model3D::Model3D(std::string name, std::string modelFilename, float scale):
+	Renderable(name), _modelFilename(modelFilename), _modelScale(scale)
 {
 
 }
 
 Model3D::Model3D(const Model3D& model):
-	_modelFilename(model._modelFilename), _modelScale(model._modelScale)
+	Renderable(model.name()), _modelFilename(model._modelFilename), _modelScale(model._modelScale)
 {
 
 }
@@ -106,7 +108,8 @@ Model3D::~Model3D()
 
 IAttachable* Model3D::spawnAttachable(Ogre::SceneNode* node) const
 {
-	Ogre::Entity* entity = _sceneManager->createEntity(this->_modelFilename);
+	Ogre::SceneManager* oscene = sts::GameRoot::getObject()->_getOSceneManager();
+	Ogre::Entity* entity = oscene->createEntity(this->_modelFilename);
 	/** @todo Make a decision about shadows - switched off for now */
 	entity->setCastShadows(false);
 

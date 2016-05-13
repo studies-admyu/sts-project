@@ -2,7 +2,7 @@
 
 namespace sts {
 
-SceneObject::SceneObject(Ogre::SceneNode* node, IRenderable* renderable)
+SceneObject::SceneObject(Ogre::SceneNode* node, Renderable* renderable)
 {
 	this->_attachable = renderable->spawnAttachable(node);
 }

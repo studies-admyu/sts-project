@@ -13,8 +13,14 @@ namespace sts {
 class SceneManager
 {
 public:
-	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* osceneViewport);
+	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport);
 	~SceneManager();
+
+	Ogre::SceneManager* _getOSceneManager();
+	const Ogre::SceneManager* _getOSceneManager() const;
+
+	Ogre::Viewport* _getOViewport();
+	const Ogre::Viewport* _getOViewport() const;
 
 	Layer* addLayer(unsigned int index);
 	Layer* layer(unsigned int index);

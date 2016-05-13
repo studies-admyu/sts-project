@@ -17,7 +17,7 @@ public:
 		int y;
 	};
 
-	SceneObject(Ogre::SceneNode* node, IRenderable* renderable);
+	SceneObject(Ogre::SceneNode* node, Renderable* renderable);
 	virtual ~SceneObject();
 
 	bool isVisible() const;

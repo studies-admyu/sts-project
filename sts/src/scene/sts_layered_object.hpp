@@ -9,7 +9,7 @@ class Layer;
 class LayeredObject: public SceneObject
 {
 public:
-	LayeredObject(Ogre::SceneNode* node, IRenderable* renderable, Layer* layer = nullptr);
+	LayeredObject(Ogre::SceneNode* node, Renderable* renderable, Layer* layer = nullptr);
 	~LayeredObject();
 
 	Layer* layer();

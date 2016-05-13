@@ -4,7 +4,7 @@
 
 namespace sts {
 
-LayeredObject::LayeredObject(Ogre::SceneNode* node, IRenderable* renderable, Layer* layer):
+LayeredObject::LayeredObject(Ogre::SceneNode* node, Renderable* renderable, Layer* layer):
 	SceneObject(node, renderable), _layer(layer)
 {
 	this->_frameCounter = 0;

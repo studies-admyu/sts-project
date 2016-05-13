@@ -2,7 +2,7 @@
 
 namespace sts {
 
-SharedObject::SharedObject(Ogre::SceneNode* node, IRenderable* renderable):
+SharedObject::SharedObject(Ogre::SceneNode* node, Renderable* renderable):
 	SceneObject(node, renderable)
 {
 

@@ -7,7 +7,7 @@ namespace sts {
 class SharedObject: public SceneObject
 {
 public:
-	SharedObject(Ogre::SceneNode* node, IRenderable* renderable);
+	SharedObject(Ogre::SceneNode* node, Renderable* renderable);
 	~SharedObject();
 
 	void setPosition(const Position& pos);

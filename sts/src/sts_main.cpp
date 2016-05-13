@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "sts_game_root.hpp"
+#include "rendering/sts_model3d.hpp"
 
 #include "sts_resources.hpp"
 #include "game_data.hpp"
@@ -15,7 +16,6 @@
 #include <OGRE/OgreRenderSystem.h>
 #include <OGRE/OgreRenderWindow.h>
 #include <OGRE/OgreWindowEventUtilities.h>
-#include <OGRE/OgreEntity.h>
 #include <OGRE/OgreBillboardSet.h>
 #include <OGRE/OgreBillboard.h>
 
@@ -161,21 +161,16 @@ int main(int argc, char* argv[])
 			lScene->destroyCamera(lCamera);
 		}
 
+		sts::SharedObject* lShipObject = nullptr;
+		{
+			sts::Model3D* lShipModel = sts::Model3D::create("airship.mesh", "airship.mesh", 3.15f);
+			lShipObject = sts::SharedObject::create(lShipModel);
+			lShipObject->setPosition(sts::SceneObject::Position(0, -100));
+		}
+
 		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
 
-		/* Load model */
-		Ogre::Entity* lShipEntity = lScene->createEntity("airship.mesh");
-		lShipEntity->setCastShadows(false);
-
-		Ogre::SceneNode* lShipNode = lRootSceneNode->createChildSceneNode();
-		lShipNode->attachObject(lShipEntity);
-		lShipNode->setScale(Ogre::Vector3(3.15f, 3.15f, 3.15f));
-
-		/* Starship start point */
-		Ogre::Vector3 razorSP(0, -200, -100);
-		lShipNode->setPosition(razorSP);
-
-		/* Sprite billboard */
+		/* Sprite billboard (manually) */
 		Ogre::SceneNode* lSpriteNode = lRootSceneNode->createChildSceneNode();
 		Ogre::BillboardSet* lBillboardSet = lScene->createBillboardSet();
 		lBillboardSet->setMaterialName("enemy_01", lRcGroupName);
@@ -195,9 +190,11 @@ int main(int argc, char* argv[])
 
 		while (!lWindow->isClosed()) {
 			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
-			float diplacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
-			lShipNode->setOrientation(Ogre::Quaternion(Ogre::Radian(angle), Ogre::Vector3(0, 0, 1)));
-			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
+			float displacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
+
+			lShipObject->setPlanarRotation(angle);
+			lShipObject->setAxisRotation(angle);
+			lShipObject->setPosition(sts::SceneObject::Position(static_cast<int>(displacement), 0));
 
 			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
 			lSpriteBillboard->setTexcoordIndex(spriteFrame);

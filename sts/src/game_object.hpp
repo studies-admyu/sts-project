@@ -21,9 +21,10 @@ public:
 	int y;
 };
 
-class LayeredObject : public GameObject {
+/** @todo Make LayeredObject compatible with this */
+class LayeredObjectB : public GameObject {
 public:
-	LayeredObject(int x, int y, double d) : GameObject(x, y, d) {}
+	LayeredObjectB(int x, int y, double d) : GameObject(x, y, d) {}
 };
 
 class Transition {
@@ -49,7 +50,7 @@ public:
 	const Weapon *weapon2;
 };
 
-class Unit : public LayeredObject {
+class Unit : public LayeredObjectB {
 public:
 	Unit(int x, int y, double d, const UnitType* utptr, std::list<State> states);
 	const UnitType *unitTypePtr;

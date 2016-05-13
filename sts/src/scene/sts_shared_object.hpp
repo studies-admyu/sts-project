@@ -7,11 +7,11 @@ namespace sts {
 class SharedObject: public SceneObject
 {
 public:
-	SharedObject(Ogre::SceneNode* node, IRenderable* renderable);
+	static SharedObject* create(Renderable* renderable);
 	~SharedObject();
 
-	void setPosition(const Position& pos);
-	Position position() const;
+protected:
+	SharedObject(Renderable* renderable);
 };
 
 } // namespace sts

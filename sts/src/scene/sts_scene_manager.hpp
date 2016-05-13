@@ -13,8 +13,20 @@ namespace sts {
 class SceneManager
 {
 public:
-	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* osceneViewport);
+	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport);
 	~SceneManager();
+
+	Ogre::SceneManager* _getOSceneManager();
+	const Ogre::SceneManager* _getOSceneManager() const;
+
+	Ogre::Viewport* _getOViewport();
+	const Ogre::Viewport* _getOViewport() const;
+
+	Ogre::SceneNode* _spawnObjectNode();
+	Ogre::SceneNode* _spawnRenderableNode();
+	void _destroyNode(Ogre::SceneNode* node);
+
+	void _clearScene();
 
 	Layer* addLayer(unsigned int index);
 	Layer* layer(unsigned int index);
@@ -40,7 +52,7 @@ private:
 	Ogre::Camera* _ocamera;
 
 	std::vector<std::shared_ptr<Layer>> _layers;
-	SharedObjectGroup _sharedObjects;
+	std::unique_ptr<SharedObjectGroup> _sharedObjects;
 
 	SceneManager(const SceneManager&);
 	void initScene();

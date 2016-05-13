@@ -1,11 +1,13 @@
 #include "sts_shared_object.hpp"
 
+#include <sts_game_root.hpp>
+
 namespace sts {
 
-SharedObject::SharedObject(Ogre::SceneNode* node, IRenderable* renderable):
-	SceneObject(node, renderable)
+SharedObject::SharedObject(Renderable* renderable):
+	SceneObject(renderable)
 {
-
+	sts::GameRoot::getObject()->sceneManager()->sharedObjects()->addObject(this);
 }
 
 SharedObject::~SharedObject()
@@ -13,15 +15,9 @@ SharedObject::~SharedObject()
 
 }
 
-void SharedObject::setPosition(const SceneObject::Position& pos)
+SharedObject* SharedObject::create(Renderable* renderable)
 {
-
-}
-
-SceneObject::Position SharedObject::position() const
-{
-	SceneObject::Position returnValue = {0, 0};
-	return returnValue;
+	return new SharedObject(renderable);
 }
 
 } // namespace sts

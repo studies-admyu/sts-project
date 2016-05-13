@@ -4,13 +4,11 @@
 
 namespace sts {
 
-SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* osceneViewport):
-	_oscene(osceneManager), _oviewport(osceneViewport)
+SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport):
+	_oscene(osceneManager), _oviewport(oviewport)
 {
-	/* Create zero layer */
-	this->_layers.push_back(std::shared_ptr<Layer>(new Layer(this, 0)));
-
-	initScene();
+	this->initScene();
+	this->_clearScene();
 }
 
 SceneManager::SceneManager(const SceneManager& scmgr)
@@ -55,6 +53,54 @@ void SceneManager::initScene()
 	sceneLight->setPosition(this->_ocamera->getPosition());
 }
 
+Ogre::SceneManager* SceneManager::_getOSceneManager()
+{
+	return this->_oscene;
+}
+
+const Ogre::SceneManager* SceneManager::_getOSceneManager() const
+{
+	return this->_oscene;
+}
+
+Ogre::Viewport* SceneManager::_getOViewport()
+{
+	return this->_oviewport;
+}
+
+const Ogre::Viewport* SceneManager::_getOViewport() const
+{
+	return this->_oviewport;
+}
+
+Ogre::SceneNode* SceneManager::_spawnObjectNode()
+{
+	return this->_oscene->getRootSceneNode()->createChildSceneNode();
+}
+
+Ogre::SceneNode* SceneManager::_spawnRenderableNode()
+{
+	/* No difference for now */
+	return this->_spawnObjectNode();
+}
+
+void SceneManager::_destroyNode(Ogre::SceneNode*)
+{
+	/* Do nothing for now - wait for the whole scene cleanup */
+}
+
+void SceneManager::_clearScene()
+{
+	this->_layers.clear();
+	this->_sharedObjects.reset(new SharedObjectGroup);
+
+	/* Scene cleanup */
+	this->_oscene->clearScene();
+
+	/* Create zero layer */
+	this->_layers.push_back(std::shared_ptr<Layer>(new Layer(this, 0)));
+}
+
 Layer* SceneManager::addLayer(unsigned int index)
 {
 	if (index == 0) {
@@ -83,10 +129,8 @@ const Layer* SceneManager::layer(unsigned int index) const
 
 float SceneManager::layerZ(unsigned int index) const
 {
-	{
-		/* Check the layer */
-		const Layer* layerToCheck = this->layer(index);
-	}
+	/* Check the layer */
+	this->layer(index);
 
 	if (this->_layers.size() > 1) {
 		return index * 1000.0 / (this->_layers.size() - 1);
@@ -133,6 +177,7 @@ void SceneManager::moveLayeredObject(LayeredObject* object, unsigned int layerIn
 	}
 
 	layerMoveTo->addObject(object);
+	object->_setLayer(layerMoveTo);
 }
 
 void SceneManager::removeLayeredObject(LayeredObject* object)
@@ -145,12 +190,12 @@ void SceneManager::removeLayeredObject(LayeredObject* object)
 
 SharedObjectGroup* SceneManager::sharedObjects()
 {
-	return &(this->_sharedObjects);
+	return this->_sharedObjects.get();
 }
 
 void SceneManager::removeSharedObject(SharedObject* object)
 {
-	this->_sharedObjects.removeObject(object);
+	this->_sharedObjects->removeObject(object);
 	delete object;
 }
 

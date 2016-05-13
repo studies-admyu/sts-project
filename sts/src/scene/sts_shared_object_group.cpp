@@ -15,7 +15,11 @@ SharedObjectGroup::SharedObjectGroup(const SharedObjectGroup& sobjgroup)
 
 SharedObjectGroup::~SharedObjectGroup()
 {
-
+	while (this->_objects.size() > 0) {
+		SharedObject* object = this->_objects.back();
+		this->_objects.pop_back();
+		delete object;
+	}
 }
 
 void SharedObjectGroup::addObject(SharedObject* object)

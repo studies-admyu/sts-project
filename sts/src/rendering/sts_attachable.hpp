@@ -1,6 +1,6 @@
 #pragma once
 
-#include <OGRE/OgreNode.h>
+#include <OGRE/OgreSceneNode.h>
 
 namespace sts {
 

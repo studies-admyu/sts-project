@@ -6,10 +6,9 @@ namespace sts {
 
 GameRoot* mGameRootSingleton = nullptr;
 
-GameRoot::GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport):
-	_oscene(oscene), _oviewport(oviewport)
+GameRoot::GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
 {
-
+	this->_scene = new SceneManager(oscene, oviewport);
 }
 
 GameRoot::GameRoot(const GameRoot&)
@@ -19,7 +18,21 @@ GameRoot::GameRoot(const GameRoot&)
 
 GameRoot::~GameRoot()
 {
+	releaseResources();
 
+	delete this->_scene;
+	this->_scene = nullptr;
+}
+
+void GameRoot::releaseScene()
+{
+	this->_scene->_clearScene();
+	this->_renderables.clear();
+}
+
+void GameRoot::releaseResources()
+{
+	this->releaseScene();
 }
 
 GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
@@ -33,33 +46,45 @@ GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewpo
 
 GameRoot* GameRoot::getObject()
 {
+	if (!mGameRootSingleton) {
+		throw std::runtime_error("Root object hasn't been initialized or has been released yet.");
+	}
 	return mGameRootSingleton;
 }
 
 void GameRoot::releaseRoot()
 {
+	mGameRootSingleton->releaseResources();
 	delete mGameRootSingleton;
 	mGameRootSingleton = nullptr;
 }
 
 Ogre::SceneManager* GameRoot::_getOSceneManager()
 {
-	return this->_oscene;
+	return this->sceneManager()->_getOSceneManager();
 }
 
 const Ogre::SceneManager* GameRoot::_getOSceneManager() const
 {
-	return this->_oscene;
+	return this->sceneManager()->_getOSceneManager();
 }
 
-Ogre::Viewport* GameRoot::_getViewport()
+Ogre::Viewport* GameRoot::_getOViewport()
 {
-	return this->_oviewport;
+	return this->sceneManager()->_getOViewport();
 }
 
-const Ogre::Viewport* GameRoot::_getViewport() const
+const Ogre::Viewport* GameRoot::_getOViewport() const
 {
-	return this->_oviewport;
+	return this->sceneManager()->_getOViewport();
+}
+
+void GameRoot::_addRenderable(Renderable* renderable)
+{
+	if (this->_renderables.find(renderable->name()) != this->_renderables.end()) {
+		throw std::runtime_error("Renderable with such a name exists.");
+	}
+	this->_renderables[renderable->name()] = std::unique_ptr<Renderable>(renderable);
 }
 
 bool GameRoot::isPaused() const
@@ -83,14 +108,19 @@ const SceneManager* GameRoot::sceneManager() const
 	return this->_scene;
 }
 
-IRenderable* GameRoot::getRenderable(std::string name)
+bool GameRoot::hasRenderable(std::string name) const
 {
-	return this->_renderables.at(name);
+	return (this->_renderables.find(name) != this->_renderables.cend());
 }
 
-const IRenderable* GameRoot::getRenderable(std::string name) const
+Renderable* GameRoot::getRenderable(std::string name)
 {
-	return this->_renderables.at(name);
+	return this->_renderables.at(name).get();
+}
+
+const Renderable* GameRoot::getRenderable(std::string name) const
+{
+	return this->_renderables.at(name).get();
 }
 
 }

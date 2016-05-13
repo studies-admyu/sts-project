@@ -16,6 +16,7 @@ set (sts_HEADERS
         "${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
         "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d_attachable.hpp"
         "${sts_SRC_ROOT_DIR}/scene/sts_layer.hpp"
         "${sts_SRC_ROOT_DIR}/scene/sts_layered_object.hpp"
         "${sts_SRC_ROOT_DIR}/scene/sts_object_group.hpp"

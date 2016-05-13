@@ -16,7 +16,7 @@ namespace sts {
     boost::filesystem::path Level::configs_path = boost::filesystem::path(sts::getDataBasePath()) /
             boost::filesystem::path("text") / boost::filesystem::path("levels");
 
-    Unit::Unit(int x, int y, double d, const UnitType *utptr, std::list<State> _states) : LayeredObject(x, y, d) {
+    Unit::Unit(int x, int y, double d, const UnitType *utptr, std::list<State> _states) : LayeredObjectB(x, y, d) {
         unitTypePtr = utptr;
         states = _states;
     }

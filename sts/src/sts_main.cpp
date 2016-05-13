@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "sts_game_root.hpp"
+
 #include "sts_resources.hpp"
 #include "game_data.hpp"
 #include "move.hpp"
@@ -136,35 +138,30 @@ int main(int argc, char* argv[])
 			lWindow = lRoot->createRenderWindow(lWindowTitle, lSizeX, lSizeY, lFullscreen, &lParams);
 		}
 
-		/* Create a scene manager */
-		Ogre::SceneManager* lScene = lRoot->createSceneManager(Ogre::ST_GENERIC, "SceneManager");
-
-		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
-
-		/* Create camera */
-		Ogre::Camera* lCamera = lScene->createCamera("MyCamera");
-
-		/* Create viewport (camera <-> window) */
-		Ogre::Viewport* vp = lWindow->addViewport(lCamera);
-
-		vp->setAutoUpdated(true);
-		vp->setBackgroundColour(Ogre::ColourValue(1, 0, 1));
-
-		lCamera->setAspectRatio(float(vp->getActualWidth()) / vp->getActualHeight());
-		lCamera->setPosition(Ogre::Vector3(0, 100, -1));
-		lCamera->lookAt(Ogre::Vector3(0, 0, 0));
-
-		/* Set clipping*/
-		lCamera->setNearClipDistance(1.5f);
-		lCamera->setFarClipDistance(3000.0f);
-
-		/* Lighting */
-		Ogre::Light* lLight = lScene->createLight("MainLight");
-		lLight->setPosition(Ogre::Vector3(0, 100, 0));
-
 		/* Resource manager */
 		Ogre::String lRcGroupName = "Main group";
 		initResourceMainGroup(lRcGroupName);
+
+		/* Create a scene manager */
+		Ogre::SceneManager* lScene = lRoot->createSceneManager(Ogre::ST_GENERIC, "SceneManager");
+
+		/* Declare necessary viewport pointer */
+		Ogre::Viewport* vp = nullptr;
+
+		{
+			/* We need to create temporary camera due to OGRE requirements */
+
+			/* Create temporary camera */
+			Ogre::Camera* lCamera = lScene->createCamera("TempCamera");
+			/* Create viewport (camera <-> window) */
+			vp = lWindow->addViewport(lCamera);
+			/* Init game root object. It will replace temporary camera with its own one */
+			sts::GameRoot::initRoot(lScene, vp);
+			/* Destroy temporary camera */
+			lScene->destroyCamera(lCamera);
+		}
+
+		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
 
 		/* Load model */
 		Ogre::Entity* lShipEntity = lScene->createEntity("airship.mesh");
@@ -212,6 +209,8 @@ int main(int argc, char* argv[])
 			Ogre::WindowEventUtilities::messagePump();
 		}
 		Ogre::LogManager::getSingleton().logMessage("Render window closed.");
+
+		sts::GameRoot::releaseRoot();
 
 		sts::GameData::load();
 		sts::GameObject go(1, 1, 1.0);

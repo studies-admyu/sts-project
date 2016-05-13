@@ -17,7 +17,11 @@ Layer::Layer(const Layer& clayer)
 
 Layer::~Layer()
 {
-
+	while (this->_objects.size() > 0) {
+		LayeredObject* object = this->_objects.back();
+		this->_objects.pop_back();
+		delete object;
+	}
 }
 
 void Layer::addObject(LayeredObject* object)

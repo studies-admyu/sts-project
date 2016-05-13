@@ -15,7 +15,7 @@ public:
 	virtual ~Renderable();
 
 	std::string name() const;
-	virtual IAttachable* spawnAttachable(Ogre::SceneNode* node) const = 0;
+	virtual IAttachable* _spawnAttachable(Ogre::SceneNode* node) const = 0;
 
 private:
 	std::string _name;

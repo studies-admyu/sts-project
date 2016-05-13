@@ -1,6 +1,6 @@
 #pragma once
 
-#include <OGRE/OgreSceneNode.h>
+#include <memory>
 
 #include <rendering/sts_renderable.hpp>
 
@@ -13,17 +13,19 @@ friend class SceneManager;
 public:
 	struct Position
 	{
+		Position(int i_x = 0, int i_y = 0):
+			x(i_x), y(i_y) { }
+
 		int x;
 		int y;
 	};
 
-	SceneObject(Ogre::SceneNode* node, Renderable* renderable);
 	virtual ~SceneObject();
 
 	bool isVisible() const;
 	void setVisible(bool value);
-	virtual void setPosition(const Position& pos) = 0;
-	virtual Position position() const = 0;
+	virtual void setPosition(const Position& pos);
+	virtual Position position() const;
 	void setPlanarRotation(float radians);
 	float planarRotation() const;
 	void setAxisRotation(float radians);
@@ -31,10 +33,12 @@ public:
 	virtual void processObject();
 
 protected:
+	SceneObject(Renderable* renderable);
 	IAttachable* attachable();
+	const IAttachable* attachable() const;
 
 private:
-	IAttachable* _attachable;
+	std::unique_ptr<IAttachable> _attachable;
 
 	SceneObject(const SceneObject&);
 };

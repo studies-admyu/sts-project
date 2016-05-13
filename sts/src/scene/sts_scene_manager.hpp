@@ -22,6 +22,12 @@ public:
 	Ogre::Viewport* _getOViewport();
 	const Ogre::Viewport* _getOViewport() const;
 
+	Ogre::SceneNode* _spawnObjectNode();
+	Ogre::SceneNode* _spawnRenderableNode();
+	void _destroyNode(Ogre::SceneNode* node);
+
+	void _clearScene();
+
 	Layer* addLayer(unsigned int index);
 	Layer* layer(unsigned int index);
 	const Layer* layer(unsigned int index) const;
@@ -46,7 +52,7 @@ private:
 	Ogre::Camera* _ocamera;
 
 	std::vector<std::shared_ptr<Layer>> _layers;
-	SharedObjectGroup _sharedObjects;
+	std::unique_ptr<SharedObjectGroup> _sharedObjects;
 
 	SceneManager(const SceneManager&);
 	void initScene();

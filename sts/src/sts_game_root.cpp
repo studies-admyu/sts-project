@@ -18,8 +18,21 @@ GameRoot::GameRoot(const GameRoot&)
 
 GameRoot::~GameRoot()
 {
+	releaseResources();
+
 	delete this->_scene;
 	this->_scene = nullptr;
+}
+
+void GameRoot::releaseScene()
+{
+	this->_scene->_clearScene();
+	this->_renderables.clear();
+}
+
+void GameRoot::releaseResources()
+{
+	this->releaseScene();
 }
 
 GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
@@ -41,6 +54,7 @@ GameRoot* GameRoot::getObject()
 
 void GameRoot::releaseRoot()
 {
+	mGameRootSingleton->releaseResources();
 	delete mGameRootSingleton;
 	mGameRootSingleton = nullptr;
 }
@@ -70,7 +84,7 @@ void GameRoot::_addRenderable(Renderable* renderable)
 	if (this->_renderables.find(renderable->name()) != this->_renderables.end()) {
 		throw std::runtime_error("Renderable with such a name exists.");
 	}
-	this->_renderables[renderable->name()] = renderable;
+	this->_renderables[renderable->name()] = std::unique_ptr<Renderable>(renderable);
 }
 
 bool GameRoot::isPaused() const
@@ -94,14 +108,19 @@ const SceneManager* GameRoot::sceneManager() const
 	return this->_scene;
 }
 
+bool GameRoot::hasRenderable(std::string name) const
+{
+	return (this->_renderables.find(name) != this->_renderables.cend());
+}
+
 Renderable* GameRoot::getRenderable(std::string name)
 {
-	return this->_renderables.at(name);
+	return this->_renderables.at(name).get();
 }
 
 const Renderable* GameRoot::getRenderable(std::string name) const
 {
-	return this->_renderables.at(name);
+	return this->_renderables.at(name).get();
 }
 
 }

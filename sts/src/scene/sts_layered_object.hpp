@@ -9,8 +9,11 @@ class Layer;
 class LayeredObject: public SceneObject
 {
 public:
-	LayeredObject(Ogre::SceneNode* node, Renderable* renderable, Layer* layer = nullptr);
+	static LayeredObject* create(Renderable* renderable, unsigned int layerIndex);
+	static LayeredObject* create(Renderable* renderable, Layer* layer);
 	~LayeredObject();
+
+	void _setLayer(Layer* layer);
 
 	Layer* layer();
 	const Layer* layer() const;
@@ -22,10 +25,16 @@ public:
 
 	virtual void processObject();
 
+protected:
+	LayeredObject(Renderable* renderable, unsigned int layerIndex);
+	LayeredObject(Renderable* renderable, Layer* layer);
+
 private:
 	Layer* _layer;
 	/** @todo Replace frameCounter with the timer */
 	unsigned int _frameCounter;
+
+	LayeredObject(const LayeredObject&);
 };
 
 } // namespace sts

@@ -7,10 +7,8 @@ namespace sts {
 SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport):
 	_oscene(osceneManager), _oviewport(oviewport)
 {
-	/* Create zero layer */
-	this->_layers.push_back(std::shared_ptr<Layer>(new Layer(this, 0)));
-
-	initScene();
+	this->initScene();
+	this->_clearScene();
 }
 
 SceneManager::SceneManager(const SceneManager& scmgr)
@@ -73,6 +71,34 @@ Ogre::Viewport* SceneManager::_getOViewport()
 const Ogre::Viewport* SceneManager::_getOViewport() const
 {
 	return this->_oviewport;
+}
+
+Ogre::SceneNode* SceneManager::_spawnObjectNode()
+{
+	return this->_oscene->getRootSceneNode()->createChildSceneNode();
+}
+
+Ogre::SceneNode* SceneManager::_spawnRenderableNode()
+{
+	/* No difference for now */
+	return this->_spawnObjectNode();
+}
+
+void SceneManager::_destroyNode(Ogre::SceneNode*)
+{
+	/* Do nothing for now - wait for the whole scene cleanup */
+}
+
+void SceneManager::_clearScene()
+{
+	this->_layers.clear();
+	this->_sharedObjects.reset(new SharedObjectGroup);
+
+	/* Scene cleanup */
+	this->_oscene->clearScene();
+
+	/* Create zero layer */
+	this->_layers.push_back(std::shared_ptr<Layer>(new Layer(this, 0)));
 }
 
 Layer* SceneManager::addLayer(unsigned int index)
@@ -151,6 +177,7 @@ void SceneManager::moveLayeredObject(LayeredObject* object, unsigned int layerIn
 	}
 
 	layerMoveTo->addObject(object);
+	object->_setLayer(layerMoveTo);
 }
 
 void SceneManager::removeLayeredObject(LayeredObject* object)
@@ -163,12 +190,12 @@ void SceneManager::removeLayeredObject(LayeredObject* object)
 
 SharedObjectGroup* SceneManager::sharedObjects()
 {
-	return &(this->_sharedObjects);
+	return this->_sharedObjects.get();
 }
 
 void SceneManager::removeSharedObject(SharedObject* object)
 {
-	this->_sharedObjects.removeObject(object);
+	this->_sharedObjects->removeObject(object);
 	delete object;
 }
 

@@ -1,4 +1,7 @@
 #include "sts_model3d.hpp"
+#include "sts_model3d_attachable.hpp"
+
+#include <stdexcept>
 
 #include <sts_game_root.hpp>
 
@@ -96,9 +99,9 @@ Model3D::Model3D(std::string name, std::string modelFilename, float scale):
 }
 
 Model3D::Model3D(const Model3D& model):
-	Renderable(model.name()), _modelFilename(model._modelFilename), _modelScale(model._modelScale)
+	Renderable(model.name())
 {
-
+	throw std::runtime_error("Model3D is not copyable");
 }
 
 Model3D::~Model3D()
@@ -106,7 +109,12 @@ Model3D::~Model3D()
 
 }
 
-IAttachable* Model3D::spawnAttachable(Ogre::SceneNode* node) const
+Model3D* Model3D::create(std::string name, std::string modelFilename, float scale)
+{
+	return new Model3D(name, modelFilename, scale);
+}
+
+IAttachable* Model3D::_spawnAttachable(Ogre::SceneNode* node) const
 {
 	Ogre::SceneManager* oscene = sts::GameRoot::getObject()->_getOSceneManager();
 	Ogre::Entity* entity = oscene->createEntity(this->_modelFilename);

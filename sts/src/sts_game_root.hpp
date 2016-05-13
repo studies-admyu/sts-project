@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include <OGRE/OgreSceneManager.h>
@@ -32,6 +33,7 @@ public:
 	SceneManager* sceneManager();
 	const SceneManager* sceneManager() const;
 
+	bool hasRenderable(std::string name) const;
 	Renderable* getRenderable(std::string name);
 	const Renderable* getRenderable(std::string name) const;
 
@@ -40,8 +42,11 @@ private:
 	GameRoot(const GameRoot&);
 	~GameRoot();
 
+	void releaseScene();
+	void releaseResources();
+
 	SceneManager* _scene;
-	std::map<std::string, Renderable*> _renderables;
+	std::map<std::string, std::unique_ptr<Renderable>> _renderables;
 };
 
 } // namespace sts

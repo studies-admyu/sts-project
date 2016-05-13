@@ -1,18 +1,43 @@
 #include "sts_layered_object.hpp"
 
-#include "sts_layer.hpp"
+#include <sts_game_root.hpp>
 
 namespace sts {
 
-LayeredObject::LayeredObject(Ogre::SceneNode* node, Renderable* renderable, Layer* layer):
-	SceneObject(node, renderable), _layer(layer)
+LayeredObject::LayeredObject(Renderable* renderable, unsigned int layerIndex):
+	LayeredObject(
+		renderable,
+		sts::GameRoot::getObject()->sceneManager()->layer(layerIndex)
+	)
+{
+
+}
+
+LayeredObject::LayeredObject(Renderable* renderable, Layer* layer):
+	SceneObject(renderable), _layer(layer)
 {
 	this->_frameCounter = 0;
+	this->_layer->addObject(this);
 }
 
 LayeredObject::~LayeredObject()
 {
 
+}
+
+LayeredObject* LayeredObject::create(Renderable* renderable, unsigned int layerIndex)
+{
+	return new LayeredObject(renderable, layerIndex);
+}
+
+LayeredObject* LayeredObject::create(Renderable* renderable, Layer* layer)
+{
+	return new LayeredObject(renderable, layer);
+}
+
+void LayeredObject::_setLayer(Layer* layer)
+{
+	this->_layer = layer;
 }
 
 Layer* LayeredObject::layer()

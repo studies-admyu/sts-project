@@ -148,6 +148,7 @@ int main(int argc, char* argv[])
 		/* Declare necessary viewport pointer */
 		Ogre::Viewport* vp = nullptr;
 
+		sts::GameRoot* lGameRoot = nullptr;
 		{
 			/* We need to create temporary camera due to OGRE requirements */
 
@@ -156,14 +157,18 @@ int main(int argc, char* argv[])
 			/* Create viewport (camera <-> window) */
 			vp = lWindow->addViewport(lCamera);
 			/* Init game root object. It will replace temporary camera with its own one */
-			sts::GameRoot::initRoot(lScene, vp);
+			lGameRoot = sts::GameRoot::initRoot(lScene, vp);
 			/* Destroy temporary camera */
 			lScene->destroyCamera(lCamera);
 		}
 
-		sts::Model3D::create("airship.mesh", "airship.mesh", 3.15f);
-		sts::SharedObject* lShipObject = sts::SharedObject::create("airship.mesh");
-		lShipObject->setPosition(sts::SceneObject::Position(0, -100));
+		sts::SceneObject::Position shipPosition(0, 0);
+		shipPosition.x = lGameRoot->sceneManager()->sceneWidth() / 2;
+		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
+
+		sts::Model3D::create("ShipModel", "airship.mesh", 6.3f);
+		sts::SharedObject* lShipObject = sts::SharedObject::create("ShipModel");
+		lShipObject->setPosition(shipPosition);
 
 		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
 
@@ -191,7 +196,7 @@ int main(int argc, char* argv[])
 
 			lShipObject->setPlanarRotation(angle);
 			lShipObject->setAxisRotation(angle);
-			lShipObject->setPosition(sts::SceneObject::Position(static_cast<int>(displacement), 0));
+			lShipObject->setPosition(shipPosition + sts::SceneObject::Position(static_cast<int>(displacement), 0));
 
 			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
 			lSpriteBillboard->setTexcoordIndex(spriteFrame);

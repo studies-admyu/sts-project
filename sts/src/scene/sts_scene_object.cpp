@@ -54,7 +54,8 @@ void SceneObject::setVisible(bool value)
 
 void SceneObject::setPosition(const SceneObject::Position& pos)
 {
-	this->_attachable->setPosition3D(Ogre::Vector3(float(pos.x), 0.0f, float(pos.y)));
+	int sceneWidth = sts::GameRoot::getObject()->sceneManager()->sceneWidth();
+	this->_attachable->setPosition3D(Ogre::Vector3(float(sceneWidth - pos.x), 0.0f, float(pos.y)));
 }
 
 SceneObject::Position SceneObject::position() const
@@ -69,7 +70,7 @@ SceneObject::Position SceneObject::position() const
 
 void SceneObject::setPlanarRotation(float radians)
 {
-	this->_attachable->setPlanarRotation(radians);
+	this->_attachable->setPlanarRotation(-radians);
 }
 
 float SceneObject::planarRotation() const

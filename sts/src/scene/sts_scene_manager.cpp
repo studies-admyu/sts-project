@@ -45,8 +45,14 @@ void SceneManager::initScene()
 	this->_ocamera->setNearClipDistance(1.5f);
 	this->_ocamera->setFarClipDistance(3000.0f);
 
-	this->_ocamera->setPosition(Ogre::Vector3(0, 100, -1));
-	this->_ocamera->lookAt(Ogre::Vector3(0, 0, 0));
+	Ogre::Vector3 screenCenter(
+		this->_oviewport->getActualWidth() / 2,
+		0,
+		this->_oviewport->getActualHeight() / 2
+	);
+
+	this->_ocamera->setPosition(screenCenter + Ogre::Vector3(0, 100, -1));
+	this->_ocamera->lookAt(screenCenter);
 
 	/* Create light */
 	Ogre::Light* sceneLight = this->_oscene->createLight("SceneLight");

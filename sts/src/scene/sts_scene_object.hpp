@@ -15,6 +15,10 @@ public:
 	{
 		Position(int i_x = 0, int i_y = 0):
 			x(i_x), y(i_y) { }
+		Position operator+(const Position& p) const
+			{ return Position(this->x + p.x, this->y + p.y); }
+		Position operator-(const Position& p) const
+			{ return Position(this->x - p.x, this->y - p.y); }
 
 		int x;
 		int y;

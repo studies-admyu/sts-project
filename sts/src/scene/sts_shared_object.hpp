@@ -8,6 +8,7 @@ class SharedObject: public SceneObject
 {
 public:
 	static SharedObject* create(Renderable* renderable);
+	static SharedObject* create(std::string renderableName);
 	~SharedObject();
 
 protected:

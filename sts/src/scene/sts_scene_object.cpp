@@ -16,6 +16,9 @@ SceneObject::SceneObject(Renderable* renderable)
 	this->_attachable = std::unique_ptr<IAttachable>(renderable->_spawnAttachable(attachableNode));
 }
 
+SceneObject::SceneObject(std::string renderableName):
+	SceneObject(sts::GameRoot::getObject()->getRenderable(renderableName)) { }
+
 SceneObject::SceneObject(const SceneObject& sceneobj):
 	_attachable(nullptr)
 {

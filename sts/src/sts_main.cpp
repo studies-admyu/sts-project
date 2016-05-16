@@ -161,12 +161,9 @@ int main(int argc, char* argv[])
 			lScene->destroyCamera(lCamera);
 		}
 
-		sts::SharedObject* lShipObject = nullptr;
-		{
-			sts::Model3D* lShipModel = sts::Model3D::create("airship.mesh", "airship.mesh", 3.15f);
-			lShipObject = sts::SharedObject::create(lShipModel);
-			lShipObject->setPosition(sts::SceneObject::Position(0, -100));
-		}
+		sts::Model3D::create("airship.mesh", "airship.mesh", 3.15f);
+		sts::SharedObject* lShipObject = sts::SharedObject::create("airship.mesh");
+		lShipObject->setPosition(sts::SceneObject::Position(0, -100));
 
 		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
 

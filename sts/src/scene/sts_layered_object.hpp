@@ -10,7 +10,9 @@ class LayeredObject: public SceneObject
 {
 public:
 	static LayeredObject* create(Renderable* renderable, unsigned int layerIndex);
+	static LayeredObject* create(std::string renderableName, unsigned int layerIndex);
 	static LayeredObject* create(Renderable* renderable, Layer* layer);
+	static LayeredObject* create(std::string renderableName, Layer* layer);
 	~LayeredObject();
 
 	void _setLayer(Layer* layer);

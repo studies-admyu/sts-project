@@ -34,6 +34,7 @@ public:
 
 protected:
 	SceneObject(Renderable* renderable);
+	SceneObject(std::string renderableName);
 	IAttachable* attachable();
 	const IAttachable* attachable() const;
 

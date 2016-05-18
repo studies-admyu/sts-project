@@ -3,8 +3,11 @@
 
 #include <vector>
 
+<<<<<<< HEAD
 #include "SoundManager.hpp"
 #include "MyFrameListener.hpp"
+#include "sts.hpp"
+=======
 #include "sts_game_root.hpp"
 #include "rendering/sts_model3d.hpp"
 
@@ -13,6 +16,7 @@
 #include "move.hpp"
 #include "game_object.hpp"
 #include "weapon.hpp"
+>>>>>>> origin/dev
 
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreRenderSystem.h>
@@ -201,11 +205,17 @@ int main(int argc, char* argv[])
 
 		while (!lWindow->isClosed()) {
 			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
+<<<<<<< HEAD
+			float diplacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
+			lShipNode->setOrientation(Ogre::Quaternion(Ogre::Radian(angle), Ogre::Vector3(0, 0, 1)));
+//			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
+=======
 			float displacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
 
 			lShipObject->setPlanarRotation(angle);
 			lShipObject->setAxisRotation(angle);
-//			lShipObject->setPosition(sts::SceneObject::Position(static_cast<int>(displacement), 0));
+			lShipObject->setPosition(sts::SceneObject::Position(static_cast<int>(displacement), 0));
+>>>>>>> origin/dev
 
 			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
 			lSpriteBillboard->setTexcoordIndex(spriteFrame);

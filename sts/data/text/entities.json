@@ -1,0 +1,30 @@
+[
+  {
+    "id": "starship_small",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "starship_small.mesh"
+  },
+  {
+    "id": "starship_big",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "starship_big.mesh"
+  },
+  {
+    "id": "RoundBullet",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "round_bullet.mesh"
+  },
+  {
+    "id": "BlastBullet",
+    "colormap": {
+      "hue": "0xffff00"
+    },
+    "model": "blast_bullet.mesh"
+  }
+]

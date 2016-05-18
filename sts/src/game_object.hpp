@@ -7,7 +7,7 @@
 
 namespace sts {
 
-class Entity;
+struct Entity;
 class Weapon;
 class IWeaponBehaviour;
 

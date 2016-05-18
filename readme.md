@@ -5,6 +5,8 @@ CMake >= 2.8 is used for building.
 
 **WARNING: Building with CMake under Mac OS X is not supported.**
 
+**WARNING: Building with Microsoft Visual Studio compiler is not supported due to compatibility issues. For more details read [an article](https://msdn.microsoft.com/en-us/library/hh567368.aspx).**
+
 The dependencies:
 
  - Boost 1.57 (or higher) -

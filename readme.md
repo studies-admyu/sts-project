@@ -7,13 +7,13 @@ CMake >= 2.8 is used for building.
 
 The dependencies:
 
- - Boost 1.57 (or higher)
+ - Boost 1.57 (or higher) -
    You can download the latest version at [boost.org](http://www.boost.org/).
- - OGRE 1.9
+ - OGRE 1.9 -
    Refer to OGRE wiki for installation details. In Linux you may use packages or [build Ogre from sources](http://www.ogre3d.org/tikiwiki/Building+Ogre).
- - OIS
-   IOS can be installed with the pre-built OGRE SDK. You may also [build it from sources](http://github.com/wgois/OIS).
- - SDL 1.2
+ - OIS -
+   Can be installed with the pre-built OGRE SDK. You may also [build it from sources](http://github.com/wgois/OIS).
+ - SDL 1.2.
 
 Required CMake variables:
 

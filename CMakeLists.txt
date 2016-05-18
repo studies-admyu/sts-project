@@ -65,12 +65,13 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 		# Statically linking boost to a dynamic Ogre build doesn't work on Linux 64bit
 		set(Boost_USE_STATIC_LIBS ${OGRE_STATIC})
 	endif (WIN32 OR APPLE)
+
 	if (MINGW)
 		# this is probably a bug in CMake: the boost find module tries to look for
 		# boost libraries with name libboost_*, but CMake already prefixes library
 		# search names with "lib". This is the workaround.
 		set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
-	endif (MINGW)
+	endif ()
 
 	# Set component variables
 	set(OGRE_BOOST_COMPONENTS thread date_time)
@@ -88,16 +89,14 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 
 	find_package(Boost COMPONENTS ${ALL_BOOST_COMPONENTS} REQUIRED)
 
-	# Set up referencing of Boost
-	include_directories(${Boost_INCLUDE_DIR})
-
 	add_definitions("-DBOOST_ALL_NO_LIB")
 	if (WIN32)
 		# Boost.Asio _WIN32_WINNT
 		#add_definitions("-D_WIN32_WINNT=0x0501")
-	endif (WIN32)
+	endif ()
 endif()
 
+# SDL dependencies
 find_package(SDL REQUIRED)
 
 if (NOT SDL_FOUND)
@@ -109,7 +108,6 @@ find_package(SDL_mixer REQUIRED)
 if (NOT SDL_MIXER_FOUND)
 	message(SEND_ERROR "Failed to find SDL_Mixer.")
 endif (NOT SDL_MIXER_FOUND)
-
 
 # STS
 add_subdirectory (sts)

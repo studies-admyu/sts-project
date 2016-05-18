@@ -13,7 +13,6 @@ set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/weapon.hpp"
 	"${sts_SRC_ROOT_DIR}/bullet.hpp"
 	"${sts_SRC_ROOT_DIR}/move.cpp"
-	"${sts_SRC_ROOT_DIR}/sound/SoundManager.hpp"
 	"${sts_SRC_ROOT_DIR}/ois/MyFrameListener.hpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
@@ -25,7 +24,9 @@ set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.hpp"
 	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.hpp"
 	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.hpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp")
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp"
+	"${sts_SRC_ROOT_DIR}/sound/SoundManager.hpp"
+)
 
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
@@ -37,7 +38,6 @@ set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/bullet.cpp"
 	"${sts_SRC_ROOT_DIR}/weapon.cpp"
 	"${sts_SRC_ROOT_DIR}/move.cpp"
-	"${sts_SRC_ROOT_DIR}/sound/SoundManager.cpp"
 	"${sts_SRC_ROOT_DIR}/ois/MyFrameListener.cpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.cpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.cpp"
@@ -46,16 +46,16 @@ set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.cpp"
 	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.cpp"
 	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.cpp"
-	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.cpp")
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.cpp"
+	"${sts_SRC_ROOT_DIR}/sound/SoundManager.cpp"
+)
 
 include_directories(
-	${OIS_INCLUDE_DIRS}
-	${OGRE_INCLUDE_DIRS}
-	${OGRE_SAMPLES_INCLUDEPATH}
-	${OGRE_Overlay_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIRS}
-	${sts_SRC_ROOT_DIR}
+	${OGRE_INCLUDE_DIRS}
+	${OIS_INCLUDE_DIRS}
 	${SDL_INCLUDE_DIR}
+	${sts_SRC_ROOT_DIR}
 )
 
 # Do we need to built a binary?
@@ -67,12 +67,12 @@ endif ()
 if (sts_BUILD_EXECUTABLE)
 	add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
 
-	target_link_libraries(sts ${Boost_LIBRARIES} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES} ${SDL_LIBRARY} ${SDL_MIXER_LIBRARIES})
+	target_link_libraries(sts ${Boost_LIBRARIES} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${SDL_LIBRARY} ${SDL_MIXER_LIBRARIES})
 
 	if (WIN32)
 	#	ToDo: solve linking problem here
 	#	set_target_properties (sts PROPERTIES WIN32_EXECUTABLE TRUE)
-	endif (WIN32)
+	endif ()
 
 	# ToDo: add post build commands for MSVC_IDE
 

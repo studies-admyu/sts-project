@@ -46,7 +46,10 @@ bool MyFrameListener::frameStarted(const Ogre::FrameEvent &evt) {
   //std::cout << "Frame Started" << std::endl;
   
   //
-  Ogre::Vector3 translate(0,0,0);
+  //Ogre::Vector3 translate(0,0,0);
+  sts::SceneObject::Position current_pos = mNode->position();
+  sts::SceneObject::Position translate(current_pos.x, current_pos.y);
+
 
   //
   mKeyboard->capture();
@@ -60,27 +63,26 @@ bool MyFrameListener::frameStarted(const Ogre::FrameEvent &evt) {
 
   //
   if(mKeyboard->isKeyDown(OIS::KC_W))
-  {	
-    translate += Ogre::Vector3(0,0,1);
-
+  {
+    translate = sts::SceneObject::Position(translate.x, translate.y + 1);
   }
 
   //
   if(mKeyboard->isKeyDown(OIS::KC_S))
   {	
-    translate += Ogre::Vector3(0,0,-1);
+    translate = sts::SceneObject::Position(translate.x, translate.y - 1);
   }
   
   //
   if(mKeyboard->isKeyDown(OIS::KC_A))
-  {	
-    translate += Ogre::Vector3(1,0,0);
+  {
+    translate = sts::SceneObject::Position(translate.x + 1, translate.y);
   }
   
   //
   if(mKeyboard->isKeyDown(OIS::KC_D))
-  {	
-    translate += Ogre::Vector3(-1,0,0);
+  {
+    translate = sts::SceneObject::Position(translate.x - 1, translate.y);
   }
 
   if(mKeyboard->isKeyDown(OIS::KC_RETURN))
@@ -98,6 +100,7 @@ bool MyFrameListener::frameStarted(const Ogre::FrameEvent &evt) {
   //
 //  mCamera->moveRelative(translate * evt.timeSinceLastFrame * mMovementspeed);
 //  mNode->setPosition(mNode->getPosition() + translate);
+    mNode->setPosition(translate);
 
   return true;
 }

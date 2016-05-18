@@ -8,6 +8,7 @@
 #include <OGRE/OgreFrameListener.h>
 
 #include "scene/sts_shared_object.hpp"
+#include "scene/sts_scene_object.hpp"
 #include "MyFrameListener.hpp"
 
 class MyFrameListener : public Ogre::FrameListener {

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include <OIS.h>
+#include <OIS/OIS.h>
 #include <OGRE/Ogre.h>
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreFrameListener.h>

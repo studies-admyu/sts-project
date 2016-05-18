@@ -1,6 +1,7 @@
 # Defines plugins to load
 
 # Defines plugin folder
+# PluginFolder=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0 - path for x86_64
 PluginFolder=/usr/local/lib/OGRE
 
 # ------ RENDER SYSTEM ------

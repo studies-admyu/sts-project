@@ -98,5 +98,18 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 	endif (WIN32)
 endif()
 
+find_package(SDL REQUIRED)
+
+if (NOT SDL_FOUND)
+	message(SEND_ERROR "Failed to find SDL.")
+endif (NOT SDL_FOUND)
+
+find_package(SDL_mixer REQUIRED)
+
+if (NOT SDL_MIXER_FOUND)
+	message(SEND_ERROR "Failed to find SDL_Mixer.")
+endif (NOT SDL_MIXER_FOUND)
+
+
 # STS
 add_subdirectory (sts)

@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "SoundManager.hpp"
-#include "MyFrameListener.hpp"
+#include "sound/SoundManager.hpp"
+#include "ois/MyFrameListener.hpp"
 #include "sts_game_root.hpp"
 #include "rendering/sts_model3d.hpp"
 

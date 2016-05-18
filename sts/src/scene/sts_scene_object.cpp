@@ -57,10 +57,10 @@ void SceneObject::setPosition(const SceneObject::Position& pos)
 SceneObject::Position SceneObject::position() const
 {
 	Ogre::Vector3 attachablePos = this->_attachable->position3D();
-	Position returnValue = {
+	Position returnValue(
 		static_cast<int>(floor(attachablePos.x)),
 		static_cast<int>(floor(attachablePos.z))
-	};
+	);
 	return returnValue;
 }
 

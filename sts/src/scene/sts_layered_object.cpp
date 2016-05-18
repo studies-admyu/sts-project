@@ -5,17 +5,18 @@
 namespace sts {
 
 LayeredObject::LayeredObject(Renderable* renderable, unsigned int layerIndex):
+	SceneObject(renderable)
+{
 	LayeredObject(
 		renderable,
 		sts::GameRoot::getObject()->sceneManager()->layer(layerIndex)
-	)
-{
-
+	);
 }
 
 LayeredObject::LayeredObject(Renderable* renderable, Layer* layer):
-	SceneObject(renderable), _layer(layer)
+	SceneObject(renderable)
 {
+	this->_layer = layer;
 	this->_frameCounter = 0;
 	this->_layer->addObject(this);
 }
@@ -62,7 +63,7 @@ void LayeredObject::setPosition(const SceneObject::Position& pos)
 
 SceneObject::Position LayeredObject::position() const
 {
-	SceneObject::Position returnValue = {0, 0};
+	SceneObject::Position returnValue(0, 0);
 	return returnValue;
 }
 

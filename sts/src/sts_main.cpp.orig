@@ -3,8 +3,11 @@
 
 #include <vector>
 
-#include "sound/SoundManager.hpp"
-#include "ois/MyFrameListener.hpp"
+<<<<<<< HEAD
+#include "SoundManager.hpp"
+#include "MyFrameListener.hpp"
+#include "sts.hpp"
+=======
 #include "sts_game_root.hpp"
 #include "rendering/sts_model3d.hpp"
 
@@ -13,6 +16,7 @@
 #include "move.hpp"
 #include "game_object.hpp"
 #include "weapon.hpp"
+>>>>>>> origin/dev
 
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreRenderSystem.h>
@@ -150,7 +154,6 @@ int main(int argc, char* argv[])
 		/* Declare necessary viewport pointer */
 		Ogre::Viewport* vp = nullptr;
 
-		sts::GameRoot* lGameRoot = nullptr;
 		{
 			/* We need to create temporary camera due to OGRE requirements */
 
@@ -159,18 +162,17 @@ int main(int argc, char* argv[])
 			/* Create viewport (camera <-> window) */
 			vp = lWindow->addViewport(lCamera);
 			/* Init game root object. It will replace temporary camera with its own one */
-			lGameRoot = sts::GameRoot::initRoot(lScene, vp);
+			sts::GameRoot::initRoot(lScene, vp);
 			/* Destroy temporary camera */
 			lScene->destroyCamera(lCamera);
 		}
 
-		sts::SceneObject::Position shipPosition(0, 0);
-		shipPosition.x = lGameRoot->sceneManager()->sceneWidth() / 2;
-		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
-
-		sts::Model3D::create("ShipModel", "airship.mesh", 6.3f);
-		sts::SharedObject* lShipObject = sts::SharedObject::create("ShipModel");
-		lShipObject->setPosition(shipPosition);
+		sts::SharedObject* lShipObject = nullptr;
+		{
+			sts::Model3D* lShipModel = sts::Model3D::create("airship.mesh", "airship.mesh", 3.15f);
+			lShipObject = sts::SharedObject::create(lShipModel);
+			lShipObject->setPosition(sts::SceneObject::Position(0, -100));
+		}
 
 		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
 
@@ -196,16 +198,24 @@ int main(int argc, char* argv[])
 		SoundManager* mSoundMgr = new SoundManager();
 		mSoundMgr->playMusic("../data/sounds/Credits_heart-of-the-sea.ogg");
 		mSoundMgr->playSound("../data/sounds/bell.ogg");
-
+		
 		// Create an instance of the MyFrameListener Class and add it to the root object
-		MyFrameListener* myListener = new MyFrameListener(lShipObject, lWindow);
+		MyFrameListener* myListener = new MyFrameListener(lShipNode, lWindow, lCamera);
 		lRoot->addFrameListener(myListener);
 
 		while (!lWindow->isClosed()) {
 			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
+<<<<<<< HEAD
+			float diplacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
+			lShipNode->setOrientation(Ogre::Quaternion(Ogre::Radian(angle), Ogre::Vector3(0, 0, 1)));
+//			lShipNode->setPosition(razorSP + Ogre::Vector3(diplacement, 0.0f, 0.0f));
+=======
+			float displacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
 
 			lShipObject->setPlanarRotation(angle);
 			lShipObject->setAxisRotation(angle);
+			lShipObject->setPosition(sts::SceneObject::Position(static_cast<int>(displacement), 0));
+>>>>>>> origin/dev
 
 			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
 			lSpriteBillboard->setTexcoordIndex(spriteFrame);

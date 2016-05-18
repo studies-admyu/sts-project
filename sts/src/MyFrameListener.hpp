@@ -7,6 +7,7 @@
 #include <OGRE/OgreRoot.h>
 #include <OGRE/OgreFrameListener.h>
 
+#include "scene/sts_shared_object.hpp"
 #include "MyFrameListener.hpp"
 
 class MyFrameListener : public Ogre::FrameListener {
@@ -14,12 +15,12 @@ private:
   OIS::InputManager* mInputManager;
   OIS::Keyboard* mKeyboard;
   OIS::Mouse* mMouse;
-  Ogre::SceneNode* mNode;
+  sts::SharedObject* mNode;
   Ogre::Camera *mCamera;
   float mMovementspeed;
 
 public:
-  MyFrameListener(Ogre::SceneNode*,Ogre::RenderWindow*, Ogre::Camera*);
+  MyFrameListener(sts::SharedObject*,Ogre::RenderWindow*);
   ~MyFrameListener();
   bool frameStarted (const Ogre::FrameEvent &evt);
   bool frameEnded (const Ogre::FrameEvent &evt);

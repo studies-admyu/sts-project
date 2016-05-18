@@ -13,17 +13,19 @@ set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/weapon.hpp"
 	"${sts_SRC_ROOT_DIR}/bullet.hpp"
 	"${sts_SRC_ROOT_DIR}/move.cpp"
-        "${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
-        "${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
-        "${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
+	"${sts_SRC_ROOT_DIR}/SoundManager.hpp"
+	"${sts_SRC_ROOT_DIR}/MyFrameListener.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_renderable.hpp"
+	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d.hpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_model3d_attachable.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_layer.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_layered_object.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_object_group.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_scene_object.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_shared_object.hpp"
-        "${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp")
+	"${sts_SRC_ROOT_DIR}/scene/sts_layer.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_layered_object.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_object_group.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_scene_manager.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_scene_object.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object.hpp"
+	"${sts_SRC_ROOT_DIR}/scene/sts_shared_object_group.hpp")
 
 set (sts_SOURCES
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
@@ -65,7 +67,7 @@ endif ()
 if (sts_BUILD_EXECUTABLE)
 	add_executable(sts ${sts_HEADERS} ${sts_SOURCES})
 
-	target_link_libraries(sts ${Boost_LIBRARIES} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES} ${SDL_MIXER_LIBRARIES})
+	target_link_libraries(sts ${Boost_LIBRARIES} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Overlay_LIBRARIES} ${SDL_LIBRARY} ${SDL_MIXER_LIBRARIES})
 
 	if (WIN32)
 	#	ToDo: solve linking problem here

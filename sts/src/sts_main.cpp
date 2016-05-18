@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
 		mSoundMgr->playSound("../data/sounds/bell.ogg");
 		
 		// Create an instance of the MyFrameListener Class and add it to the root object
-		MyFrameListener* myListener = new MyFrameListener(lShipNode, lWindow, lCamera);
+		MyFrameListener* myListener = new MyFrameListener(lShipObject, lWindow);
 		lRoot->addFrameListener(myListener);
 
 		while (!lWindow->isClosed()) {

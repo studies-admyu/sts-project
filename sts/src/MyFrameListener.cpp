@@ -2,11 +2,11 @@
 
 
 //
-MyFrameListener::MyFrameListener(Ogre::SceneNode *node, Ogre::RenderWindow *mWindow, Ogre::Camera *camera)
+MyFrameListener::MyFrameListener(sts::SharedObject *node, Ogre::RenderWindow *mWindow)
 {
   //
   mNode = node;
-  mCamera = camera;
+//  mCamera = camera;
   mMovementspeed = 5.0f;
 
   //
@@ -92,12 +92,12 @@ bool MyFrameListener::frameStarted(const Ogre::FrameEvent &evt) {
   //
   float rotX = mMouse->getMouseState().X.rel * evt.timeSinceLastFrame* -1;
   float rotY = mMouse->getMouseState().Y.rel * evt.timeSinceLastFrame * -1;
-  mCamera->yaw(Ogre::Radian(rotX));
-  mCamera->pitch(Ogre::Radian(rotY));
+//  mCamera->yaw(Ogre::Radian(rotX));
+//  mCamera->pitch(Ogre::Radian(rotY));
   
   //
 //  mCamera->moveRelative(translate * evt.timeSinceLastFrame * mMovementspeed);
-  mNode->setPosition(mNode->getPosition() + translate);
+//  mNode->setPosition(mNode->getPosition() + translate);
 
   return true;
 }

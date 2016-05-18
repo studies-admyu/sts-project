@@ -1,3 +1,6 @@
 sts/config/debug/plugins.cfg
 sts/config/ogre.cfg
 sts/config/plugins.cfg
+sts/data/materials/
+sts/data/models/
+sts/data/sounds/

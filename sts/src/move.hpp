@@ -29,7 +29,7 @@ class MoveStay : public IMoveBehaviour {
 class MoveBehaviourException : public std::exception {
 public:
 	MoveBehaviourException(const std::string m="MoveBehaviour exception was thrown") : msg(m) {}
-	virtual ~MoveBehaviourException() throw() {}
+	virtual ~MoveBehaviourException() {}
 	virtual const char* what() const { return msg.c_str(); }
 private:
 	std::string msg;

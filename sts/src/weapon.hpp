@@ -99,7 +99,7 @@ protected:
 class WeaponException : public std::exception {
 public:
     WeaponException(const std::string m="WeaponException exception was thrown") : msg(m) {}
-    virtual ~WeaponException() throw() {}
+    virtual ~WeaponException() {}
     virtual const char* what() const { return msg.c_str(); }
 private:
     std::string msg;

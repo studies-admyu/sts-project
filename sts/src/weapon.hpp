@@ -100,7 +100,7 @@ class WeaponException : public std::exception {
 public:
     WeaponException(const std::string m="WeaponException exception was thrown") : msg(m) {}
     virtual ~WeaponException() {}
-    virtual const char* what() const { return msg.c_str(); }
+    virtual const char* what() const noexcept { return msg.c_str(); }
 private:
     std::string msg;
 };

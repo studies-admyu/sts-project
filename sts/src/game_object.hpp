@@ -5,9 +5,11 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "sts_cross_platform.hpp"
+
 namespace sts {
 
-class Entity;
+struct Entity;
 class Weapon;
 class IWeaponBehaviour;
 

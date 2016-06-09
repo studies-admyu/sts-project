@@ -6,10 +6,6 @@ if (APPLE)
 	message (FATAL_ERROR "Sorry, project building with CMake on Apple is not supported.")
 endif ()
 
-if (MSVC)
-	message (FATAL_ERROR "Sorry, project building with Microsoft Visual Studio is not supported due to compatibility issues.")
-endif ()
-
 if (MSVC_IDE)
 	set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 	unset (CMAKE_BUILD_TYPE CACHE)

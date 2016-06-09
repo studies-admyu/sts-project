@@ -10,7 +10,7 @@
 namespace sts {
 
 class IBulletStyle;
-class MuzzleFlashStyle;
+struct MuzzleFlashStyle;
 class Weapon;
 class UnitType;
 class IWeaponBehaviour;

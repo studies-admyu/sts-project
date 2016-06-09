@@ -79,9 +79,9 @@ protected:
 class FireForwardEveryFive : public IWeaponBehaviour {
 public:
     FireForwardEveryFive(Weapon *w) : IWeaponBehaviour(w) {};
-    virtual void fire(Unit *u) override { /* implement behaviour here */ };
+    virtual void fire(Unit *u) { /* implement behaviour here */ };
 protected:
-    virtual bool isTimeTofire() override;
+    virtual bool isTimeTofire();
 private:
     double lastShotTime;
     double period;
@@ -90,17 +90,17 @@ private:
 class NoFire : public IWeaponBehaviour {
 public:
     NoFire(Weapon *w) : IWeaponBehaviour(w) {};
-    virtual void fire(Unit *u) override { /* implement behaviour here */ };
+    virtual void fire(Unit *u) { /* implement behaviour here */ };
 protected:
-    virtual bool isTimeTofire() override { return false; };
+    virtual bool isTimeTofire() { return false; };
 };
 
 
 class WeaponException : public std::exception {
 public:
     WeaponException(const std::string m="WeaponException exception was thrown") : msg(m) {}
-    virtual ~WeaponException() throw() {}
-    virtual const char* what() const noexcept override { return msg.c_str(); }
+    virtual ~WeaponException() {}
+    virtual const char* what() const noexcept { return msg.c_str(); }
 private:
     std::string msg;
 };

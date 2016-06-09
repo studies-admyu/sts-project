@@ -15,22 +15,22 @@ public:
 class MoveForward : public IMoveBehaviour {
 	double speed;
 public:
-	virtual void move(GameObject &o) override;
+	virtual void move(GameObject &o);
 };
 
 class MoveIdle : public IMoveBehaviour {
-	virtual void move(GameObject &o) override;
+	virtual void move(GameObject &o);
 };
 
 class MoveStay : public IMoveBehaviour {
-	virtual void move(GameObject &o) override;
+	virtual void move(GameObject &o);
 };
 
 class MoveBehaviourException : public std::exception {
 public:
 	MoveBehaviourException(const std::string m="MoveBehaviour exception was thrown") : msg(m) {}
 	virtual ~MoveBehaviourException() throw() {}
-	virtual const char* what() const noexcept override { return msg.c_str(); }
+	virtual const char* what() const { return msg.c_str(); }
 private:
 	std::string msg;
 };

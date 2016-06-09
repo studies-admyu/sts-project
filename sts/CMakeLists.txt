@@ -5,6 +5,7 @@ project(sts)
 set (sts_SRC_ROOT_DIR src)
 
 set (sts_HEADERS
+	"${sts_SRC_ROOT_DIR}/sts_cross_platform.hpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
 	"${sts_SRC_ROOT_DIR}/sts_game_root.hpp"
 	"${sts_SRC_ROOT_DIR}/game_data.hpp"

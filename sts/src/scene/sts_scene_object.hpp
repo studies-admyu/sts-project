@@ -46,6 +46,7 @@ private:
 	std::unique_ptr<IAttachable> _attachable;
 
 	SceneObject(const SceneObject&);
+	void initObject(Renderable* renderable);
 };
 
 } // namespace sts

@@ -11,13 +11,13 @@ namespace sts {
 
 SceneObject::SceneObject(Renderable* renderable)
 {
-	sts::SceneManager* sceneManager = GameRoot::getObject()->sceneManager();
-	Ogre::SceneNode* attachableNode = sceneManager->_spawnObjectNode();
-	this->_attachable = std::unique_ptr<IAttachable>(renderable->_spawnAttachable(attachableNode));
+	this->initObject(renderable);
 }
 
-SceneObject::SceneObject(std::string renderableName):
-	SceneObject(sts::GameRoot::getObject()->getRenderable(renderableName)) { }
+SceneObject::SceneObject(std::string renderableName)
+{
+	this->initObject(sts::GameRoot::getObject()->getRenderable(renderableName));
+}
 
 SceneObject::SceneObject(const SceneObject& sceneobj):
 	_attachable(nullptr)
@@ -30,6 +30,13 @@ SceneObject::~SceneObject()
 	Ogre::SceneNode* attachableNode = this->_attachable->node();
 	attachableNode->detachAllObjects();
 	sts::GameRoot::getObject()->sceneManager()->_destroyNode(attachableNode);
+}
+
+void SceneObject::initObject(Renderable* renderable)
+{
+	sts::SceneManager* sceneManager = GameRoot::getObject()->sceneManager();
+	Ogre::SceneNode* attachableNode = sceneManager->_spawnObjectNode();
+	this->_attachable = std::unique_ptr<IAttachable>(renderable->_spawnAttachable(attachableNode));
 }
 
 IAttachable* SceneObject::attachable()

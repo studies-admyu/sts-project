@@ -38,12 +38,12 @@ protected:
 class RoundBullet : public IBulletStyle {
 public:
 	static RoundBullet* getInstance();
-	virtual void collisionAlgorithm(GameObject &o) const override { /* handle collision here */ }
-	virtual void move(Bullet *bullet) const override { return Ogre::LogManager::getSingleton().logMessage("Moving RoundBullet"); }
+	virtual void collisionAlgorithm(GameObject &o) const { /* handle collision here */ }
+	virtual void move(Bullet *bullet) const { return Ogre::LogManager::getSingleton().logMessage("Moving RoundBullet"); }
 private:
 	RoundBullet() : IBulletStyle(GameData::entities["RoundBullet"]) { Ogre::LogManager::getSingleton().logMessage("RoundBullet style created");}
-	RoundBullet(RoundBullet const&) = delete;
-	RoundBullet& operator=(RoundBullet const&) = delete;
+	RoundBullet(RoundBullet const&): IBulletStyle(GameData::entities["RoundBullet"]) { };
+	RoundBullet& operator=(RoundBullet const&) { return *this; };
 	static RoundBullet *instance;
 
 };
@@ -51,12 +51,12 @@ private:
 class BlastBullet : public IBulletStyle {
 public:
 	static BlastBullet* getInstance();
-	virtual void collisionAlgorithm(GameObject &o) const override { /* handle collision here */ }
-	virtual void move(Bullet *bullet) const override { return Ogre::LogManager::getSingleton().logMessage("Moving BlastBullet"); }
+	virtual void collisionAlgorithm(GameObject &o) const { /* handle collision here */ }
+	virtual void move(Bullet *bullet) const { return Ogre::LogManager::getSingleton().logMessage("Moving BlastBullet"); }
 private:
 	BlastBullet() : IBulletStyle(GameData::entities["BlastBullet"]) { Ogre::LogManager::getSingleton().logMessage("BlastBullet style created");}
-	BlastBullet(BlastBullet const&) = delete;
-	BlastBullet& operator=(BlastBullet const&) = delete;
+	BlastBullet(BlastBullet const&): IBulletStyle(GameData::entities["BlastBullet"]) { }
+	BlastBullet& operator=(BlastBullet const&) { return *this; }
 	static BlastBullet *instance;
 };
 

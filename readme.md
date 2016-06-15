@@ -1,3 +1,7 @@
+### For developers
+
+There may be compatibility issues with some versions of Visual C++ compiler. See [an article](https://msdn.microsoft.com/en-us/library/hh567368.aspx) for details.
+
 ### Building
 
 The project is cross-platform and tested at least on Windows, Linux (Ubuntu).

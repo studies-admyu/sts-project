@@ -192,10 +192,11 @@ int main(int argc, char* argv[])
 		lWindow->setAutoUpdated(false);
 		lRoot->clearEventTimes();
 
-		// Create sound manager
+		/* Create sound manager */
 		SoundManager* mSoundMgr = new SoundManager();
-		mSoundMgr->playMusic("../data/sounds/Credits_heart-of-the-sea.ogg");
-		mSoundMgr->playSound("../data/sounds/bell.ogg");
+
+		mSoundMgr->playMusic(sts::getDataBasePath() + std::string("sounds/Credits_heart-of-the-sea.ogg"));
+		mSoundMgr->playSound(sts::getDataBasePath() + std::string("sounds/bell.ogg"));
 
 		// Create an instance of the MyFrameListener Class and add it to the root object
 		MyFrameListener* myListener = new MyFrameListener(lShipObject, lWindow);

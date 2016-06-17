@@ -15,7 +15,7 @@ namespace sts {
     boost::filesystem::path GameData::configs_path;
 
     std::unordered_map<std::string, MuzzleFlashStyle*> GameData::muzzleFlashStyles;
-    std::unordered_map<std::string, Entity*> GameData::entities;
+    std::unordered_map<std::string, Renderable*> GameData::renderables;
     std::unordered_map<std::string, IBulletStyle*> GameData::bulletStyles;
     std::unordered_map<std::string, Weapon*> GameData::weapons;
     std::unordered_map<std::string, UnitType*> GameData::unit_types;
@@ -31,9 +31,9 @@ namespace sts {
         parseUnitTypes();
     }
 
-	// TODO: handle exceptions
     void GameData::parseMuzzleFlashStyles() {
-        pt::ptree root;
+        /** @todo Handle exceptions */
+	pt::ptree root;
         auto json_filename = (configs_path / boost::filesystem::path("muzzle_flash_styles.json")).string();
         pt::read_json(json_filename, root);
 
@@ -49,8 +49,8 @@ namespace sts {
         }
     }
 
-	// TODO: handle exceptions
-	void GameData::parseEntities() {
+    void GameData::parseEntities() {
+        /** @todo Handle exceptions */
         pt::ptree root;
         auto json_filename = (configs_path / boost::filesystem::path("entities.json")).string();
         pt::read_json(json_filename, root);
@@ -63,15 +63,16 @@ namespace sts {
             std::string colormap_hue = entityTree.get<std::string>("colormap.hue");
             std::string model_name = entityTree.get<std::string>("model");
             std::cout << "Read entity with id " << id << std::endl;
-            entities[id] = new Entity(id, model_name, colormap_hue);
+            /** @todo Fix the resource addition */
+            /* entities[id] = new Entity(id, model_name, colormap_hue); */
         }
     }
 
 	// Creates mappings BulletStyleName -> instance of needed BulletStyles. All BulletStyles are singltones
-	void GameData::parseBulletStyles() {
+    void GameData::parseBulletStyles() {
         bulletStyles["RoundBullet"] = RoundBullet::getInstance();
         bulletStyles["BlastBullet"] = BlastBullet::getInstance();
-	}
+    }
 
     // Creates mappings weapon id -> instance of Weapon with specified in json params
     void GameData::parseWeapons() {
@@ -103,8 +104,9 @@ namespace sts {
             std::string weapon2_name = unitTypeTree.get<std::string>("weapon2");
             int health_max = unitTypeTree.get<int>("health_max");
             int speed_max = unitTypeTree.get<int>("speed_max");
-            unit_types[id] = new UnitType(id, entities[entity_name], health_max, speed_max, weapons[weapon1_name],
-            weapons[weapon2_name]);
+            /** @todo Fix the resource addition */
+            /* unit_types[id] = new UnitType(id, renderables[entity_name], health_max, speed_max, weapons[weapon1_name],
+            weapons[weapon2_name]); */
         }
     }
 

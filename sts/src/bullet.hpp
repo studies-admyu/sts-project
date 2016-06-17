@@ -4,8 +4,9 @@
 
 #include "game_object.hpp"
 #include "move.hpp"
-#include "entity.hpp"
 #include "game_data.hpp"
+
+#include "rendering/sts_renderable.hpp"
 
 namespace sts {
 
@@ -26,13 +27,13 @@ private:
  * */
 class IBulletStyle {
 public:
-	IBulletStyle(const Entity *e) : entityPtr(e) {}
+	IBulletStyle(const Renderable *r) : renderablePtr(r) {}
 	// Every bullet style must decide how to handle collisions.
 	virtual void collisionAlgorithm(GameObject &o) const = 0;
 	// Every bullet style must decide how to move the bullet
 	virtual void move(Bullet *bullet) const = 0;
 protected:
-	const Entity *entityPtr;
+	const Renderable* renderablePtr;
 };
 
 class RoundBullet : public IBulletStyle {
@@ -41,8 +42,8 @@ public:
 	virtual void collisionAlgorithm(GameObject &o) const { /* handle collision here */ }
 	virtual void move(Bullet *bullet) const { return Ogre::LogManager::getSingleton().logMessage("Moving RoundBullet"); }
 private:
-	RoundBullet() : IBulletStyle(GameData::entities["RoundBullet"]) { Ogre::LogManager::getSingleton().logMessage("RoundBullet style created");}
-	RoundBullet(RoundBullet const&): IBulletStyle(GameData::entities["RoundBullet"]) { };
+	RoundBullet() : IBulletStyle(GameData::renderables["RoundBullet"]) { Ogre::LogManager::getSingleton().logMessage("RoundBullet style created");}
+	RoundBullet(RoundBullet const&): IBulletStyle(GameData::renderables["RoundBullet"]) { };
 	RoundBullet& operator=(RoundBullet const&) { return *this; };
 	static RoundBullet *instance;
 
@@ -54,8 +55,8 @@ public:
 	virtual void collisionAlgorithm(GameObject &o) const { /* handle collision here */ }
 	virtual void move(Bullet *bullet) const { return Ogre::LogManager::getSingleton().logMessage("Moving BlastBullet"); }
 private:
-	BlastBullet() : IBulletStyle(GameData::entities["BlastBullet"]) { Ogre::LogManager::getSingleton().logMessage("BlastBullet style created");}
-	BlastBullet(BlastBullet const&): IBulletStyle(GameData::entities["BlastBullet"]) { }
+	BlastBullet() : IBulletStyle(GameData::renderables["BlastBullet"]) { Ogre::LogManager::getSingleton().logMessage("BlastBullet style created");}
+	BlastBullet(BlastBullet const&): IBulletStyle(GameData::renderables["BlastBullet"]) { }
 	BlastBullet& operator=(BlastBullet const&) { return *this; }
 	static BlastBullet *instance;
 };

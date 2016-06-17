@@ -58,11 +58,11 @@ namespace sts {
         for (pt::ptree::value_type &eRoot : root)
         {
             assert(eRoot.first.empty()); // lists have no keys
-            pt::ptree entityTree = eRoot.second;
-            std::string id = entityTree.get<std::string>("id");
-            std::string colormap_hue = entityTree.get<std::string>("colormap.hue");
-            std::string model_name = entityTree.get<std::string>("model");
-            std::cout << "Read entity with id " << id << std::endl;
+            pt::ptree renderableTree = eRoot.second;
+            std::string id = renderableTree.get<std::string>("id");
+            std::string colormap_hue = renderableTree.get<std::string>("colormap.hue");
+            std::string model_name = renderableTree.get<std::string>("model");
+            std::cout << "Read renderable with id " << id << std::endl;
             /** @todo Fix the resource addition */
             /* entities[id] = new Entity(id, model_name, colormap_hue); */
         }
@@ -99,7 +99,7 @@ namespace sts {
             assert(utRoot.first.empty()); // lists have no keys
             pt::ptree unitTypeTree = utRoot.second;
             std::string id = unitTypeTree.get<std::string>("id");
-            std::string entity_name = unitTypeTree.get<std::string>("entity");
+            std::string renderable_name = unitTypeTree.get<std::string>("entity");
             std::string weapon1_name = unitTypeTree.get<std::string>("weapon1");
             std::string weapon2_name = unitTypeTree.get<std::string>("weapon2");
             int health_max = unitTypeTree.get<int>("health_max");

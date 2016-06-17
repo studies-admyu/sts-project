@@ -9,7 +9,7 @@
 
 namespace sts {
 
-struct Entity;
+class Renderable;
 class Weapon;
 class IWeaponBehaviour;
 
@@ -42,10 +42,10 @@ public:
 
 class UnitType {
 public:
-	UnitType(std::string id, Entity *entityPtr, int hm, int sm, const Weapon *w1, const Weapon *w2);
+	UnitType(std::string id, Renderable *renderablePtr, int hm, int sm, const Weapon *w1, const Weapon *w2);
 
 	std::string id;
-	Entity *entityPtr;
+	Renderable* renderablePtr;
 	int healthMax;
 	int speedMax;
 	const Weapon *weapon1;

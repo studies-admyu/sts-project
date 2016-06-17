@@ -9,8 +9,8 @@
 #include "weapon.hpp"
 
 namespace sts {
-    UnitType::UnitType(std::string _id, Entity *_entityPtr, int hm, int sm, const Weapon *w1, const Weapon *w2)
-            : id(_id), entityPtr(_entityPtr), healthMax(hm), speedMax(sm), weapon1(w1), weapon2(w2)
+    UnitType::UnitType(std::string _id, Renderable* _renderablePtr, int hm, int sm, const Weapon *w1, const Weapon *w2)
+            : id(_id), renderablePtr(_renderablePtr), healthMax(hm), speedMax(sm), weapon1(w1), weapon2(w2)
     { Ogre::LogManager::getSingleton().logMessage("UnitType created"); }
 
     boost::filesystem::path Level::configs_path = boost::filesystem::path(sts::getDataBasePath()) /

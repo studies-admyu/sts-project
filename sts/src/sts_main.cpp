@@ -7,6 +7,7 @@
 #include "ois/MyFrameListener.hpp"
 #include "sts_game_root.hpp"
 #include "rendering/sts_model3d.hpp"
+#include "rendering/sts_sprite2d.hpp"
 
 #include "sts_resources.hpp"
 #include "game_data.hpp"
@@ -172,18 +173,9 @@ int main(int argc, char* argv[])
 		sts::SharedObject* lShipObject = sts::SharedObject::create("ShipModel");
 		lShipObject->setPosition(shipPosition);
 
-		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
-
-		/* Sprite billboard (manually) */
-		Ogre::SceneNode* lSpriteNode = lRootSceneNode->createChildSceneNode();
-		Ogre::BillboardSet* lBillboardSet = lScene->createBillboardSet();
-		lBillboardSet->setMaterialName("enemy_01", lRcGroupName);
-		lBillboardSet->setTextureStacksAndSlices(1, 4);
-		Ogre::Billboard* lSpriteBillboard = lBillboardSet->createBillboard(Ogre::Vector3(0, 0, 0));
-		lSpriteBillboard->setDimensions(48.0f / 2.0f, 58.0f / 2.0f);
-		lSpriteBillboard->setTexcoordIndex(1);
-		lSpriteNode->attachObject(lBillboardSet);
-		lSpriteNode->setPosition(Ogre::Vector3(0, -200, 100));
+		sts::Sprite2D::create("EnemySprite01", "enemy_01", sts::Sprite2D::Size(48, 58));
+		sts::SharedObject* lSpriteObject = sts::SharedObject::create("EnemySprite01");
+		lSpriteObject->setPosition(shipPosition + sts::SceneObject::Position(0, 100));
 
 		/* Obtain the timer pointer */
 		Ogre::Timer* lTimer = lRoot->getTimer();
@@ -207,9 +199,6 @@ int main(int argc, char* argv[])
 
 			lShipObject->setPlanarRotation(angle);
 			lShipObject->setAxisRotation(angle);
-
-			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
-			lSpriteBillboard->setTexcoordIndex(spriteFrame);
 
 			lWindow->update(false);
 			lWindow->swapBuffers();

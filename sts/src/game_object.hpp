@@ -6,6 +6,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "sts_cross_platform.hpp"
+#include "scene/sts_layered_object.hpp"
 
 namespace sts {
 
@@ -14,20 +15,6 @@ class Weapon;
 class IWeaponBehaviour;
 
 namespace pt = boost::property_tree;
-
-class GameObject {
-public:
-	GameObject(int _x, int _y, double _d) : x(_x), y(_y), direction(_d) {}
-	double direction;
-	int x;
-	int y;
-};
-
-/** @todo Make LayeredObject compatible with this */
-class LayeredObjectB : public GameObject {
-public:
-	LayeredObjectB(int x, int y, double d) : GameObject(x, y, d) {}
-};
 
 class Transition {
 
@@ -52,9 +39,10 @@ public:
 	const Weapon *weapon2;
 };
 
-class Unit : public LayeredObjectB {
+class Unit : public LayeredObject {
 public:
-	Unit(int x, int y, double d, const UnitType* utptr, std::list<State> states);
+	Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State> states);
+	Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<State> states);
 	const UnitType *unitTypePtr;
 	std::list<State> states;
 };

@@ -209,7 +209,6 @@ int main(int argc, char* argv[])
 		sts::GameRoot::releaseRoot();
 
 		sts::GameData::load();
-		sts::GameObject go(1, 1, 1.0);
 		sts::Level l("level1.json");
 	}
 	catch (Ogre::Exception &e) {

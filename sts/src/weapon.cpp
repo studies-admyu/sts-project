@@ -15,8 +15,12 @@ namespace sts {
     }
 
     Bullet* Weapon::createBullet(int x, int y, double direction) {
+		/** @todo Implement this */
+		/*
         Bullet *b = new Bullet(x, y, direction, this);
         return b;
+		*/
+		return nullptr;
     }
 
     IWeaponBehaviour* IWeaponBehaviour::createWeaponBehaviour(std::string wb_type, Weapon *w) {

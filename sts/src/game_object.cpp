@@ -16,7 +16,12 @@ namespace sts {
     boost::filesystem::path Level::configs_path = boost::filesystem::path(sts::getDataBasePath()) /
             boost::filesystem::path("text") / boost::filesystem::path("levels");
 
-    Unit::Unit(int x, int y, double d, const UnitType *utptr, std::list<State> _states) : LayeredObjectB(x, y, d) {
+    Unit::Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State> _states): LayeredObject(renderable, layerIndex) {
+        unitTypePtr = utptr;
+        states = _states;
+    }
+
+	Unit::Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<State> _states): LayeredObject(renderable, layer) {
         unitTypePtr = utptr;
         states = _states;
     }
@@ -37,7 +42,8 @@ namespace sts {
             int y = mfs_tree.get<int>("y0");
             double d = mfs_tree.get<int>("y0");
             std::list<State> states = parseStates(mfs_tree.get_child("states"));
-            units.push_back(Unit(x, y, d, unitType, states));
+			/** @todo Fix this */
+            /* units.push_back(Unit(x, y, d, unitType, states)); */
 
         }
     }

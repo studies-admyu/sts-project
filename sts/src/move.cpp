@@ -17,15 +17,15 @@ IMoveBehaviour* IMoveBehaviour::createMoveBehaviour(std::string mb_name) {
 		throw MoveBehaviourException("Bad move behaviour name");
 }
 
-void MoveForward::move(GameObject &o) {
+void MoveForward::move(SceneObject& o) {
 	Ogre::LogManager::getSingleton().logMessage("Moving forward");
 }
 
-void MoveIdle::move(GameObject &o) {
+void MoveIdle::move(SceneObject& o) {
 	Ogre::LogManager::getSingleton().logMessage("Idle moving");
 }
 
-void MoveStay::move(GameObject &o) {
+void MoveStay::move(SceneObject& o) {
 	Ogre::LogManager::getSingleton().logMessage("Staying quietly");
 }
 

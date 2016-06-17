@@ -6,7 +6,7 @@ namespace sts {
 
 class IMoveBehaviour {
 public:
-	virtual void move(GameObject &o) = 0;
+	virtual void move(SceneObject& o) = 0;
 	// Factory method, chooses child type and creates it.
 	// Currently children are hardcoded and not configurable externally. We should change it in the future.
 	static IMoveBehaviour* createMoveBehaviour(std::string mb_name);
@@ -15,15 +15,15 @@ public:
 class MoveForward : public IMoveBehaviour {
 	double speed;
 public:
-	virtual void move(GameObject &o);
+	virtual void move(SceneObject& o);
 };
 
 class MoveIdle : public IMoveBehaviour {
-	virtual void move(GameObject &o);
+	virtual void move(SceneObject& o);
 };
 
 class MoveStay : public IMoveBehaviour {
-	virtual void move(GameObject &o);
+	virtual void move(SceneObject& o);
 };
 
 class MoveBehaviourException : public std::exception {

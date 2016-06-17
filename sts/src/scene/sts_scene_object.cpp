@@ -11,9 +11,12 @@ namespace sts {
 
 SceneObject::SceneObject(Renderable* renderable)
 {
-	sts::SceneManager* sceneManager = GameRoot::getObject()->sceneManager();
-	Ogre::SceneNode* attachableNode = sceneManager->_spawnObjectNode();
-	this->_attachable = std::unique_ptr<IAttachable>(renderable->_spawnAttachable(attachableNode));
+	this->initObject(renderable);
+}
+
+SceneObject::SceneObject(std::string renderableName)
+{
+	this->initObject(sts::GameRoot::getObject()->getRenderable(renderableName));
 }
 
 SceneObject::SceneObject(const SceneObject& sceneobj):
@@ -27,6 +30,13 @@ SceneObject::~SceneObject()
 	Ogre::SceneNode* attachableNode = this->_attachable->node();
 	attachableNode->detachAllObjects();
 	sts::GameRoot::getObject()->sceneManager()->_destroyNode(attachableNode);
+}
+
+void SceneObject::initObject(Renderable* renderable)
+{
+	sts::SceneManager* sceneManager = GameRoot::getObject()->sceneManager();
+	Ogre::SceneNode* attachableNode = sceneManager->_spawnObjectNode();
+	this->_attachable = std::unique_ptr<IAttachable>(renderable->_spawnAttachable(attachableNode));
 }
 
 IAttachable* SceneObject::attachable()
@@ -51,14 +61,16 @@ void SceneObject::setVisible(bool value)
 
 void SceneObject::setPosition(const SceneObject::Position& pos)
 {
-	this->_attachable->setPosition3D(Ogre::Vector3(float(pos.x), 0.0f, float(pos.y)));
+	int sceneWidth = sts::GameRoot::getObject()->sceneManager()->sceneWidth();
+	this->_attachable->setPosition3D(Ogre::Vector3(float(sceneWidth - pos.x), 0.0f, float(pos.y)));
 }
 
 SceneObject::Position SceneObject::position() const
 {
 	Ogre::Vector3 attachablePos = this->_attachable->position3D();
+	int sceneWidth = sts::GameRoot::getObject()->sceneManager()->sceneWidth();
 	Position returnValue(
-		static_cast<int>(floor(attachablePos.x)),
+		static_cast<int>(floor(sceneWidth - attachablePos.x)),
 		static_cast<int>(floor(attachablePos.z))
 	);
 	return returnValue;
@@ -66,7 +78,7 @@ SceneObject::Position SceneObject::position() const
 
 void SceneObject::setPlanarRotation(float radians)
 {
-	this->_attachable->setPlanarRotation(radians);
+	this->_attachable->setPlanarRotation(-radians);
 }
 
 float SceneObject::planarRotation() const

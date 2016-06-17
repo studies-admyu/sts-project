@@ -20,4 +20,9 @@ SharedObject* SharedObject::create(Renderable* renderable)
 	return new SharedObject(renderable);
 }
 
+SharedObject* SharedObject::create(std::string renderableName)
+{
+	return SharedObject::create(sts::GameRoot::getObject()->getRenderable(renderableName));
+}
+
 } // namespace sts

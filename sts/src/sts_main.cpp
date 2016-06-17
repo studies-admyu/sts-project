@@ -3,23 +3,22 @@
 
 #include <vector>
 
+#include <OGRE/OgreRoot.h>
+#include <OGRE/OgreRenderSystem.h>
+#include <OGRE/OgreRenderWindow.h>
+#include <OGRE/OgreWindowEventUtilities.h>
+
 #include "sound/SoundManager.hpp"
 #include "ois/MyFrameListener.hpp"
 #include "sts_game_root.hpp"
 #include "rendering/sts_model3d.hpp"
+#include "rendering/sts_sprite2d.hpp"
 
 #include "sts_resources.hpp"
 #include "game_data.hpp"
 #include "move.hpp"
 #include "game_object.hpp"
 #include "weapon.hpp"
-
-#include <OGRE/OgreRoot.h>
-#include <OGRE/OgreRenderSystem.h>
-#include <OGRE/OgreRenderWindow.h>
-#include <OGRE/OgreWindowEventUtilities.h>
-#include <OGRE/OgreBillboardSet.h>
-#include <OGRE/OgreBillboard.h>
 
 typedef std::vector<Ogre::String> Strings;
 
@@ -150,6 +149,7 @@ int main(int argc, char* argv[])
 		/* Declare necessary viewport pointer */
 		Ogre::Viewport* vp = nullptr;
 
+		sts::GameRoot* lGameRoot = nullptr;
 		{
 			/* We need to create temporary camera due to OGRE requirements */
 
@@ -158,30 +158,22 @@ int main(int argc, char* argv[])
 			/* Create viewport (camera <-> window) */
 			vp = lWindow->addViewport(lCamera);
 			/* Init game root object. It will replace temporary camera with its own one */
-			sts::GameRoot::initRoot(lScene, vp);
+			lGameRoot = sts::GameRoot::initRoot(lScene, vp);
 			/* Destroy temporary camera */
 			lScene->destroyCamera(lCamera);
 		}
 
-		sts::SharedObject* lShipObject = nullptr;
-		{
-			sts::Model3D* lShipModel = sts::Model3D::create("airship.mesh", "airship.mesh", 3.15f);
-			lShipObject = sts::SharedObject::create(lShipModel);
-			lShipObject->setPosition(sts::SceneObject::Position(0, -100));
-		}
+		sts::SceneObject::Position shipPosition(0, 0);
+		shipPosition.x = lGameRoot->sceneManager()->sceneWidth() / 2;
+		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
 
-		Ogre::SceneNode* lRootSceneNode = lScene->getRootSceneNode();
+		sts::Model3D::create("ShipModel", "airship.mesh", 6.3f);
+		sts::SharedObject* lShipObject = sts::SharedObject::create("ShipModel");
+		lShipObject->setPosition(shipPosition);
 
-		/* Sprite billboard (manually) */
-		Ogre::SceneNode* lSpriteNode = lRootSceneNode->createChildSceneNode();
-		Ogre::BillboardSet* lBillboardSet = lScene->createBillboardSet();
-		lBillboardSet->setMaterialName("enemy_01", lRcGroupName);
-		lBillboardSet->setTextureStacksAndSlices(1, 4);
-		Ogre::Billboard* lSpriteBillboard = lBillboardSet->createBillboard(Ogre::Vector3(0, 0, 0));
-		lSpriteBillboard->setDimensions(48.0f / 2.0f, 58.0f / 2.0f);
-		lSpriteBillboard->setTexcoordIndex(1);
-		lSpriteNode->attachObject(lBillboardSet);
-		lSpriteNode->setPosition(Ogre::Vector3(0, -200, 100));
+		sts::Sprite2D::create("EnemySprite01", "enemy_01", sts::Sprite2D::Size(48, 58));
+		sts::SharedObject* lSpriteObject = sts::SharedObject::create("EnemySprite01");
+		lSpriteObject->setPosition(shipPosition + sts::SceneObject::Position(0, 100));
 
 		/* Obtain the timer pointer */
 		Ogre::Timer* lTimer = lRoot->getTimer();
@@ -192,23 +184,19 @@ int main(int argc, char* argv[])
 
 		/* Create sound manager */
 		SoundManager* mSoundMgr = new SoundManager();
+
 		mSoundMgr->playMusic(sts::getDataBasePath() + std::string("sounds/Credits_heart-of-the-sea.ogg"));
 		mSoundMgr->playSound(sts::getDataBasePath() + std::string("sounds/bell.ogg"));
-		
+
 		// Create an instance of the MyFrameListener Class and add it to the root object
 		MyFrameListener* myListener = new MyFrameListener(lShipObject, lWindow);
 		lRoot->addFrameListener(myListener);
 
 		while (!lWindow->isClosed()) {
 			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
-			float displacement = Ogre::Math::Cos(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * 100.0f;
 
 			lShipObject->setPlanarRotation(angle);
 			lShipObject->setAxisRotation(angle);
-//			lShipObject->setPosition(sts::SceneObject::Position(static_cast<int>(displacement), 0));
-
-			unsigned int spriteFrame = (lTimer->getMilliseconds() / 125) % 2;
-			lSpriteBillboard->setTexcoordIndex(spriteFrame);
 
 			lWindow->update(false);
 			lWindow->swapBuffers();

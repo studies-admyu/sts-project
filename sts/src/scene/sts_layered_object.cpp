@@ -13,12 +13,28 @@ LayeredObject::LayeredObject(Renderable* renderable, unsigned int layerIndex):
 	);
 }
 
+LayeredObject* LayeredObject::create(std::string renderableName, unsigned int layerIndex)
+{
+	return LayeredObject::create(
+		sts::GameRoot::getObject()->getRenderable(renderableName),
+		layerIndex
+	);
+}
+
 LayeredObject::LayeredObject(Renderable* renderable, Layer* layer):
 	SceneObject(renderable)
 {
 	this->_layer = layer;
 	this->_frameCounter = 0;
 	this->_layer->addObject(this);
+}
+
+LayeredObject* LayeredObject::create(std::string renderableName, Layer* layer)
+{
+	return LayeredObject::create(
+		sts::GameRoot::getObject()->getRenderable(renderableName),
+		layer
+	);
 }
 
 LayeredObject::~LayeredObject()

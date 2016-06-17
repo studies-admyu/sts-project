@@ -15,6 +15,10 @@ public:
 	{
 		Position(int i_x = 0, int i_y = 0):
 			x(i_x), y(i_y) { }
+		Position operator+(const Position& p) const
+			{ return Position(this->x + p.x, this->y + p.y); }
+		Position operator-(const Position& p) const
+			{ return Position(this->x - p.x, this->y - p.y); }
 
 		int x;
 		int y;
@@ -34,6 +38,7 @@ public:
 
 protected:
 	SceneObject(Renderable* renderable);
+	SceneObject(std::string renderableName);
 	IAttachable* attachable();
 	const IAttachable* attachable() const;
 
@@ -41,6 +46,7 @@ private:
 	std::unique_ptr<IAttachable> _attachable;
 
 	SceneObject(const SceneObject&);
+	void initObject(Renderable* renderable);
 };
 
 } // namespace sts

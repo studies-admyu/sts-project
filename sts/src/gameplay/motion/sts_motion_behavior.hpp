@@ -1,5 +1,7 @@
 #pragma once
 
+#include <exception>
+
 #include <string>
 
 #include <sts_cross_platform.hpp>

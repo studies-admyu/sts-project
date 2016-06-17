@@ -1,6 +1,10 @@
 #pragma once
 
+#include <exception>
+
 #include <boost/property_tree/ptree.hpp>
+
+#include <sts_cross_platform.hpp>
 
 #include "sts_bullet_style.hpp"
 

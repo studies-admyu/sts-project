@@ -3,6 +3,11 @@
 
 #include <vector>
 
+#include <OGRE/OgreRoot.h>
+#include <OGRE/OgreRenderSystem.h>
+#include <OGRE/OgreRenderWindow.h>
+#include <OGRE/OgreWindowEventUtilities.h>
+
 #include "sound/SoundManager.hpp"
 #include "ois/MyFrameListener.hpp"
 #include "sts_game_root.hpp"
@@ -14,13 +19,6 @@
 #include "move.hpp"
 #include "game_object.hpp"
 #include "weapon.hpp"
-
-#include <OGRE/OgreRoot.h>
-#include <OGRE/OgreRenderSystem.h>
-#include <OGRE/OgreRenderWindow.h>
-#include <OGRE/OgreWindowEventUtilities.h>
-#include <OGRE/OgreBillboardSet.h>
-#include <OGRE/OgreBillboard.h>
 
 typedef std::vector<Ogre::String> Strings;
 

@@ -16,9 +16,7 @@
 
 #include "sts_resources.hpp"
 #include "game_data.hpp"
-#include "move.hpp"
 #include "game_object.hpp"
-#include "weapon.hpp"
 
 typedef std::vector<Ogre::String> Strings;
 

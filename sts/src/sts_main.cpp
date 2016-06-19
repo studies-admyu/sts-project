@@ -16,9 +16,7 @@
 
 #include "sts_resources.hpp"
 #include "game_data.hpp"
-#include "move.hpp"
 #include "game_object.hpp"
-#include "weapon.hpp"
 
 typedef std::vector<Ogre::String> Strings;
 
@@ -209,7 +207,6 @@ int main(int argc, char* argv[])
 		sts::GameRoot::releaseRoot();
 
 		sts::GameData::load();
-		sts::GameObject go(1, 1, 1.0);
 		sts::Level l("level1.json");
 	}
 	catch (Ogre::Exception &e) {

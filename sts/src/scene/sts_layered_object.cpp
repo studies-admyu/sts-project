@@ -7,10 +7,7 @@ namespace sts {
 LayeredObject::LayeredObject(Renderable* renderable, unsigned int layerIndex):
 	SceneObject(renderable)
 {
-	LayeredObject(
-		renderable,
-		sts::GameRoot::getObject()->sceneManager()->layer(layerIndex)
-	);
+	this->initObject(sts::GameRoot::getObject()->sceneManager()->layer(layerIndex));
 }
 
 LayeredObject* LayeredObject::create(std::string renderableName, unsigned int layerIndex)
@@ -24,9 +21,7 @@ LayeredObject* LayeredObject::create(std::string renderableName, unsigned int la
 LayeredObject::LayeredObject(Renderable* renderable, Layer* layer):
 	SceneObject(renderable)
 {
-	this->_layer = layer;
-	this->_frameCounter = 0;
-	this->_layer->addObject(this);
+	this->initObject(layer);
 }
 
 LayeredObject* LayeredObject::create(std::string renderableName, Layer* layer)
@@ -50,6 +45,13 @@ LayeredObject* LayeredObject::create(Renderable* renderable, unsigned int layerI
 LayeredObject* LayeredObject::create(Renderable* renderable, Layer* layer)
 {
 	return new LayeredObject(renderable, layer);
+}
+
+void LayeredObject::initObject(Layer* layer)
+{
+	this->_layer = layer;
+	this->_frameCounter = 0;
+	this->_layer->addObject(this);
 }
 
 void LayeredObject::_setLayer(Layer* layer)

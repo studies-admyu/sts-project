@@ -37,6 +37,8 @@ private:
 	unsigned int _frameCounter;
 
 	LayeredObject(const LayeredObject&);
+
+	void initObject(Layer* layer);
 };
 
 } // namespace sts

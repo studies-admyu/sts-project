@@ -34,7 +34,7 @@ public:
 	float planarRotation() const;
 	void setAxisRotation(float radians);
 	float axisRotation() const;
-	virtual void processObject();
+	virtual void processObject(unsigned int msec);
 
 protected:
 	SceneObject(Renderable* renderable);

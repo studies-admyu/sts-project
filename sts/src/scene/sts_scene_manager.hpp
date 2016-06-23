@@ -13,11 +13,14 @@ namespace sts {
 class SceneManager
 {
 public:
-	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport);
+	SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport, Ogre::Timer* otimer);
 	~SceneManager();
 
 	Ogre::SceneManager* _getOSceneManager();
 	const Ogre::SceneManager* _getOSceneManager() const;
+
+	Ogre::Timer* _getOTimer();
+	const Ogre::Timer* _getOTimer() const;
 
 	Ogre::Viewport* _getOViewport();
 	const Ogre::Viewport* _getOViewport() const;
@@ -48,6 +51,7 @@ public:
 
 private:
 	Ogre::SceneManager* _oscene;
+	Ogre::Timer* _otimer;
 	Ogre::Viewport* _oviewport;
 	Ogre::Camera* _ocamera;
 

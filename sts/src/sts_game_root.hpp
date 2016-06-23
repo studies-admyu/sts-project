@@ -15,7 +15,7 @@ namespace sts {
 class GameRoot
 {
 public:
-	static GameRoot* initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport);
+	static GameRoot* initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer);
 	static GameRoot* getObject();
 	static void releaseRoot();
 
@@ -37,8 +37,10 @@ public:
 	Renderable* getRenderable(std::string name);
 	const Renderable* getRenderable(std::string name) const;
 
+	void processGame();
+
 private:
-	GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport);
+	GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer);
 	GameRoot(const GameRoot&);
 	~GameRoot();
 

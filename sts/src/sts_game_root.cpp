@@ -6,9 +6,9 @@ namespace sts {
 
 GameRoot* mGameRootSingleton = nullptr;
 
-GameRoot::GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
+GameRoot::GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer)
 {
-	this->_scene = new SceneManager(oscene, oviewport);
+	this->_scene = new SceneManager(oscene, oviewport, otimer);
 }
 
 GameRoot::GameRoot(const GameRoot&)
@@ -35,12 +35,12 @@ void GameRoot::releaseResources()
 	this->releaseScene();
 }
 
-GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
+GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer)
 {
 	if (mGameRootSingleton) {
 		throw std::runtime_error("Attempt to init GameRoot singleton once again.");
 	}
-	mGameRootSingleton = new GameRoot(oscene, oviewport);
+	mGameRootSingleton = new GameRoot(oscene, oviewport, otimer);
 	return mGameRootSingleton;
 }
 
@@ -121,6 +121,11 @@ Renderable* GameRoot::getRenderable(std::string name)
 const Renderable* GameRoot::getRenderable(std::string name) const
 {
 	return this->_renderables.at(name).get();
+}
+
+void GameRoot::processGame()
+{
+	this->sceneManager()->processScene();
 }
 
 }

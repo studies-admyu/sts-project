@@ -25,7 +25,7 @@ public:
 	void setPosition(const Position& pos);
 	Position position() const;
 
-	virtual void processObject();
+	virtual void processObject(unsigned int msec);
 
 protected:
 	LayeredObject(Renderable* renderable, unsigned int layerIndex);
@@ -33,8 +33,8 @@ protected:
 
 private:
 	Layer* _layer;
-	/** @todo Replace frameCounter with the timer */
-	unsigned int _frameCounter;
+	unsigned int _zeroMsec;
+	int _offsetY;
 
 	LayeredObject(const LayeredObject&);
 

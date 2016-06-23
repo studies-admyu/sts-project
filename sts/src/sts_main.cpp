@@ -14,6 +14,8 @@
 #include "rendering/sts_model3d.hpp"
 #include "rendering/sts_sprite2d.hpp"
 
+#include "gameplay/sts_unit.hpp"
+
 #include "sts_resources.hpp"
 #include "game_data.hpp"
 #include "game_object.hpp"
@@ -144,6 +146,9 @@ int main(int argc, char* argv[])
 		/* Create a scene manager */
 		Ogre::SceneManager* lScene = lRoot->createSceneManager(Ogre::ST_GENERIC, "SceneManager");
 
+		/* Obtain the timer pointer */
+		Ogre::Timer* lTimer = lRoot->getTimer();
+
 		/* Declare necessary viewport pointer */
 		Ogre::Viewport* vp = nullptr;
 
@@ -156,25 +161,24 @@ int main(int argc, char* argv[])
 			/* Create viewport (camera <-> window) */
 			vp = lWindow->addViewport(lCamera);
 			/* Init game root object. It will replace temporary camera with its own one */
-			lGameRoot = sts::GameRoot::initRoot(lScene, vp);
+			lGameRoot = sts::GameRoot::initRoot(lScene, vp, lTimer);
 			/* Destroy temporary camera */
 			lScene->destroyCamera(lCamera);
 		}
+
+		lGameRoot->sceneManager()->addLayer(1)->setSpeed(-60);
 
 		sts::SceneObject::Position shipPosition(0, 0);
 		shipPosition.x = lGameRoot->sceneManager()->sceneWidth() / 2;
 		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
 
 		sts::Model3D::create("ShipModel", "airship.mesh", 6.3f);
-		sts::SharedObject* lShipObject = sts::SharedObject::create("ShipModel");
-		lShipObject->setPosition(shipPosition);
+		sts::Unit* lHeroShip = sts::Unit::create("ShipModel", (unsigned int)0, nullptr, std::list<sts::State*>());
+		lHeroShip->setPosition(shipPosition);
 
 		sts::Sprite2D::create("EnemySprite01", "enemy_01", sts::Sprite2D::Size(48, 58));
-		sts::SharedObject* lSpriteObject = sts::SharedObject::create("EnemySprite01");
-		lSpriteObject->setPosition(shipPosition + sts::SceneObject::Position(0, 100));
-
-		/* Obtain the timer pointer */
-		Ogre::Timer* lTimer = lRoot->getTimer();
+		sts::Unit* lEnemyShip = sts::Unit::create("EnemySprite01", (unsigned int)1, nullptr, std::list<sts::State*>());
+		lEnemyShip->setPosition(shipPosition + sts::SceneObject::Position(0, 200));
 
 		/* Skip all the messages */
 		lWindow->setAutoUpdated(false);
@@ -187,14 +191,16 @@ int main(int argc, char* argv[])
 		mSoundMgr->playSound(sts::getDataBasePath() + std::string("sounds/bell.ogg"));
 
 		// Create an instance of the MyFrameListener Class and add it to the root object
-		MyFrameListener* myListener = new MyFrameListener(lShipObject, lWindow);
+		MyFrameListener* myListener = new MyFrameListener(lHeroShip, lWindow);
 		lRoot->addFrameListener(myListener);
 
 		while (!lWindow->isClosed()) {
 			float angle = Ogre::Math::Sin(float(lTimer->getMilliseconds()) * Ogre::Math::PI / 2000.0f) * Ogre::Math::PI / 4.0f;
 
-			lShipObject->setPlanarRotation(angle);
-			lShipObject->setAxisRotation(angle);
+			lHeroShip->setPlanarRotation(angle);
+			lHeroShip->setAxisRotation(angle);
+
+			lGameRoot->processGame();
 
 			lWindow->update(false);
 			lWindow->swapBuffers();

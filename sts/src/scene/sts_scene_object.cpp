@@ -96,7 +96,7 @@ float SceneObject::axisRotation() const
 	return this->_attachable->axisRotation();
 }
 
-void SceneObject::processObject()
+void SceneObject::processObject(unsigned int msec)
 {
 
 }

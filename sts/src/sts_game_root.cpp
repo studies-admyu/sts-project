@@ -27,6 +27,7 @@ GameRoot::~GameRoot()
 void GameRoot::releaseScene()
 {
 	this->_scene->_clearScene();
+	this->_unitTypes.clear();
 	this->_renderables.clear();
 }
 
@@ -87,6 +88,14 @@ void GameRoot::_addRenderable(Renderable* renderable)
 	this->_renderables[renderable->name()] = std::unique_ptr<Renderable>(renderable);
 }
 
+void GameRoot::_addUnitType(UnitType* unitType)
+{
+	if (this->_unitTypes.find(unitType->name()) != this->_unitTypes.end()) {
+		throw std::runtime_error("UnitType with such a name exists.");
+	}
+	this->_unitTypes[unitType->name()] = std::unique_ptr<UnitType>(unitType);
+}
+
 bool GameRoot::isPaused() const
 {
 	/** @todo Implement this method */
@@ -121,6 +130,21 @@ Renderable* GameRoot::getRenderable(std::string name)
 const Renderable* GameRoot::getRenderable(std::string name) const
 {
 	return this->_renderables.at(name).get();
+}
+
+bool GameRoot::hasUnitType(std::string name) const
+{
+	return (this->_unitTypes.find(name) != this->_unitTypes.cend());
+}
+
+UnitType* GameRoot::getUnitType(std::string name)
+{
+	return this->_unitTypes.at(name).get();
+}
+
+const UnitType* GameRoot::getUnitType(std::string name) const
+{
+	return this->_unitTypes.at(name).get();
 }
 
 void GameRoot::processGame()

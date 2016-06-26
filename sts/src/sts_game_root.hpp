@@ -7,7 +7,7 @@
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreViewport.h>
 
-#include "rendering/sts_renderable.hpp"
+#include "gameplay/sts_unit_type.hpp"
 #include "scene/sts_scene_manager.hpp"
 
 namespace sts {
@@ -26,6 +26,7 @@ public:
 	const Ogre::Viewport* _getOViewport() const;
 
 	void _addRenderable(Renderable* renderable);
+	void _addUnitType(UnitType* unitType);
 
 	bool isPaused() const;
 	void setPaused(bool value);
@@ -36,6 +37,10 @@ public:
 	bool hasRenderable(std::string name) const;
 	Renderable* getRenderable(std::string name);
 	const Renderable* getRenderable(std::string name) const;
+
+	bool hasUnitType(std::string name) const;
+	UnitType* getUnitType(std::string name);
+	const UnitType* getUnitType(std::string name) const;
 
 	void processGame();
 
@@ -49,6 +54,7 @@ private:
 
 	SceneManager* _scene;
 	std::map<std::string, std::unique_ptr<Renderable>> _renderables;
+	std::map<std::string, std::unique_ptr<UnitType>> _unitTypes;
 };
 
 } // namespace sts

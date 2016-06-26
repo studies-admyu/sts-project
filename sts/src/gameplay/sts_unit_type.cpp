@@ -16,7 +16,7 @@ UnitType::UnitType(std::string name, Renderable *renderable, int healthM, int sp
 
 UnitType::UnitType(const UnitType&)
 {
-	throw std::runtime_error("Model3D is not copyable");
+	throw std::runtime_error("UnitType is not copyable");
 }
 
 UnitType::~UnitType()

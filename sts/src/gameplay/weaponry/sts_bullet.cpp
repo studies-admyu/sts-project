@@ -4,7 +4,7 @@ namespace sts {
 
 void Bullet::move()
 {
-	weapon->bulletStyle->move(this);
+	weapon->bulletStyle()->move(this);
 }
 
 } // namespace sts

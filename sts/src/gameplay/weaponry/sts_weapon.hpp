@@ -21,22 +21,33 @@ namespace pt = boost::property_tree;
 class Weapon
 {
 public:
-    // Create instance from json tree
-    Weapon(pt::ptree params);
-    Weapon(const std::string &_id, const IBulletStyle *ibs, const FiringStyle *fs,
-           int damage, bool isH) :
-            id(_id), bulletStyle(ibs), firingStyle(fs), damage(damage), isHoming(isH) {
-        Ogre::LogManager::getSingleton().logMessage("Weapon created");
-    }
+	static Weapon* create(std::string name, IBulletStyle* bs, FiringStyle* fs, int dmg, bool isHom);
+	static Weapon* create(std::string name, pt::ptree params);
 
-    Bullet* createBullet(int x, int y, double direction);
+	~Weapon();
 
-    // string identifier used to reference configured instance in json
-    std::string id;
-    const IBulletStyle *bulletStyle;
-    const FiringStyle *firingStyle;
-    int damage;
-    bool isHoming;
+	std::string name() const;
+
+	IBulletStyle* bulletStyle();
+	const IBulletStyle* bulletStyle() const;
+
+	FiringStyle* firingStyle();
+	const FiringStyle* firingStyle() const;
+
+	int damage() const;
+	bool isHoming() const;
+
+	Bullet* createBullet(int x, int y, double direction);
+
+private:
+	std::string _name;
+	IBulletStyle* _bulletStyle;
+	FiringStyle* _firingStyle;
+	int _damage;
+	bool _isHoming;
+
+	Weapon(std::string name, IBulletStyle* bs, FiringStyle* fs, int dmg, bool isHom);
+	Weapon(const Weapon&);
 };
 
 class WeaponException : public std::exception

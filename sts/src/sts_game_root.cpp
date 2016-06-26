@@ -28,6 +28,7 @@ void GameRoot::releaseScene()
 {
 	this->_scene->_clearScene();
 	this->_unitTypes.clear();
+	this->_weapons.clear();
 	this->_renderables.clear();
 }
 
@@ -88,6 +89,14 @@ void GameRoot::_addRenderable(Renderable* renderable)
 	this->_renderables[renderable->name()] = std::unique_ptr<Renderable>(renderable);
 }
 
+void GameRoot::_addWeapon(Weapon* weapon)
+{
+	if (this->_weapons.find(weapon->name()) != this->_weapons.end()) {
+		throw std::runtime_error("Weapon with such a name exists.");
+	}
+	this->_weapons[weapon->name()] = std::unique_ptr<Weapon>(weapon);
+}
+
 void GameRoot::_addUnitType(UnitType* unitType)
 {
 	if (this->_unitTypes.find(unitType->name()) != this->_unitTypes.end()) {
@@ -130,6 +139,21 @@ Renderable* GameRoot::getRenderable(std::string name)
 const Renderable* GameRoot::getRenderable(std::string name) const
 {
 	return this->_renderables.at(name).get();
+}
+
+bool GameRoot::hasWeapon(std::string name) const
+{
+	return (this->_weapons.find(name) != this->_weapons.cend());
+}
+
+Weapon* GameRoot::getWeapon(std::string name)
+{
+	return this->_weapons.at(name).get();
+}
+
+const Weapon* GameRoot::getWeapon(std::string name) const
+{
+	return this->_weapons.at(name).get();
 }
 
 bool GameRoot::hasUnitType(std::string name) const

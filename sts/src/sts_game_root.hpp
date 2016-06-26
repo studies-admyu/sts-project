@@ -26,6 +26,7 @@ public:
 	const Ogre::Viewport* _getOViewport() const;
 
 	void _addRenderable(Renderable* renderable);
+	void _addWeapon(Weapon* weapon);
 	void _addUnitType(UnitType* unitType);
 
 	bool isPaused() const;
@@ -37,6 +38,10 @@ public:
 	bool hasRenderable(std::string name) const;
 	Renderable* getRenderable(std::string name);
 	const Renderable* getRenderable(std::string name) const;
+
+	bool hasWeapon(std::string name) const;
+	Weapon* getWeapon(std::string name);
+	const Weapon* getWeapon(std::string name) const;
 
 	bool hasUnitType(std::string name) const;
 	UnitType* getUnitType(std::string name);
@@ -54,6 +59,7 @@ private:
 
 	SceneManager* _scene;
 	std::map<std::string, std::unique_ptr<Renderable>> _renderables;
+	std::map<std::string, std::unique_ptr<Weapon>> _weapons;
 	std::map<std::string, std::unique_ptr<UnitType>> _unitTypes;
 };
 

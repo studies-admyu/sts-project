@@ -1,59 +1,51 @@
 #pragma once
 
-#include <OGRE/OgreRoot.h>
-
-#include <rendering/sts_renderable.hpp>
 #include <scene/sts_scene_object.hpp>
-#include <game_data.hpp>
 
 namespace sts {
 
 class Bullet;
 
 /**
-  * Specifies how a bullet looks like, how it moves and how it handles collisions.
-  * All BulletStyles are singltones with hardcoded behaviours.
+  * Specifies how to create bullet.
+  * All the BulletStyles are singltones with hardcoded behaviours.
   * Creates bullets of this style on demand.
   */
 class IBulletStyle
 {
 public:
-	IBulletStyle(const Renderable *r) : renderablePtr(r) {}
-	// Every bullet style must decide how to handle collisions.
-	virtual void collisionAlgorithm(SceneObject& o) const = 0;
-	// Every bullet style must decide how to move the bullet
-	virtual void move(Bullet *bullet) const = 0;
+	/** Creates a bullet in the specified position */
+	virtual Bullet* _createBullet(SceneObject::Position pos) = 0;
 
 protected:
-	const Renderable* renderablePtr;
+	/** Virtual destructor to supress warnings */
+	virtual ~IBulletStyle() { }
 };
 
-class RoundBullet: public IBulletStyle
+class RoundBulletStyle: public IBulletStyle
 {
 public:
-	static RoundBullet* getInstance();
-	virtual void collisionAlgorithm(SceneObject& o) const { /* handle collision here */ }
-	virtual void move(Bullet *bullet) const { return Ogre::LogManager::getSingleton().logMessage("Moving RoundBullet"); }
+	static RoundBulletStyle* getObject();
+	static void releaseObject();
+	Bullet* _createBullet(SceneObject::Position pos);
 
 private:
-	RoundBullet() : IBulletStyle(GameData::renderables["RoundBullet"]) { Ogre::LogManager::getSingleton().logMessage("RoundBullet style created");}
-	RoundBullet(RoundBullet const&): IBulletStyle(GameData::renderables["RoundBullet"]) { };
-	RoundBullet& operator=(RoundBullet const&) { return *this; };
-	static RoundBullet *instance;
+	RoundBulletStyle();
+	RoundBulletStyle(const RoundBulletStyle&);
+	~RoundBulletStyle();
 };
 
-class BlastBullet: public IBulletStyle
+class BlastBulletStyle: public IBulletStyle
 {
 public:
-	static BlastBullet* getInstance();
-	virtual void collisionAlgorithm(SceneObject& o) const { /* handle collision here */ }
-	virtual void move(Bullet *bullet) const { return Ogre::LogManager::getSingleton().logMessage("Moving BlastBullet"); }
+	static BlastBulletStyle* getObject();
+	static void releaseObject();
+	Bullet* _createBullet(SceneObject::Position pos);
 
 private:
-	BlastBullet() : IBulletStyle(GameData::renderables["BlastBullet"]) { Ogre::LogManager::getSingleton().logMessage("BlastBullet style created");}
-	BlastBullet(BlastBullet const&): IBulletStyle(GameData::renderables["BlastBullet"]) { }
-	BlastBullet& operator=(BlastBullet const&) { return *this; }
-	static BlastBullet *instance;
+	BlastBulletStyle();
+	BlastBulletStyle(const BlastBulletStyle&);
+	~BlastBulletStyle();
 };
 
 } // namespace sts

@@ -58,8 +58,8 @@ void GameData::parseRenderables()
 // Creates mappings BulletStyleName -> instance of needed BulletStyles. All BulletStyles are singltones
 void GameData::parseBulletStyles()
 {
-	bulletStyles["RoundBullet"] = RoundBullet::getInstance();
-	bulletStyles["BlastBullet"] = BlastBullet::getInstance();
+	bulletStyles["RoundBullet"] = RoundBulletStyle::getObject();
+	bulletStyles["BlastBullet"] = BlastBulletStyle::getObject();
 }
 
 // Creates mappings weapon id -> instance of Weapon with specified in json params

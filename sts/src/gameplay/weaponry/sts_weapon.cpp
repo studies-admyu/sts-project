@@ -6,8 +6,8 @@
 
 namespace sts {
 
-Weapon::Weapon(std::string name, IBulletStyle* bs, FiringStyle* fs, int dmg, bool isHom)
-	: _name(name), _bulletStyle(bs), _firingStyle(fs), _damage(dmg), _isHoming(isHom)
+Weapon::Weapon(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom)
+	: _name(name), _bulletStyle(bs), _firingStyle(fs), _damage(dmg), _cooldown(cld), _isHoming(isHom)
 {
 	sts::GameRoot::getObject()->_addWeapon(this);
 	Ogre::LogManager::getSingleton().logMessage("Weapon created");
@@ -23,9 +23,9 @@ Weapon::~Weapon()
 
 }
 
-Weapon* Weapon::create(std::string name, IBulletStyle* bs, FiringStyle* fs, int dmg, bool isHom)
+Weapon* Weapon::create(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom)
 {
-	return new Weapon(name, bs, fs, dmg, isHom);
+	return new Weapon(name, bs, fs, dmg, cld, isHom);
 }
 
 Weapon* Weapon::create(std::string name, pt::ptree params)
@@ -39,7 +39,7 @@ Weapon* Weapon::create(std::string name, pt::ptree params)
 	bool isHoming = params.get<bool>("homing");
 
 	/** @todo Fix this */
-	return new Weapon(name, nullptr, nullptr, damage, isHoming);
+	return new Weapon(name, nullptr, nullptr, damage, 1000, isHoming);
 }
 
 std::string Weapon::name() const
@@ -57,12 +57,12 @@ const IBulletStyle* Weapon::bulletStyle() const
 	return this->_bulletStyle;
 }
 
-FiringStyle* Weapon::firingStyle()
+IFiringStyle* Weapon::firingStyle()
 {
 	return this->_firingStyle;
 }
 
-const FiringStyle* Weapon::firingStyle() const
+const IFiringStyle* Weapon::firingStyle() const
 {
 	return this->_firingStyle;
 }
@@ -70,6 +70,11 @@ const FiringStyle* Weapon::firingStyle() const
 int Weapon::damage() const
 {
 	return this->_damage;
+}
+
+unsigned int Weapon::cooldown() const
+{
+	return this->_cooldown;
 }
 
 bool Weapon::isHoming() const
@@ -85,6 +90,11 @@ Bullet* Weapon::createBullet(int x, int y, double direction)
 	return b;
 	*/
 	return nullptr;
+}
+
+WeaponState* Weapon::createWeaponState()
+{
+	return this->_firingStyle->_createWeaponState(this);
 }
 
 } // namespace sts

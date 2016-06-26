@@ -8,6 +8,7 @@
 
 #include "sts_bullet_style.hpp"
 #include "sts_firing_style.hpp"
+#include "sts_weapon_state.hpp"
 
 namespace sts {
 
@@ -21,7 +22,7 @@ namespace pt = boost::property_tree;
 class Weapon
 {
 public:
-	static Weapon* create(std::string name, IBulletStyle* bs, FiringStyle* fs, int dmg, bool isHom);
+	static Weapon* create(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom);
 	static Weapon* create(std::string name, pt::ptree params);
 
 	~Weapon();
@@ -31,22 +32,26 @@ public:
 	IBulletStyle* bulletStyle();
 	const IBulletStyle* bulletStyle() const;
 
-	FiringStyle* firingStyle();
-	const FiringStyle* firingStyle() const;
+	IFiringStyle* firingStyle();
+	const IFiringStyle* firingStyle() const;
 
 	int damage() const;
+	/** Weapon cooldown (after each shot) in milliseconds. */
+	unsigned int cooldown() const;
 	bool isHoming() const;
 
 	Bullet* createBullet(int x, int y, double direction);
+	WeaponState* createWeaponState();
 
 private:
 	std::string _name;
 	IBulletStyle* _bulletStyle;
-	FiringStyle* _firingStyle;
+	IFiringStyle* _firingStyle;
 	int _damage;
+	unsigned int _cooldown;
 	bool _isHoming;
 
-	Weapon(std::string name, IBulletStyle* bs, FiringStyle* fs, int dmg, bool isHom);
+	Weapon(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom);
 	Weapon(const Weapon&);
 };
 

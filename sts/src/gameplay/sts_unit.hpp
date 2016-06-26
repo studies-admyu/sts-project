@@ -1,11 +1,15 @@
 #pragma once
 
+#include <memory>
+
 #include <scene/sts_layered_object.hpp>
 
 #include "statemachine/sts_state.hpp"
 #include "sts_unit_type.hpp"
 
 namespace sts {
+
+class WeaponState;
 
 class Unit: public LayeredObject
 {
@@ -22,6 +26,12 @@ public:
 	void setHealth(int value);
 	void setTeam(unsigned int value);
 
+	WeaponState* weapon1State();
+	const WeaponState* weapon1State() const;
+
+	WeaponState* weapon2State();
+	const WeaponState* weapon2State() const;
+
 	const UnitType* unitTypePtr;
 	std::list<State*> states;
 
@@ -33,6 +43,8 @@ private:
 	int _health;
 	unsigned int _team;
 	bool _isDestructable;
+	std::unique_ptr<WeaponState> _weapon1State;
+	std::unique_ptr<WeaponState> _weapon2State;
 
 	void initUnit(const UnitType* utptr, std::list<State*> states);
 };

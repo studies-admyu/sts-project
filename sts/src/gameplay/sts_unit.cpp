@@ -76,4 +76,24 @@ void Unit::setTeam(unsigned int value)
 	this->_team = value;
 }
 
+WeaponState* Unit::weapon1State()
+{
+	return this->_weapon1State.get();
+}
+
+const WeaponState* Unit::weapon1State() const
+{
+	return this->_weapon1State.get();
+}
+
+WeaponState* Unit::weapon2State()
+{
+	return this->_weapon2State.get();
+}
+
+const WeaponState* Unit::weapon2State() const
+{
+	return this->_weapon2State.get();
+}
+
 } // namespace sts

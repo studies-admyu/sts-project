@@ -9,6 +9,7 @@
 
 namespace sts {
 
+class IFiringState;
 class WeaponState;
 
 class Unit: public LayeredObject
@@ -28,9 +29,13 @@ public:
 
 	WeaponState* weapon1State();
 	const WeaponState* weapon1State() const;
+	IFiringState* weapon1FiringState();
+	const IFiringState* weapon1FiringState() const;
 
 	WeaponState* weapon2State();
 	const WeaponState* weapon2State() const;
+	IFiringState* weapon2FiringState();
+	const IFiringState* weapon2FiringState() const;
 
 	const UnitType* unitTypePtr;
 	std::list<State*> states;
@@ -44,7 +49,9 @@ private:
 	unsigned int _team;
 	bool _isDestructable;
 	std::unique_ptr<WeaponState> _weapon1State;
+	std::unique_ptr<IFiringState> _weapon1FiringState;
 	std::unique_ptr<WeaponState> _weapon2State;
+	std::unique_ptr<IFiringState> _weapon2FiringState;
 
 	void initUnit(const UnitType* utptr, std::list<State*> states);
 };

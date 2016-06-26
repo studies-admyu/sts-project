@@ -1,35 +1,217 @@
 #include "sts_motion_behavior.hpp"
 
-#include <OGRE/OgreRoot.h>
+#include <stdexcept>
+
+#include "sts_motion_state.hpp"
 
 namespace sts {
 
-IMotionBehavior* IMotionBehavior::createMotionBehavior(std::string mb_name)
+class MoveIdleState: public IMotionState
 {
-	if (mb_name == "MoveForward") {
-		return new MoveForward();
-	} else if (mb_name == "MoveIdle") {
-		return new MoveIdle();
-	} else if (mb_name == "MoveStay") {
-		return new MoveStay();
-	} else {
-		throw MoveBehaviorException("Bad move behavior name");
-	}
+public:
+	MoveIdleState();
+	~MoveIdleState();
+
+	void process(SceneObject* obj);
+
+private:
+	MoveIdleState(const MoveIdleState&);
+};
+
+MoveIdleState::MoveIdleState()
+{
+
 }
 
-void MoveForward::move(SceneObject& o)
+MoveIdleState::MoveIdleState(const MoveIdleState&)
 {
-	Ogre::LogManager::getSingleton().logMessage("Moving forward");
+	throw std::runtime_error("MoveIdleState is not copyable");
 }
 
-void MoveIdle::move(SceneObject& o)
+MoveIdleState::~MoveIdleState()
 {
-	Ogre::LogManager::getSingleton().logMessage("Idle moving");
+
 }
 
-void MoveStay::move(SceneObject& o)
+void MoveIdleState::process(SceneObject* obj)
 {
-	Ogre::LogManager::getSingleton().logMessage("Staying quietly");
+	/** @todo Implement this */
+}
+
+MoveIdle::MoveIdle()
+{
+
+}
+
+MoveIdle::MoveIdle(const MoveIdle&)
+{
+	throw std::runtime_error("MoveIdle is not copyable");
+}
+
+MoveIdle::~MoveIdle()
+{
+
+}
+
+IMotionState* MoveIdle::_createMotionState()
+{
+	return new MoveIdleState();
+}
+
+class MoveStayState: public IMotionState
+{
+public:
+	MoveStayState();
+	~MoveStayState();
+
+	void process(SceneObject* obj);
+
+private:
+	MoveStayState(const MoveStayState&);
+};
+
+MoveStayState::MoveStayState()
+{
+
+}
+
+MoveStayState::MoveStayState(const MoveStayState&)
+{
+	throw std::runtime_error("MoveStayState is not copyable");
+}
+
+MoveStayState::~MoveStayState()
+{
+
+}
+
+void MoveStayState::process(SceneObject* obj)
+{
+	/** @todo Implement this */
+}
+
+MoveStay::MoveStay()
+{
+
+}
+
+MoveStay::MoveStay(const MoveStay&)
+{
+	throw std::runtime_error("MoveStay is not copyable");
+}
+
+MoveStay::~MoveStay()
+{
+
+}
+
+IMotionState* MoveStay::_createMotionState()
+{
+	return new MoveStayState();
+}
+
+class MoveForwardState: public IMotionState
+{
+public:
+	MoveForwardState();
+	~MoveForwardState();
+
+	void process(SceneObject* obj);
+
+private:
+	MoveForwardState(const MoveForwardState&);
+};
+
+MoveForwardState::MoveForwardState()
+{
+
+}
+
+MoveForwardState::MoveForwardState(const MoveForwardState&)
+{
+	throw std::runtime_error("MoveForwardState is not copyable");
+}
+
+MoveForwardState::~MoveForwardState()
+{
+
+}
+
+void MoveForwardState::process(SceneObject* obj)
+{
+	/** @todo Implement this */
+}
+
+MoveForward::MoveForward()
+{
+
+}
+
+MoveForward::MoveForward(const MoveForward&)
+{
+	throw std::runtime_error("MoveForward is not copyable");
+}
+
+MoveForward::~MoveForward()
+{
+
+}
+
+IMotionState* MoveForward::_createMotionState()
+{
+	return new MoveForwardState();
+}
+
+class MoveByKeysState: public IMotionState
+{
+public:
+	MoveByKeysState(Key mvUpKey, Key mvDownKey, Key mvLeftKey, Key mvRightKey);
+	~MoveByKeysState();
+
+	void process(SceneObject* obj);
+
+private:
+	MoveByKeysState(const MoveByKeysState&);
+};
+
+MoveByKeysState::MoveByKeysState(Key mvUpKey, Key mvDownKey, Key mvLeftKey, Key mvRightKey)
+{
+
+}
+
+MoveByKeysState::MoveByKeysState(const MoveByKeysState&)
+{
+	throw std::runtime_error("MoveForwardState is not copyable");
+}
+
+MoveByKeysState::~MoveByKeysState()
+{
+
+}
+
+void MoveByKeysState::process(SceneObject* obj)
+{
+	/** @todo Implement this */
+}
+
+MoveByKeys::MoveByKeys(Key mvUpKey, Key mvDownKey, Key mvLeftKey, Key mvRightKey)
+{
+
+}
+
+MoveByKeys::MoveByKeys(const MoveByKeys&)
+{
+	throw std::runtime_error("MoveByKeys is not copyable");
+}
+
+MoveByKeys::~MoveByKeys()
+{
+
+}
+
+IMotionState* MoveByKeys::_createMotionState()
+{
+	return new MoveByKeysState(this->_moveUpKey, this->_moveDownKey, this->_moveLeftKey, this->_moveRightKey);
 }
 
 } // namespace sts

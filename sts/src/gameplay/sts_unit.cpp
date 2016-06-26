@@ -2,6 +2,9 @@
 
 #include <sts_game_root.hpp>
 
+#include "weaponry/sts_firing_state.hpp"
+#include "weaponry/sts_weapon_state.hpp"
+
 namespace sts {
 
 Unit::Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State*> _states)
@@ -86,6 +89,16 @@ const WeaponState* Unit::weapon1State() const
 	return this->_weapon1State.get();
 }
 
+IFiringState* Unit::weapon1FiringState()
+{
+	return this->_weapon1FiringState.get();
+}
+
+const IFiringState* Unit::weapon1FiringState() const
+{
+	return this->_weapon1FiringState.get();
+}
+
 WeaponState* Unit::weapon2State()
 {
 	return this->_weapon2State.get();
@@ -94,6 +107,16 @@ WeaponState* Unit::weapon2State()
 const WeaponState* Unit::weapon2State() const
 {
 	return this->_weapon2State.get();
+}
+
+IFiringState* Unit::weapon2FiringState()
+{
+	return this->_weapon2FiringState.get();
+}
+
+const IFiringState* Unit::weapon2FiringState() const
+{
+	return this->_weapon2FiringState.get();
 }
 
 } // namespace sts

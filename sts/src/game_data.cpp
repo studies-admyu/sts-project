@@ -6,7 +6,6 @@
 #include "sts_resources.hpp"
 
 #include "gameplay/weaponry/sts_bullet.hpp"
-#include "gameplay/weaponry/sts_muzzle_flash_style.hpp"
 
 namespace sts {
 
@@ -14,7 +13,7 @@ namespace pt = boost::property_tree;
 
 boost::filesystem::path GameData::configs_path;
 
-std::unordered_map<std::string, MuzzleFlashStyle*> GameData::muzzleFlashStyles;
+std::unordered_map<std::string, FiringStyle*> GameData::firingStyles;
 std::unordered_map<std::string, Renderable*> GameData::renderables;
 std::unordered_map<std::string, IBulletStyle*> GameData::bulletStyles;
 std::unordered_map<std::string, Weapon*> GameData::weapons;
@@ -25,29 +24,16 @@ void GameData::load()
 	configs_path = sts::getDataBasePath();
 	configs_path = configs_path / boost::filesystem::path("text");
 
-	parseMuzzleFlashStyles();
+	parseFiringStyles();
 	parseRenderables();
 	parseBulletStyles();
 	parseWeapons();
 	parseUnitTypes();
 }
 
-void GameData::parseMuzzleFlashStyles()
+void GameData::parseFiringStyles()
 {
-	/** @todo Handle exceptions */
-	pt::ptree root;
-	auto json_filename = (configs_path / boost::filesystem::path("muzzle_flash_styles.json")).string();
-	pt::read_json(json_filename, root);
 
-	for (pt::ptree::value_type &mfs_root : root) {
-		assert(mfs_root.first.empty()); // lists have no keys
-		pt::ptree mfs_tree = mfs_root.second;
-		std::string id = mfs_tree.get<std::string>("id");
-		std::string colormap_hue = mfs_tree.get<std::string>("colormap.hue");
-		std::string sound = mfs_tree.get<std::string>("sound");
-		std::cout << "Read muzzle flash style with id " << id << std::endl;
-		muzzleFlashStyles[id] = new MuzzleFlashStyle(id, colormap_hue, sound);
-	}
 }
 
 void GameData::parseRenderables()

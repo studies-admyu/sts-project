@@ -5,11 +5,11 @@ namespace sts {
 Weapon::Weapon(pt::ptree params)
 {
 	std::string bullet_style_name = params.get<std::string>("bullet-style");
-	std::string muzzle_flash_style_name = params.get<std::string>("muzzle-flash-style");
+	std::string firing_style_name = params.get<std::string>("firing-style");
 	int damage = params.get<int>("damage");
 	bool isHoming = params.get<bool>("homing");
 
-	Weapon(id, GameData::bulletStyles[bullet_style_name], GameData::muzzleFlashStyles[muzzle_flash_style_name],
+	Weapon(id, GameData::bulletStyles[bullet_style_name], GameData::firingStyles[firing_style_name],
 							 damage, isHoming);
 }
 

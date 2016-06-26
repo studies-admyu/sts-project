@@ -20,7 +20,7 @@ set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/gameplay/weaponry/sts_aiming_behavior.hpp"
 	"${sts_SRC_ROOT_DIR}/gameplay/weaponry/sts_bullet.hpp"
 	"${sts_SRC_ROOT_DIR}/gameplay/weaponry/sts_bullet_style.hpp"
-	"${sts_SRC_ROOT_DIR}/gameplay/weaponry/sts_muzzle_flash_style.hpp"
+	"${sts_SRC_ROOT_DIR}/gameplay/weaponry/sts_firing_style.hpp"
 	"${sts_SRC_ROOT_DIR}/gameplay/weaponry/sts_weapon.hpp"
 	"${sts_SRC_ROOT_DIR}/ois/MyFrameListener.hpp"
 	"${sts_SRC_ROOT_DIR}/rendering/sts_attachable.hpp"

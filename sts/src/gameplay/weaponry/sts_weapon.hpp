@@ -7,6 +7,7 @@
 #include <sts_cross_platform.hpp>
 
 #include "sts_bullet_style.hpp"
+#include "sts_firing_style.hpp"
 
 namespace sts {
 
@@ -22,9 +23,9 @@ class Weapon
 public:
     // Create instance from json tree
     Weapon(pt::ptree params);
-    Weapon(const std::string &_id, const IBulletStyle *ibs, const MuzzleFlashStyle *mfs,
+    Weapon(const std::string &_id, const IBulletStyle *ibs, const FiringStyle *fs,
            int damage, bool isH) :
-            id(_id), bulletStyle(ibs), muzzleFlashStyle(mfs), damage(damage), isHoming(isH) {
+            id(_id), bulletStyle(ibs), firingStyle(fs), damage(damage), isHoming(isH) {
         Ogre::LogManager::getSingleton().logMessage("Weapon created");
     }
 
@@ -33,7 +34,7 @@ public:
     // string identifier used to reference configured instance in json
     std::string id;
     const IBulletStyle *bulletStyle;
-    const MuzzleFlashStyle *muzzleFlashStyle;
+    const FiringStyle *firingStyle;
     int damage;
     bool isHoming;
 };

@@ -205,10 +205,10 @@ int main(int argc, char* argv[])
 		}
 		Ogre::LogManager::getSingleton().logMessage("Render window closed.");
 
-		sts::GameRoot::releaseRoot();
-
 		sts::GameData::load();
 		sts::Level l("level1.json");
+
+		sts::GameRoot::releaseRoot();
 	}
 	catch (Ogre::Exception &e) {
 		std::cerr << "Ogre::Exception: " << e.what() << std::endl;

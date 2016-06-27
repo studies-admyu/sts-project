@@ -73,7 +73,7 @@ void GameData::parseWeapons()
 		assert(wRoot.first.empty()); // lists have no keys
 		pt::ptree weaponTree = wRoot.second;
 		std::string id = weaponTree.get<std::string>("id");
-		weapons[id] = Weapon::create(id, weaponTree);
+		/* weapons[id] = Weapon::create(id, weaponTree); */
 	}
 }
 

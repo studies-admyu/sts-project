@@ -1,6 +1,8 @@
-#include "sts_state.hpp"
+#include "sts_sm_state.hpp"
 
 namespace sts {
+
+namespace SM {
 
 State::State()
 {
@@ -17,37 +19,37 @@ State::~State()
 
 }
 
-IAimingBehavior* State::weapon1Behavior()
+IFiringBehavior* State::weapon1Behavior()
 {
 	return this->_ab1;
 }
 
-const IAimingBehavior* State::weapon1Behavior() const
+const IFiringBehavior* State::weapon1Behavior() const
 {
 	return this->_ab1;
 }
 
-void State::setWeapon1Behavior(IAimingBehavior* ab)
+void State::setWeapon1Behavior(IFiringBehavior* ab)
 {
 	this->_ab1 = ab;
 }
 
-IAimingBehavior* State::weapon2Behavior()
+IFiringBehavior* State::weapon2Behavior()
 {
 	return this->_ab2;
 }
 
-const IAimingBehavior* State::weapon2Behavior() const
+const IFiringBehavior* State::weapon2Behavior() const
 {
 	return this->_ab2;
 }
 
-void State::setWeapon2Behavior(IAimingBehavior* ab)
+void State::setWeapon2Behavior(IFiringBehavior* ab)
 {
 	this->_ab2 = ab;
 }
 
-void State::addTransition(Transition* trans)
+void State::addTransition(ITransition* trans)
 {
 	if (!trans) {
 		return;
@@ -66,12 +68,12 @@ void State::addTransition(Transition* trans)
 	}
 }
 
-std::list<Transition*> State::transitions()
+std::list<ITransition*> State::transitions()
 {
 	return this->_transitions;
 }
 
-void State::removeTransition(Transition* trans)
+void State::removeTransition(ITransition* trans)
 {
 	if (!trans) {
 		return;
@@ -89,5 +91,7 @@ void State::removeTransition(Transition* trans)
 		this->_transitions.erase(tr);
 	}
 }
+
+} // namespace SM
 
 } // namespace sts

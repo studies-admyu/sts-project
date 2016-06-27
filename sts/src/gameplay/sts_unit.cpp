@@ -7,13 +7,13 @@
 
 namespace sts {
 
-Unit::Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State*> _states)
+Unit::Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> _states)
 	:LayeredObject(renderable, layerIndex)
 {
 	this->initUnit(utptr, _states);
 }
 
-Unit::Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<State*> _states)
+Unit::Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<SM::State*> _states)
 	:LayeredObject(renderable, layer)
 {
 	this->initUnit(utptr, _states);
@@ -30,7 +30,7 @@ Unit::~Unit()
 
 }
 
-void Unit::initUnit(const UnitType* utptr, std::list<State*> states)
+void Unit::initUnit(const UnitType* utptr, std::list<SM::State*> states)
 {
 	this->unitTypePtr = utptr;
 	this->states = states;
@@ -39,22 +39,22 @@ void Unit::initUnit(const UnitType* utptr, std::list<State*> states)
 	this->_isDestructable = true;
 }
 
-Unit* Unit::create(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State*> states)
+Unit* Unit::create(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states)
 {
 	return new Unit(renderable, layerIndex, utptr, states);
 }
 
-Unit* Unit::create(std::string renderableName, unsigned int layerIndex, const UnitType* utptr, std::list<State*> states)
+Unit* Unit::create(std::string renderableName, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states)
 {
 	return new Unit(sts::GameRoot::getObject()->getRenderable(renderableName), layerIndex, utptr, states);
 }
 
-Unit* Unit::create(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<State*> states)
+Unit* Unit::create(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<SM::State*> states)
 {
 	return new Unit(renderable, layer, utptr, states);
 }
 
-Unit* Unit::create(std::string renderableName, Layer* layer, const UnitType* utptr, std::list<State*> states)
+Unit* Unit::create(std::string renderableName, Layer* layer, const UnitType* utptr, std::list<SM::State*> states)
 {
 	return new Unit(sts::GameRoot::getObject()->getRenderable(renderableName), layer, utptr, states);
 }

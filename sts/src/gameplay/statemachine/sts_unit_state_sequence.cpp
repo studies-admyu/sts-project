@@ -17,13 +17,13 @@ UnitStateSequence::UnitStateSequence(const UnitStateSequence& uss)
 UnitStateSequence::~UnitStateSequence()
 {
 	while (this->_states.size() > 0) {
-		State* state = this->_states.back();
+		SM::State* state = this->_states.back();
 		this->_states.pop_back();
 		delete state;
 	}
 }
 
-void UnitStateSequence::addState(State* state)
+void UnitStateSequence::addState(SM::State* state)
 {
 	if (!state) {
 		return;
@@ -42,12 +42,12 @@ void UnitStateSequence::addState(State* state)
 	}
 }
 
-std::list<State*> UnitStateSequence::objects()
+std::list<SM::State*> UnitStateSequence::objects()
 {
 	return this->_states;
 }
 
-void UnitStateSequence::removeState(State* state)
+void UnitStateSequence::removeState(SM::State* state)
 {
 	if (!state) {
 		return;
@@ -66,7 +66,7 @@ void UnitStateSequence::removeState(State* state)
 	}
 }
 
-State* UnitStateSequence::currentState()
+SM::State* UnitStateSequence::currentState()
 {
 	if (this->_currentState == this->_states.end()) {
 		return nullptr;
@@ -75,7 +75,7 @@ State* UnitStateSequence::currentState()
 	}
 }
 
-const State* UnitStateSequence::currentState() const
+const SM::State* UnitStateSequence::currentState() const
 {
 	if (this->_currentState == this->_states.end()) {
 		return nullptr;
@@ -87,6 +87,11 @@ const State* UnitStateSequence::currentState() const
 void UnitStateSequence::reset()
 {
 	this->_currentState = this->_states.begin();
+}
+
+void UnitStateSequence::processState(Unit* unit)
+{
+	/** @todo Implement this */
 }
 
 } // namespace sts

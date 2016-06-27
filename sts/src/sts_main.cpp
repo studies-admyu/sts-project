@@ -173,11 +173,11 @@ int main(int argc, char* argv[])
 		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
 
 		sts::Model3D::create("ShipModel", "airship.mesh", 6.3f);
-		sts::Unit* lHeroShip = sts::Unit::create("ShipModel", (unsigned int)0, nullptr, std::list<sts::State*>());
+		sts::Unit* lHeroShip = sts::Unit::create("ShipModel", (unsigned int)0, nullptr, std::list<sts::SM::State*>());
 		lHeroShip->setPosition(shipPosition);
 
 		sts::Sprite2D::create("EnemySprite01", "enemy_01", sts::Sprite2D::Size(48, 58));
-		sts::Unit* lEnemyShip = sts::Unit::create("EnemySprite01", (unsigned int)1, nullptr, std::list<sts::State*>());
+		sts::Unit* lEnemyShip = sts::Unit::create("EnemySprite01", (unsigned int)1, nullptr, std::list<sts::SM::State*>());
 		lEnemyShip->setPosition(shipPosition + sts::SceneObject::Position(0, 200));
 
 		/* Skip all the messages */

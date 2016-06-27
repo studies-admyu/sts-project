@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sts_state.hpp"
+#include "sts_sm_state.hpp"
 
 namespace sts {
 
@@ -11,17 +11,19 @@ public:
 	UnitStateSequence(const UnitStateSequence&);
 	~UnitStateSequence();
 
-	void addState(State* state);
-	std::list<State*> objects();
-	void removeState(State* state);
+	void addState(SM::State* state);
+	std::list<SM::State*> objects();
+	void removeState(SM::State* state);
 
-	State* currentState();
-	const State* currentState() const;
+	SM::State* currentState();
+	const SM::State* currentState() const;
 	void reset();
 
+	void processState(Unit* unit);
+
 private:
-	std::list<State*> _states;
-	std::list<State*>::iterator _currentState;
+	std::list<SM::State*> _states;
+	std::list<SM::State*>::iterator _currentState;
 };
 
 } // namespace sts

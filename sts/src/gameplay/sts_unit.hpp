@@ -4,7 +4,7 @@
 
 #include <scene/sts_layered_object.hpp>
 
-#include "statemachine/sts_state.hpp"
+#include "statemachine/sts_sm_state.hpp"
 #include "sts_unit_type.hpp"
 
 namespace sts {
@@ -15,10 +15,10 @@ class WeaponState;
 class Unit: public LayeredObject
 {
 public:
-	static Unit* create(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State*> states);
-	static Unit* create(std::string renderableName, unsigned int layerIndex, const UnitType* utptr, std::list<State*> states);
-	static Unit* create(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<State*> states);
-	static Unit* create(std::string renderableName, Layer* layer, const UnitType* utptr, std::list<State*> states);
+	static Unit* create(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states);
+	static Unit* create(std::string renderableName, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states);
+	static Unit* create(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<SM::State*> states);
+	static Unit* create(std::string renderableName, Layer* layer, const UnitType* utptr, std::list<SM::State*> states);
 
 	virtual ~Unit();
 
@@ -38,11 +38,11 @@ public:
 	const IFiringState* weapon2FiringState() const;
 
 	const UnitType* unitTypePtr;
-	std::list<State*> states;
+	std::list<SM::State*> states;
 
 private:
-	Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<State*> states);
-	Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<State*> states);
+	Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states);
+	Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<SM::State*> states);
 	Unit(const Unit&);
 
 	int _health;
@@ -53,7 +53,7 @@ private:
 	std::unique_ptr<WeaponState> _weapon2State;
 	std::unique_ptr<IFiringState> _weapon2FiringState;
 
-	void initUnit(const UnitType* utptr, std::list<State*> states);
+	void initUnit(const UnitType* utptr, std::list<SM::State*> states);
 };
 
 } // namespace sts

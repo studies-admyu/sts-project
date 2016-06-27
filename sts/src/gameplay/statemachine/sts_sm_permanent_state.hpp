@@ -1,10 +1,12 @@
 #pragma once
 
-#include "sts_state.hpp"
+#include "sts_sm_state.hpp"
 
 namespace sts {
 
 class IMotionBehavior;
+
+namespace SM {
 
 class PermanentState: public State
 {
@@ -17,20 +19,34 @@ class PermanentState: public State
 
 private:
 	IMotionBehavior* _mb;
+
+	PermanentState(const PermanentState&);
 };
 
-class TimeElapseTransition: public Transition
+class TimeElapseTransition: public ITransition
 {
 public:
 	TimeElapseTransition();
 	~TimeElapseTransition();
+
+	bool checkForTransition(Unit* unit);
+
+private:
+	TimeElapseTransition(const TimeElapseTransition&);
 };
 
-class HealthElapseTransition: public Transition
+class HealthElapseTransition: public ITransition
 {
 public:
 	HealthElapseTransition();
 	~HealthElapseTransition();
+
+	bool checkForTransition(Unit* unit);
+
+private:
+	HealthElapseTransition(const HealthElapseTransition&);
 };
+
+} // namespace SM
 
 } // namespace sts

@@ -11,12 +11,11 @@
 #include "sound/SoundManager.hpp"
 #include "ois/MyFrameListener.hpp"
 #include "sts_game_root.hpp"
-#include "rendering/sts_model3d.hpp"
-#include "rendering/sts_sprite2d.hpp"
 
 #include "gameplay/sts_unit.hpp"
 
 #include "sts_resources.hpp"
+#include "sts_level_generator.hpp"
 #include "game_data.hpp"
 #include "game_object.hpp"
 
@@ -166,19 +165,15 @@ int main(int argc, char* argv[])
 			lScene->destroyCamera(lCamera);
 		}
 
-		lGameRoot->sceneManager()->addLayer(1)->setSpeed(-60);
+		generateLevel();
 
+		/* Create hero init additionally */
 		sts::SceneObject::Position shipPosition(0, 0);
 		shipPosition.x = lGameRoot->sceneManager()->sceneWidth() / 2;
 		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
 
-		sts::Model3D::create("ShipModel", "airship.mesh", 6.3f);
 		sts::Unit* lHeroShip = sts::Unit::create("ShipModel", (unsigned int)0, nullptr, std::list<sts::SM::State*>());
 		lHeroShip->setPosition(shipPosition);
-
-		sts::Sprite2D::create("EnemySprite01", "enemy_01", sts::Sprite2D::Size(48, 58));
-		sts::Unit* lEnemyShip = sts::Unit::create("EnemySprite01", (unsigned int)1, nullptr, std::list<sts::SM::State*>());
-		lEnemyShip->setPosition(shipPosition + sts::SceneObject::Position(0, 200));
 
 		/* Skip all the messages */
 		lWindow->setAutoUpdated(false);

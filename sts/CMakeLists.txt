@@ -6,6 +6,7 @@ set (sts_SRC_ROOT_DIR src)
 
 set (sts_HEADERS
 	"${sts_SRC_ROOT_DIR}/sts_cross_platform.hpp"
+	"${sts_SRC_ROOT_DIR}/sts_level_generator.hpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.hpp"
 	"${sts_SRC_ROOT_DIR}/sts_game_root.hpp"
 	"${sts_SRC_ROOT_DIR}/game_data.hpp"
@@ -44,6 +45,7 @@ set (sts_HEADERS
 )
 
 set (sts_SOURCES
+	"${sts_SRC_ROOT_DIR}/sts_level_generator.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_main.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_resources.cpp"
 	"${sts_SRC_ROOT_DIR}/sts_game_root.cpp"

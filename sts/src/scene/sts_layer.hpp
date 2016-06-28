@@ -21,16 +21,16 @@ public:
 
 	unsigned char opacity() const;
 	void setOpacity(unsigned char value);
-	unsigned int speed() const;
-	void setSpeed(unsigned int value);
+	int speed() const;
+	void setSpeed(int value);
 	SceneManager* sceneManager();
 
-	void processLayer();
+	void processLayer(unsigned int msec);
 
 private:
 	SceneManager* _scene;
 	unsigned int _layerIndex;
-	unsigned int _speed;
+	int _speed;
 	unsigned char _opacity;
 	std::list<LayeredObject*> _objects;
 

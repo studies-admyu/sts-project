@@ -1,12 +1,15 @@
 #pragma once
 
 #include <exception>
+#include <memory>
 
 #include <boost/property_tree/ptree.hpp>
 
 #include <sts_cross_platform.hpp>
 
 #include "sts_bullet_style.hpp"
+#include "sts_firing_style.hpp"
+#include "sts_weapon_state.hpp"
 
 namespace sts {
 
@@ -20,22 +23,37 @@ namespace pt = boost::property_tree;
 class Weapon
 {
 public:
-    // Create instance from json tree
-    Weapon(pt::ptree params);
-    Weapon(const std::string &_id, const IBulletStyle *ibs, const MuzzleFlashStyle *mfs,
-           int damage, bool isH) :
-            id(_id), bulletStyle(ibs), muzzleFlashStyle(mfs), damage(damage), isHoming(isH) {
-        Ogre::LogManager::getSingleton().logMessage("Weapon created");
-    }
+	static Weapon* create(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom);
+	static Weapon* create(std::string name, pt::ptree params);
 
-    Bullet* createBullet(int x, int y, double direction);
+	~Weapon();
 
-    // string identifier used to reference configured instance in json
-    std::string id;
-    const IBulletStyle *bulletStyle;
-    const MuzzleFlashStyle *muzzleFlashStyle;
-    int damage;
-    bool isHoming;
+	std::string name() const;
+
+	IBulletStyle* bulletStyle();
+	const IBulletStyle* bulletStyle() const;
+
+	IFiringStyle* firingStyle();
+	const IFiringStyle* firingStyle() const;
+
+	int damage() const;
+	/** Weapon cooldown (after each shot) in milliseconds. */
+	unsigned int cooldown() const;
+	bool isHoming() const;
+
+	Bullet* createBullet(int x, int y, double direction);
+	WeaponState* createWeaponState();
+
+private:
+	std::string _name;
+	IBulletStyle* _bulletStyle;
+	std::unique_ptr<IFiringStyle> _firingStyle;
+	int _damage;
+	unsigned int _cooldown;
+	bool _isHoming;
+
+	Weapon(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom);
+	Weapon(const Weapon&);
 };
 
 class WeaponException : public std::exception

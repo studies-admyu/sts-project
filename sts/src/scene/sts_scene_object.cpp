@@ -6,6 +6,7 @@
 #include <OGRE/OgreSceneNode.h>
 
 #include <sts_game_root.hpp>
+#include <gameplay/motion/sts_motion_state.hpp>
 
 namespace sts {
 
@@ -30,6 +31,11 @@ SceneObject::~SceneObject()
 	Ogre::SceneNode* attachableNode = this->_attachable->node();
 	attachableNode->detachAllObjects();
 	sts::GameRoot::getObject()->sceneManager()->_destroyNode(attachableNode);
+}
+
+void SceneObject::_setMotionState(IMotionState* newState)
+{
+	this->_motionState.reset(newState);
 }
 
 void SceneObject::initObject(Renderable* renderable)
@@ -96,9 +102,21 @@ float SceneObject::axisRotation() const
 	return this->_attachable->axisRotation();
 }
 
-void SceneObject::processObject()
+IMotionState* SceneObject::motionState()
 {
+	return this->_motionState.get();
+}
 
+const IMotionState* SceneObject::motionState() const
+{
+	return this->_motionState.get();
+}
+
+void SceneObject::processObject(unsigned int msec)
+{
+	if (this->_motionState.get()) {
+		this->_motionState->process(this);
+	}
 }
 
 } // namespace sts

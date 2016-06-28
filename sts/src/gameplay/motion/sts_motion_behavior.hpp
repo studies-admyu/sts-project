@@ -5,38 +5,72 @@
 #include <string>
 
 #include <sts_cross_platform.hpp>
+#include <input/sts_key.hpp>
 #include <scene/sts_scene_object.hpp>
 
 namespace sts {
 
+class IMotionState;
+
 class IMotionBehavior
 {
 public:
-	virtual void move(SceneObject& o) = 0;
-	// Factory method, chooses child type and creates it.
-	// Currently children are hardcoded and not configurable externally. We should change it in the future.
-	static IMotionBehavior* createMotionBehavior(std::string mb_name);
-};
-
-class MoveForward: public IMotionBehavior
-{
-public:
-	virtual void move(SceneObject& o);
-
-private:
-	double speed;
+	virtual IMotionState* _createMotionState() = 0;
+	/** Virtual destructor to supress warnings. */
+	virtual ~IMotionBehavior() { }
 };
 
 class MoveIdle: public IMotionBehavior
 {
 public:
-	virtual void move(SceneObject& o);
+	MoveIdle();
+	~MoveIdle();
+
+	IMotionState* _createMotionState();
+
+private:
+	MoveIdle(const MoveIdle&);
 };
 
 class MoveStay : public IMotionBehavior
 {
 public:
-	virtual void move(SceneObject& o);
+	MoveStay();
+	~MoveStay();
+
+	IMotionState* _createMotionState();
+
+private:
+	MoveStay(const MoveStay&);
+};
+
+class MoveForward: public IMotionBehavior
+{
+public:
+	MoveForward();
+	~MoveForward();
+
+	IMotionState* _createMotionState();
+
+private:
+	MoveForward(const MoveForward&);
+};
+
+class MoveByKeys: public IMotionBehavior
+{
+public:
+	MoveByKeys(Key mvUpKey, Key mvDownKey, Key mvLeftKey, Key mvRightKey);
+	~MoveByKeys();
+
+	IMotionState* _createMotionState();
+
+private:
+	Key _moveUpKey;
+	Key _moveDownKey;
+	Key _moveLeftKey;
+	Key _moveRightKey;
+
+	MoveByKeys(const MoveByKeys&);
 };
 
 class MoveBehaviorException: public std::exception

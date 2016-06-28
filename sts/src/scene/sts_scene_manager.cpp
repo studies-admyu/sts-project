@@ -4,8 +4,8 @@
 
 namespace sts {
 
-SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport):
-	_oscene(osceneManager), _oviewport(oviewport)
+SceneManager::SceneManager(Ogre::SceneManager* osceneManager, Ogre::Viewport* oviewport, Ogre::Timer* otimer):
+	_oscene(osceneManager), _otimer(otimer), _oviewport(oviewport)
 {
 	this->initScene();
 	this->_clearScene();
@@ -67,6 +67,16 @@ Ogre::SceneManager* SceneManager::_getOSceneManager()
 const Ogre::SceneManager* SceneManager::_getOSceneManager() const
 {
 	return this->_oscene;
+}
+
+Ogre::Timer* SceneManager::_getOTimer()
+{
+	return this->_otimer;
+}
+
+const Ogre::Timer* SceneManager::_getOTimer() const
+{
+	return this->_otimer;
 }
 
 Ogre::Viewport* SceneManager::_getOViewport()
@@ -217,7 +227,11 @@ unsigned int SceneManager::sceneHeight() const
 
 void SceneManager::processScene()
 {
+	unsigned msec = this->_otimer->getMilliseconds();
 
+	for (auto layer = this->_layers.begin(); layer != this->_layers.end(); ++layer) {
+		layer->get()->processLayer(msec);
+	}
 }
 
 } // namespace sts

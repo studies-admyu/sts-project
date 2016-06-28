@@ -28,15 +28,15 @@ Level::Level(std::string level_json_name)
 		int x = mfs_tree.get<int>("x0");
 		int y = mfs_tree.get<int>("y0");
 		double d = mfs_tree.get<int>("y0");
-		std::list<State> states = parseStates(mfs_tree.get_child("states"));
+		std::list<SM::State*> states = parseStates(mfs_tree.get_child("states"));
 		/** @todo Fix this */
 		/* units.push_back(Unit(x, y, d, unitType, states)); */
 	}
 }
 
-std::list<State> Level::parseStates(pt::ptree root)
+std::list<SM::State*> Level::parseStates(pt::ptree root)
 {
-	std::list<State> states;
+	std::list<SM::State*> states;
 	for (pt::ptree::value_type &state : root) {
 		assert(state.first.empty()); // lists have no keys
 		pt::ptree state_tree = state.second;
@@ -45,11 +45,12 @@ std::list<State> Level::parseStates(pt::ptree root)
 	return states;
 }
 
-State Level::parseState(pt::ptree tree)
+SM::State* Level::parseState(pt::ptree tree)
 {
 	std::string state_type = tree.get<std::string>("type");
 	std::cout << "Parsing state " << state_type << std::endl;
-	return State();
+	return nullptr;
+	/* return SM::State(); */
 }
 
 } // namespace sts

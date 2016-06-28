@@ -1,5 +1,7 @@
 #include "sts_layered_object.hpp"
 
+#include <cmath>
+
 #include <sts_game_root.hpp>
 
 namespace sts {
@@ -7,10 +9,7 @@ namespace sts {
 LayeredObject::LayeredObject(Renderable* renderable, unsigned int layerIndex):
 	SceneObject(renderable)
 {
-	LayeredObject(
-		renderable,
-		sts::GameRoot::getObject()->sceneManager()->layer(layerIndex)
-	);
+	this->initObject(sts::GameRoot::getObject()->sceneManager()->layer(layerIndex));
 }
 
 LayeredObject* LayeredObject::create(std::string renderableName, unsigned int layerIndex)
@@ -24,9 +23,7 @@ LayeredObject* LayeredObject::create(std::string renderableName, unsigned int la
 LayeredObject::LayeredObject(Renderable* renderable, Layer* layer):
 	SceneObject(renderable)
 {
-	this->_layer = layer;
-	this->_frameCounter = 0;
-	this->_layer->addObject(this);
+	this->initObject(layer);
 }
 
 LayeredObject* LayeredObject::create(std::string renderableName, Layer* layer)
@@ -52,6 +49,14 @@ LayeredObject* LayeredObject::create(Renderable* renderable, Layer* layer)
 	return new LayeredObject(renderable, layer);
 }
 
+void LayeredObject::initObject(Layer* layer)
+{
+	this->_layer = layer;
+	this->_zeroMsec = 0;
+	this->_offsetY = 0;
+	this->_layer->addObject(this);
+}
+
 void LayeredObject::_setLayer(Layer* layer)
 {
 	this->_layer = layer;
@@ -74,30 +79,30 @@ IAttachable* LayeredObject::attachable()
 
 void LayeredObject::setPosition(const SceneObject::Position& pos)
 {
-
+	SceneObject::Position newPos = pos + SceneObject::Position(0, this->_offsetY);
+	SceneObject::setPosition(newPos);
 }
 
 SceneObject::Position LayeredObject::position() const
 {
-	SceneObject::Position returnValue(0, 0);
+	SceneObject::Position returnValue = SceneObject::position();
+	returnValue = returnValue - SceneObject::Position(0, this->_offsetY);
 	return returnValue;
 }
 
-void LayeredObject::processObject()
+void LayeredObject::processObject(unsigned int msec)
 {
-	SceneObject::processObject();
+	SceneObject::processObject(msec);
 
-	Ogre::Vector3 attachablePosition = this->attachable()->position3D();
-	/* We use y coordinate instead of z */
-	attachablePosition.y = this->layer()->z();
-	this->attachable()->setPosition3D(attachablePosition);
-
-	++this->_frameCounter;
-	this->_frameCounter = this->_frameCounter % 1000;
-	if (this->_frameCounter == 0) {
-		SceneObject::Position objPosition = this->position();
-		objPosition.y -= this->layer()->speed();
-		this->setPosition(objPosition);
+	if (this->isVisible()) {
+		/* Update position */
+		float offsetYf = float(msec - this->_zeroMsec);
+		offsetYf = offsetYf * float(this->layer()->speed()) / 1000.0;
+		sts::SceneObject::Position currentPosition = this->position();
+		this->_offsetY = std::floor(offsetYf);
+		this->setPosition(currentPosition);
+	} else {
+		this->_zeroMsec = msec;
 	}
 }
 

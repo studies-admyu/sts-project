@@ -2,13 +2,15 @@
 
 #include <stdexcept>
 
+#include "gameplay/weaponry/sts_bullet_style.hpp"
+
 namespace sts {
 
 GameRoot* mGameRootSingleton = nullptr;
 
-GameRoot::GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
+GameRoot::GameRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer)
 {
-	this->_scene = new SceneManager(oscene, oviewport);
+	this->_scene = new SceneManager(oscene, oviewport, otimer);
 }
 
 GameRoot::GameRoot(const GameRoot&)
@@ -27,20 +29,25 @@ GameRoot::~GameRoot()
 void GameRoot::releaseScene()
 {
 	this->_scene->_clearScene();
+	this->_unitTypes.clear();
+	this->_weapons.clear();
 	this->_renderables.clear();
 }
 
 void GameRoot::releaseResources()
 {
 	this->releaseScene();
+
+	sts::RoundBulletStyle::releaseObject();
+	sts::BlastBulletStyle::releaseObject();
 }
 
-GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport)
+GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer)
 {
 	if (mGameRootSingleton) {
 		throw std::runtime_error("Attempt to init GameRoot singleton once again.");
 	}
-	mGameRootSingleton = new GameRoot(oscene, oviewport);
+	mGameRootSingleton = new GameRoot(oscene, oviewport, otimer);
 	return mGameRootSingleton;
 }
 
@@ -87,6 +94,22 @@ void GameRoot::_addRenderable(Renderable* renderable)
 	this->_renderables[renderable->name()] = std::unique_ptr<Renderable>(renderable);
 }
 
+void GameRoot::_addWeapon(Weapon* weapon)
+{
+	if (this->_weapons.find(weapon->name()) != this->_weapons.end()) {
+		throw std::runtime_error("Weapon with such a name exists.");
+	}
+	this->_weapons[weapon->name()] = std::unique_ptr<Weapon>(weapon);
+}
+
+void GameRoot::_addUnitType(UnitType* unitType)
+{
+	if (this->_unitTypes.find(unitType->name()) != this->_unitTypes.end()) {
+		throw std::runtime_error("UnitType with such a name exists.");
+	}
+	this->_unitTypes[unitType->name()] = std::unique_ptr<UnitType>(unitType);
+}
+
 bool GameRoot::isPaused() const
 {
 	/** @todo Implement this method */
@@ -121,6 +144,41 @@ Renderable* GameRoot::getRenderable(std::string name)
 const Renderable* GameRoot::getRenderable(std::string name) const
 {
 	return this->_renderables.at(name).get();
+}
+
+bool GameRoot::hasWeapon(std::string name) const
+{
+	return (this->_weapons.find(name) != this->_weapons.cend());
+}
+
+Weapon* GameRoot::getWeapon(std::string name)
+{
+	return this->_weapons.at(name).get();
+}
+
+const Weapon* GameRoot::getWeapon(std::string name) const
+{
+	return this->_weapons.at(name).get();
+}
+
+bool GameRoot::hasUnitType(std::string name) const
+{
+	return (this->_unitTypes.find(name) != this->_unitTypes.cend());
+}
+
+UnitType* GameRoot::getUnitType(std::string name)
+{
+	return this->_unitTypes.at(name).get();
+}
+
+const UnitType* GameRoot::getUnitType(std::string name) const
+{
+	return this->_unitTypes.at(name).get();
+}
+
+void GameRoot::processGame()
+{
+	this->sceneManager()->processScene();
 }
 
 }

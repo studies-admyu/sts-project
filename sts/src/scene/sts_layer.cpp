@@ -82,12 +82,12 @@ void Layer::setOpacity(unsigned char value)
 	this->_opacity = value;
 }
 
-unsigned int Layer::speed() const
+int Layer::speed() const
 {
 	return this->_speed;
 }
 
-void Layer::setSpeed(unsigned int value)
+void Layer::setSpeed(int value)
 {
 	this->_speed = value;
 }
@@ -97,9 +97,11 @@ SceneManager* Layer::sceneManager()
 	return _scene;
 }
 
-void Layer::processLayer()
+void Layer::processLayer(unsigned int msec)
 {
-
+	for (auto obj = this->_objects.begin(); obj != this->_objects.end(); ++obj) {
+		(*obj)->processObject(msec);
+	}
 }
 
 } // namespace sts

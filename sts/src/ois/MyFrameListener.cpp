@@ -3,10 +3,10 @@
 #include <sts_game_root.hpp>
 
 //
-MyFrameListener::MyFrameListener(sts::SharedObject *node, Ogre::RenderWindow *mWindow)
+MyFrameListener::MyFrameListener(sts::SceneObject* object, Ogre::RenderWindow* mWindow)
 {
 	//
-	mNode = node;
+	mObject = object;
 	mMovementspeed = 5.0f;
 
 	//
@@ -42,7 +42,7 @@ MyFrameListener::~MyFrameListener()
 
 //
 bool MyFrameListener::frameStarted(const Ogre::FrameEvent &evt) {
-	sts::SceneObject::Position current_pos = mNode->position();
+	sts::SceneObject::Position current_pos = mObject->position();
 	sts::SceneObject::Position translate(current_pos.x, current_pos.y);
 
 	//
@@ -94,7 +94,7 @@ bool MyFrameListener::frameStarted(const Ogre::FrameEvent &evt) {
 		// fire code
 	}
 
-	mNode->setPosition(translate);
+	mObject->setPosition(translate);
 
 	return true;
 }

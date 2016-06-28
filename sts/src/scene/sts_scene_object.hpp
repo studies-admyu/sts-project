@@ -6,6 +6,8 @@
 
 namespace sts {
 
+class IMotionState;
+
 class SceneObject
 {
 friend class SceneManager;
@@ -26,6 +28,8 @@ public:
 
 	virtual ~SceneObject();
 
+	void _setMotionState(IMotionState* newState);
+
 	bool isVisible() const;
 	void setVisible(bool value);
 	virtual void setPosition(const Position& pos);
@@ -34,7 +38,11 @@ public:
 	float planarRotation() const;
 	void setAxisRotation(float radians);
 	float axisRotation() const;
-	virtual void processObject();
+
+	IMotionState* motionState();
+	const IMotionState* motionState() const;
+
+	virtual void processObject(unsigned int msec);
 
 protected:
 	SceneObject(Renderable* renderable);
@@ -44,6 +52,7 @@ protected:
 
 private:
 	std::unique_ptr<IAttachable> _attachable;
+	std::unique_ptr<IMotionState> _motionState;
 
 	SceneObject(const SceneObject&);
 	void initObject(Renderable* renderable);

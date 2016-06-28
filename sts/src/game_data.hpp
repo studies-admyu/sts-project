@@ -6,7 +6,7 @@
 namespace sts {
 
 class IBulletStyle;
-struct MuzzleFlashStyle;
+class FiringStyle;
 class Renderable;
 class Weapon;
 class UnitType;
@@ -18,7 +18,7 @@ public:
 	/* read jsons and load data */
 	static void load();
 	static std::unordered_map<std::string, IBulletStyle*> bulletStyles;
-	static std::unordered_map<std::string, MuzzleFlashStyle*> muzzleFlashStyles;
+	static std::unordered_map<std::string, FiringStyle*> firingStyles;
 	static std::unordered_map<std::string, Renderable*> renderables;
 	static std::unordered_map<std::string, Weapon*> weapons;
 	static std::unordered_map<std::string, UnitType*> unit_types;
@@ -28,7 +28,7 @@ private:
 	static boost::filesystem::path configs_path;
 
 	static void parseBulletStyles();
-	static void parseMuzzleFlashStyles();
+	static void parseFiringStyles();
 	static void parseRenderables();
 	static void parseWeapons();
 	static void parseUnitTypes();

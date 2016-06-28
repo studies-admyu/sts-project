@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exception>
+#include <memory>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -46,7 +47,7 @@ public:
 private:
 	std::string _name;
 	IBulletStyle* _bulletStyle;
-	IFiringStyle* _firingStyle;
+	std::unique_ptr<IFiringStyle> _firingStyle;
 	int _damage;
 	unsigned int _cooldown;
 	bool _isHoming;

@@ -9,7 +9,9 @@ class UnitType
 {
 public:
 	static UnitType* create(std::string name, Renderable *renderable, int healthM, int speedM, Weapon* w1, Weapon* w2);
+	static UnitType* create(std::string name, Renderable *renderable, int healthM, int speedM, std::string weapon1Name, std::string weapon2Name);
 	static UnitType* create(std::string name, std::string renderableName, int healthM, int speedM, Weapon* w1, Weapon* w2);
+	static UnitType* create(std::string name, std::string renderableName, int healthM, int speedM, std::string weapon1Name, std::string weapon2Name);
 
 	~UnitType();
 

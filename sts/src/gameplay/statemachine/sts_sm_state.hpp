@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <memory>
 
 #include "sts_sm_transition.hpp"
 
@@ -14,8 +15,11 @@ class State
 {
 public:
 	State();
-	State(const State&);
 	virtual ~State();
+
+	virtual State* makeCopy() const;
+	virtual void onStateEnter();
+	bool checkForTransition(Unit* unit) const;
 
 	IFiringBehavior* weapon1Behavior();
 	const IFiringBehavior* weapon1Behavior() const;
@@ -29,10 +33,13 @@ public:
 	std::list<ITransition*> transitions();
 	void removeTransition(ITransition* trans);
 
+protected:
+	State(const State&);
+
 private:
-	IFiringBehavior* _ab1;
-	IFiringBehavior* _ab2;
-	std::list<ITransition*> _transitions;
+	std::shared_ptr<IFiringBehavior> _fb1;
+	std::shared_ptr<IFiringBehavior> _fb2;
+	std::list<std::unique_ptr<ITransition>> _transitions;
 };
 
 } // namespace SM

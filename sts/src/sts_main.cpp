@@ -172,7 +172,7 @@ int main(int argc, char* argv[])
 		shipPosition.x = lGameRoot->sceneManager()->sceneWidth() / 2;
 		shipPosition.y = lGameRoot->sceneManager()->sceneHeight() / 4;
 
-		sts::Unit* lHeroShip = sts::Unit::create("ShipModel", (unsigned int)0, nullptr, std::list<sts::SM::State*>());
+		sts::Unit* lHeroShip = sts::Unit::create("HeroShip", (unsigned int)0, 1, nullptr);
 		lHeroShip->setPosition(shipPosition);
 
 		/* Skip all the messages */

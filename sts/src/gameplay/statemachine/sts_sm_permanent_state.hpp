@@ -10,28 +10,37 @@ namespace SM {
 
 class PermanentState: public State
 {
+public:
 	PermanentState();
 	~PermanentState();
+
+	State* makeCopy() const;
 
 	IMotionBehavior* motionBehavior();
 	const IMotionBehavior* motionBehavior() const;
 	void setMotionBehavior(IMotionBehavior* mb);
 
-private:
-	IMotionBehavior* _mb;
-
+protected:
 	PermanentState(const PermanentState&);
+
+private:
+	std::shared_ptr<IMotionBehavior> _mb;
 };
 
 class TimeElapseTransition: public ITransition
 {
 public:
-	TimeElapseTransition();
+	TimeElapseTransition(unsigned int timeMsec);
 	~TimeElapseTransition();
 
+	ITransition* makeCopy() const;
+	void onStateEnter();
 	bool checkForTransition(Unit* unit);
 
 private:
+	unsigned int _timeMsec;
+	unsigned int _timeOnTheStart;
+
 	TimeElapseTransition(const TimeElapseTransition&);
 };
 
@@ -41,6 +50,8 @@ public:
 	HealthElapseTransition();
 	~HealthElapseTransition();
 
+	ITransition* makeCopy() const;
+	void onStateEnter();
 	bool checkForTransition(Unit* unit);
 
 private:

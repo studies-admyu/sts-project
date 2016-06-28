@@ -2,6 +2,9 @@
 
 #include <stdexcept>
 
+#include <sts_game_root.hpp>
+#include <gameplay/motion/sts_motion_behavior.hpp>
+
 namespace sts {
 
 namespace SM {
@@ -11,9 +14,10 @@ PermanentState::PermanentState()
 
 }
 
-PermanentState::PermanentState(const PermanentState&)
+PermanentState::PermanentState(const PermanentState& ps)
+	: _mb(ps._mb)
 {
-	throw std::runtime_error("PermanentState is not copyable");
+
 }
 
 PermanentState::~PermanentState()
@@ -21,22 +25,28 @@ PermanentState::~PermanentState()
 
 }
 
+State* PermanentState::makeCopy() const
+{
+	return new PermanentState(*this);
+}
+
 IMotionBehavior* PermanentState::motionBehavior()
 {
-	return this->_mb;
+	return this->_mb.get();
 }
 
 const IMotionBehavior* PermanentState::motionBehavior() const
 {
-	return this->_mb;
+	return this->_mb.get();
 }
 
 void PermanentState::setMotionBehavior(IMotionBehavior* mb)
 {
-	this->_mb = mb;
+	this->_mb = std::shared_ptr<IMotionBehavior>(mb);
 }
 
-TimeElapseTransition::TimeElapseTransition()
+TimeElapseTransition::TimeElapseTransition(unsigned int timeMsec)
+	: _timeMsec(timeMsec), _timeOnTheStart(0)
 {
 
 }
@@ -51,10 +61,20 @@ TimeElapseTransition::~TimeElapseTransition()
 
 }
 
+ITransition* TimeElapseTransition::makeCopy() const
+{
+	return new TimeElapseTransition(this->_timeMsec);
+}
+
+void TimeElapseTransition::onStateEnter()
+{
+	this->_timeOnTheStart = sts::GameRoot::getObject()->sceneManager()->_getOTimer()->getMilliseconds();
+}
+
 bool TimeElapseTransition::checkForTransition(Unit* unit)
 {
-	/** @todo Implement this */
-	return false;
+	unsigned int currentTime = sts::GameRoot::getObject()->sceneManager()->_getOTimer()->getMilliseconds();
+	return (currentTime - this->_timeOnTheStart > this->_timeMsec);
 }
 
 HealthElapseTransition::HealthElapseTransition()
@@ -68,6 +88,16 @@ HealthElapseTransition::HealthElapseTransition(const HealthElapseTransition&)
 }
 
 HealthElapseTransition::~HealthElapseTransition()
+{
+
+}
+
+ITransition* HealthElapseTransition::makeCopy() const
+{
+	return new HealthElapseTransition();
+}
+
+void HealthElapseTransition::onStateEnter()
 {
 
 }

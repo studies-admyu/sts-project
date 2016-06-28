@@ -1,5 +1,7 @@
 #include "sts_weapon.hpp"
 
+#include <stdexcept>
+
 #include <OGRE/OgreRoot.h>
 
 #include <sts_game_root.hpp>
@@ -7,8 +9,18 @@
 namespace sts {
 
 Weapon::Weapon(std::string name, IBulletStyle* bs, IFiringStyle* fs, int dmg, unsigned int cld, bool isHom)
-	: _name(name), _bulletStyle(bs), _firingStyle(fs), _damage(dmg), _cooldown(cld), _isHoming(isHom)
+	: _name(name), _bulletStyle(bs), _damage(dmg), _cooldown(cld), _isHoming(isHom)
 {
+	if (name.size() == 0) {
+		throw std::runtime_error("Attempt to create a Weapon with empty name.");
+	} else if (!bs) {
+		throw std::runtime_error("Attempt to create a Weapon with NULL BulletStyle.");
+	} else if (!fs) {
+		throw std::runtime_error("Attempt to create a Weapon with NULL FiringStyle.");
+	}
+
+	this->_firingStyle = std::unique_ptr<IFiringStyle>(fs);
+
 	sts::GameRoot::getObject()->_addWeapon(this);
 	Ogre::LogManager::getSingleton().logMessage("Weapon created");
 }
@@ -59,12 +71,12 @@ const IBulletStyle* Weapon::bulletStyle() const
 
 IFiringStyle* Weapon::firingStyle()
 {
-	return this->_firingStyle;
+	return this->_firingStyle.get();
 }
 
 const IFiringStyle* Weapon::firingStyle() const
 {
-	return this->_firingStyle;
+	return this->_firingStyle.get();
 }
 
 int Weapon::damage() const

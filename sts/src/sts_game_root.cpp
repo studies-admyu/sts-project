@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "gameplay/weaponry/sts_bullet_style.hpp"
+
 namespace sts {
 
 GameRoot* mGameRootSingleton = nullptr;
@@ -35,6 +37,9 @@ void GameRoot::releaseScene()
 void GameRoot::releaseResources()
 {
 	this->releaseScene();
+
+	sts::RoundBulletStyle::releaseObject();
+	sts::BlastBulletStyle::releaseObject();
 }
 
 GameRoot* GameRoot::initRoot(Ogre::SceneManager* oscene, Ogre::Viewport* oviewport, Ogre::Timer* otimer)

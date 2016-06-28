@@ -2,21 +2,24 @@
 
 #include <sts_game_root.hpp>
 
+#include "statemachine/sts_sm_permanent_state.hpp"
+#include "motion/sts_motion_behavior.hpp"
+#include "weaponry/sts_firing_behavior.hpp"
 #include "weaponry/sts_firing_state.hpp"
 #include "weaponry/sts_weapon_state.hpp"
 
 namespace sts {
 
-Unit::Unit(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> _states)
-	:LayeredObject(renderable, layerIndex)
+Unit::Unit(UnitType* utype, Layer* layer, unsigned int tm, const UnitStateSequence* stSeq)
+	: LayeredObject(utype->renderable(), layer)
 {
-	this->initUnit(utptr, _states);
+	this->initUnit(utype, tm, stSeq);
 }
 
-Unit::Unit(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<SM::State*> _states)
-	:LayeredObject(renderable, layer)
+Unit::Unit(UnitType* utype, unsigned int layerIndex, unsigned int tm, const UnitStateSequence* stSeq)
+	: LayeredObject(utype->renderable(), layerIndex)
 {
-	this->initUnit(utptr, _states);
+	this->initUnit(utype, tm, stSeq);
 }
 
 Unit::Unit(const Unit& unit)
@@ -30,33 +33,66 @@ Unit::~Unit()
 
 }
 
-void Unit::initUnit(const UnitType* utptr, std::list<SM::State*> states)
+void Unit::initUnit(UnitType* utype, unsigned int tm, const UnitStateSequence* stSeq)
 {
-	this->unitTypePtr = utptr;
-	this->states = states;
-	this->_health = 100;
-	this->_team = 0;
+	if (!stSeq) {
+		this->_stateSequence = std::unique_ptr<UnitStateSequence>(Unit::createDefaultSequence());
+	} else {
+		this->_stateSequence = std::unique_ptr<UnitStateSequence>(new UnitStateSequence(*stSeq));
+	}
+
+	this->_unitType = utype;
+	if (utype->weapon1()) {
+		this->_weapon1State.reset(utype->weapon1()->createWeaponState());
+	}
+	if (utype->weapon2()) {
+		this->_weapon2State.reset(utype->weapon2()->createWeaponState());
+	}
+	this->_health = utype->healthMax();
+	this->_team = tm;
+	/** @todo Add isDestructable constructor argument */
 	this->_isDestructable = true;
 }
 
-Unit* Unit::create(Renderable* renderable, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states)
+UnitStateSequence* Unit::createDefaultSequence()
 {
-	return new Unit(renderable, layerIndex, utptr, states);
+	UnitStateSequence* returnValue = new UnitStateSequence();
+	SM::PermanentState* defaultState = new SM::PermanentState();
+	defaultState->setWeapon1Behavior(new NoFire());
+	defaultState->setWeapon2Behavior(new NoFire());
+	defaultState->setMotionBehavior(new MoveIdle());
+	returnValue->addState(defaultState);
+	return returnValue;
 }
 
-Unit* Unit::create(std::string renderableName, unsigned int layerIndex, const UnitType* utptr, std::list<SM::State*> states)
+Unit* Unit::create(UnitType* utype, unsigned int layerIndex, unsigned int tm, const UnitStateSequence* stSeq)
 {
-	return new Unit(sts::GameRoot::getObject()->getRenderable(renderableName), layerIndex, utptr, states);
+	return new Unit(utype, layerIndex, tm, stSeq);
 }
 
-Unit* Unit::create(Renderable* renderable, Layer* layer, const UnitType* utptr, std::list<SM::State*> states)
+Unit* Unit::create(UnitType* utype, Layer* layer, unsigned int tm, const UnitStateSequence* stSeq)
 {
-	return new Unit(renderable, layer, utptr, states);
+	return new Unit(utype, layer, tm, stSeq);
 }
 
-Unit* Unit::create(std::string renderableName, Layer* layer, const UnitType* utptr, std::list<SM::State*> states)
+Unit* Unit::create(std::string unitTypeName, unsigned int layerIndex, unsigned int tm, const UnitStateSequence* stSeq)
 {
-	return new Unit(sts::GameRoot::getObject()->getRenderable(renderableName), layer, utptr, states);
+	return new Unit(sts::GameRoot::getObject()->getUnitType(unitTypeName), layerIndex, tm, stSeq);
+}
+
+Unit* Unit::create(std::string unitTypeName, Layer* layer, unsigned int tm, const UnitStateSequence* stSeq)
+{
+	return new Unit(sts::GameRoot::getObject()->getUnitType(unitTypeName), layer, tm, stSeq);
+}
+
+void Unit::_setWeapon1FiringState(IFiringState* newState)
+{
+	this->_weapon1FiringState.reset(newState);
+}
+
+void Unit::_setWeapon2FiringState(IFiringState* newState)
+{
+	this->_weapon2FiringState.reset(newState);
 }
 
 int Unit::health() const
@@ -77,6 +113,16 @@ void Unit::setHealth(int value)
 void Unit::setTeam(unsigned int value)
 {
 	this->_team = value;
+}
+
+UnitType* Unit::unitType()
+{
+	return this->_unitType;
+}
+
+const UnitType* Unit::unitType() const
+{
+	return this->_unitType;
 }
 
 WeaponState* Unit::weapon1State()
@@ -117,6 +163,33 @@ IFiringState* Unit::weapon2FiringState()
 const IFiringState* Unit::weapon2FiringState() const
 {
 	return this->_weapon2FiringState.get();
+}
+
+UnitStateSequence* Unit::stateSequence()
+{
+	return this->_stateSequence.get();
+}
+
+const UnitStateSequence* Unit::stateSequence() const
+{
+	return this->_stateSequence.get();
+}
+
+void Unit::processObject(unsigned int msec)
+{
+	/* Check for the state machine changes */
+	this->_stateSequence->processState(this);
+
+	/* Weapon processing */
+	if (this->_weapon1FiringState.get() && this->_weapon1State.get()) {
+		this->_weapon1FiringState->process(this, this->_weapon1State.get());
+	}
+	if (this->_weapon2FiringState.get() && this->_weapon2State.get()) {
+		this->_weapon2FiringState->process(this, this->_weapon2State.get());
+	}
+
+	/* Motion & layer details processing */
+	LayeredObject::processObject(msec);
 }
 
 } // namespace sts

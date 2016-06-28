@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "sts_sm_state.hpp"
 
 namespace sts {
@@ -22,8 +24,10 @@ public:
 	void processState(Unit* unit);
 
 private:
-	std::list<SM::State*> _states;
-	std::list<SM::State*>::iterator _currentState;
+	std::list<std::unique_ptr<SM::State>> _states;
+	std::list<std::unique_ptr<SM::State>>::iterator _currentState;
+
+	void updateState(Unit* unit);
 };
 
 } // namespace sts
